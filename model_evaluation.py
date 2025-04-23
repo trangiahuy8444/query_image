@@ -37,7 +37,27 @@ class RelTREvaluator:
         """
         Khởi tạo RelTREvaluator để đánh giá mô hình RelTR.
         """
-        self.driver = GraphDatabase.driver(neo4j_uri, auth=(neo4j_username, neo4j_password))
+        # Cấu hình kết nối Neo4j với JWT token
+        self.driver = GraphDatabase.driver(
+            neo4j_uri,
+            auth=("neo4j", "12345678"),  # Thông tin xác thực cơ bản
+            encrypted=True,
+            trust="TRUST_ALL_CERTIFICATES",
+            max_connection_lifetime=3600,
+            max_connection_pool_size=50,
+            connection_acquisition_timeout=60,
+            connection_timeout=30,
+            max_retry_time=30
+        )
+        
+        # Test kết nối
+        try:
+            with self.driver.session() as session:
+                session.run("RETURN 1")
+            logger.info("Successfully connected to Neo4j database")
+        except Exception as e:
+            logger.error(f"Failed to connect to Neo4j: {str(e)}")
+            raise
         
         # Sử dụng CPU để tránh lỗi device mismatch
         self.device = torch.device('cpu')
@@ -480,6 +500,9 @@ class RelTREvaluator:
         plt.subplot(2, 2, 1)
         plt.title('ROC Curves for Subject-Object Pairs')
         
+        # Vẽ đường chéo 45 độ
+        plt.plot([0, 1], [0, 1], 'k--', label='Random')
+        
         # Vẽ ROC curve cho cặp subject-object
         for result in results['pairs']:
             min_pairs = result['min_pairs']
@@ -495,6 +518,9 @@ class RelTREvaluator:
         # Tạo subplot cho ROC curves của triplets
         plt.subplot(2, 2, 2)
         plt.title('ROC Curves for Triplets')
+        
+        # Vẽ đường chéo 45 độ
+        plt.plot([0, 1], [0, 1], 'k--', label='Random')
         
         # Vẽ ROC curve cho triplets
         for result in results['triplets']:
@@ -512,6 +538,9 @@ class RelTREvaluator:
         plt.subplot(2, 2, 3)
         plt.title('Precision-Recall for Subject-Object Pairs')
         
+        # Vẽ đường chéo 45 độ
+        plt.plot([0, 1], [0, 1], 'k--', label='Random')
+        
         for result in results['pairs']:
             min_pairs = result['min_pairs']
             metrics = result['metrics']
@@ -528,6 +557,9 @@ class RelTREvaluator:
         # Tạo subplot cho Precision-Recall của triplets
         plt.subplot(2, 2, 4)
         plt.title('Precision-Recall for Triplets')
+        
+        # Vẽ đường chéo 45 độ
+        plt.plot([0, 1], [0, 1], 'k--', label='Random')
         
         for result in results['triplets']:
             min_pairs = result['min_pairs']
