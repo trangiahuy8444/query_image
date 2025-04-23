@@ -568,9 +568,13 @@ class RelTREvaluator:
                 
             # Load và xử lý ảnh
             predictions = predict(image_path, self.model)
-            if predictions is None:
+            if predictions is None or len(predictions) == 0:
                 logger.error(f"No predictions for image: {image_id}")
                 return image_id, None
+                
+            logger.info(f"Image {image_id}: Found {len(predictions)} predictions")
+            for pred in predictions:
+                logger.info(f"  {pred['subject']['class']} -[{pred['relation']['class']}]-> {pred['object']['class']}")
                 
             return image_id, predictions
         except Exception as e:
@@ -599,6 +603,10 @@ class RelTREvaluator:
             if not subjects or not objects:
                 logger.warning("No valid predictions in batch")
                 return [], []
+            
+            logger.info(f"Querying Neo4j with {len(subjects)} subjects and {len(objects)} objects")
+            logger.info(f"Prediction pairs: {prediction_pairs}")
+            logger.info(f"Prediction triples: {prediction_triples}")
             
             # Truy vấn cho cặp subject-object
             pairs_query = """
@@ -671,6 +679,11 @@ class RelTREvaluator:
                 triplets_result = list(session.run(triplets_query, params))
                 
                 logger.info(f"Found {len(pairs_result)} pairs and {len(triplets_result)} triplets")
+                for record in pairs_result:
+                    logger.info(f"Image {record['image_id']}: {record['matching_pairs']} matching pairs out of {record['total_pairs']} total pairs")
+                for record in triplets_result:
+                    logger.info(f"Image {record['image_id']}: {record['matching_triples']} matching triples out of {record['total_triples']} total triples")
+                
                 return pairs_result, triplets_result
             except Exception as e:
                 logger.error(f"Error querying Neo4j: {str(e)}")
@@ -738,11 +751,14 @@ class RelTREvaluator:
                         batch_predictions.extend(predictions)
                 
                 if batch_predictions:
+                    logger.info(f"Batch {i//batch_size + 1}: Processing {len(batch_predictions)} predictions")
                     # Truy vấn Neo4j cho batch
                     pairs_result, triplets_result = self._batch_query_neo4j(batch_predictions)
                     
                     # Cập nhật kết quả
                     self._update_results(all_results, pairs_result, triplets_result)
+                else:
+                    logger.warning(f"Batch {i//batch_size + 1}: No valid predictions")
                 
                 # Giải phóng bộ nhớ sau mỗi batch
                 if torch.cuda.is_available():
