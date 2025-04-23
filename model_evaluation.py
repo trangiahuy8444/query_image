@@ -15,6 +15,7 @@ import psutil
 import torch
 import torch.serialization
 import argparse
+import socket
 
 # Cấu hình logging để ghi lại thông tin và lỗi
 logging.basicConfig(
@@ -33,8 +34,7 @@ def check_neo4j_connection(uri, username, password):
         driver = GraphDatabase.driver(
             uri,
             auth=(username, password),
-            encrypted=True,
-            trust="TRUST_ALL_CERTIFICATES"
+            encrypted=False
         )
         with driver.session() as session:
             session.run("RETURN 1")
@@ -42,6 +42,23 @@ def check_neo4j_connection(uri, username, password):
         return True
     except Exception as e:
         logger.error(f"Failed to connect to Neo4j: {str(e)}")
+        return False
+
+def check_neo4j_server(host="localhost", port=7687):
+    """Kiểm tra xem Neo4j server có đang chạy không"""
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(2)
+        result = sock.connect_ex((host, port))
+        sock.close()
+        if result == 0:
+            logger.info("Neo4j server is running")
+            return True
+        else:
+            logger.error("Neo4j server is not running")
+            return False
+    except Exception as e:
+        logger.error(f"Error checking Neo4j server: {str(e)}")
         return False
 
 class RelTREvaluator:
@@ -58,8 +75,7 @@ class RelTREvaluator:
         self.driver = GraphDatabase.driver(
             neo4j_uri,
             auth=(neo4j_username, neo4j_password),
-            encrypted=True,
-            trust="TRUST_ALL_CERTIFICATES"
+            encrypted=False
         )
         
         # Test kết nối
@@ -889,7 +905,12 @@ class RelTREvaluator:
 def main():
     """Hàm chính để thực hiện đánh giá"""
     try:
-        # Kiểm tra kết nối Neo4j trước
+        # Kiểm tra Neo4j server trước
+        if not check_neo4j_server():
+            logger.error("Please start Neo4j server before running this script")
+            return
+            
+        # Kiểm tra kết nối Neo4j
         if not check_neo4j_connection("bolt://localhost:7687", "neo4j", "12345678"):
             logger.error("Cannot proceed without Neo4j connection")
             return
