@@ -1,0 +1,42 @@
+{
+  "dataset_splits": {
+    "train": {
+      "images": 1739,
+      "annotations": 9984
+    },
+    "val": {
+      "images": 200,
+      "annotations": 1145
+    },
+    "test": {
+      "images": 200,
+      "annotations": 1147
+    }
+  },
+  "relationships": {
+    "train": 6588,
+    "val": 733,
+    "test": 749
+  },
+  "categories": {
+    "objects": 150,
+    "relationships": 51
+  },
+  "original": {
+    "train": {
+      "images": 1739,
+      "annotations": 19545,
+      "relationships": 9896
+    },
+    "val": {
+      "images": 200,
+      "annotations": 2463,
+      "relationships": 1096
+    },
+    "test": {
+      "images": 200,
+      "annotations": 2404,
+      "relationships": 1175
+    }
+  }
+}

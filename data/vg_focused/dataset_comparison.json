@@ -1,0 +1,55 @@
+{
+  "image_counts": {
+    "original": {
+      "train": 1739,
+      "val": 200,
+      "test": 200
+    },
+    "new": {
+      "train": 1739,
+      "val": 200,
+      "test": 200
+    }
+  },
+  "annotation_counts": {
+    "original": {
+      "train": 19545,
+      "val": 2463,
+      "test": 2404
+    },
+    "new": {
+      "train": 9984,
+      "val": 1145,
+      "test": 1147
+    }
+  },
+  "relationship_counts": {
+    "original": {
+      "train": 9896,
+      "val": 1096,
+      "test": 1175
+    },
+    "new": {
+      "train": 6588,
+      "val": 733,
+      "test": 749
+    }
+  },
+  "reduction_percentages": {
+    "images": {
+      "train": 0.0,
+      "val": 0.0,
+      "test": 0.0
+    },
+    "annotations": {
+      "train": 48.92,
+      "val": 53.51,
+      "test": 52.29
+    },
+    "relationships": {
+      "train": 33.43,
+      "val": 33.12,
+      "test": 36.26
+    }
+  }
+}

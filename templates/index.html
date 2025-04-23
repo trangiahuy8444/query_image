@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Relationship Analysis</title>
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --secondary-color: #4CAF50;
+            --text-color: #333;
+            --bg-color: #f4f4f9;
+            --card-bg: #fff;
+            --border-radius: 8px;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+        }
+
+        .upload-btn, .analyze-btn {
+            padding: 12px 24px;
+            margin: 0 10px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .analyze-btn {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .upload-btn:hover, .analyze-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Loading State */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1em;
+            color: #666;
+            position: relative;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-color);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Input Image Section */
+        .input-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .input-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .input-image-container {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+
+        .input-image-container img {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+        }
+
+        /* Predictions Grid */
+        .predictions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .prediction-card {
+            background: white;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .prediction-card .subject { color: var(--primary-color); font-weight: bold; }
+        .prediction-card .relation { color: #FF5722; font-style: italic; }
+        .prediction-card .object { color: var(--secondary-color); font-weight: bold; }
+
+        /* Results Grid */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .image-container {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            background-color: #f8f9fa;
+        }
+
+        /* Metrics */
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric-item {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .metric-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 5px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .input-container {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .tab {
+                padding: 8px 16px;
+            }
+        }
+
+        /* Add these styles to the existing CSS */
+        .relationship-item {
+            padding: 5px 0;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .relationship-item.matching {
+            font-weight: bold;
+            color: var(--primary-color);
+            background-color: rgba(33, 150, 243, 0.1);
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 4px 0;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 2px 4px rgba(33, 150, 243, 0.1);
+        }
+
+        .relationship-item.matching strong {
+            color: var(--primary-color);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+            margin: 10px 0;
+        }
+
+        .image-id-info {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Relationship Analysis</h1>
+        
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <form id="uploadForm">
+                <input type="file" id="fileInput" accept="image/*" style="display: none">
+                <button type="button" onclick="document.getElementById('fileInput').click()" class="upload-btn">
+                    Choose Image
+                </button>
+                <button type="submit" class="analyze-btn">Analyze</button>
+            </form>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading" id="loadingSection">
+            <div class="loading-spinner"></div>
+            <p>Analyzing image and finding relationships...</p>
+        </div>
+
+        <!-- Main Content -->
+        <div id="mainContent" style="display: none">
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('input')">Input Analysis</button>
+                <button class="tab" onclick="showTab('pairs')">Matching Pairs</button>
+                <button class="tab" onclick="showTab('triples')">Matching Triples</button>
+            </div>
+
+            <!-- Input Analysis Tab -->
+            <div class="tab-content active" id="inputTab">
+                <div class="input-section">
+                    <h2>Input Image Analysis</h2>
+                    <div class="input-container">
+                        <div class="input-image-container">
+                            <img id="inputImage" src="" alt="Input image">
+                            <div class="image-info">
+                                <strong>Filename:</strong> <span id="inputFilename">-</span><br>
+                                <strong>Image ID:</strong> <span id="inputImageId">-</span>
+                            </div>
+                        </div>
+                        <div class="predictions-container">
+                            <h3>Detected Relationships</h3>
+                            <div id="predictionsGrid" class="predictions-grid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metrics-container">
+                    <div class="metric-item">
+                        <div class="metric-label">Prediction Time</div>
+                        <div id="predictionTime" class="metric-value">-</div>
+                        <div class="metric-unit">seconds</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Number of Predictions</div>
+                        <div id="numPredictions" class="metric-value">-</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Total Unique Images</div>
+                        <div id="totalImages" class="metric-value">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Matching Pairs Tab -->
+            <div class="tab-content" id="pairsTab">
+                <div class="results-section">
+                    <h3>Images with 1 or More Matching Subject-Object Pairs 
+                        <span id="1_or_more_stats" class="stats-badge"></span>
+                    </h3>
+                    <div id="1_or_more_results" class="gallery"></div>
+                </div>
+
+                <div class="results-section">
+                    <h3>Images with 2 or More Matching Subject-Object Pairs 
+                        <span id="2_or_more_stats" class="stats-badge"></span>
+                    </h3>
+                    <div id="2_or_more_results" class="gallery"></div>
+                </div>
+
+                <div class="results-section">
+                    <h3>Images with 3 or More Matching Subject-Object Pairs 
+                        <span id="3_or_more_stats" class="stats-badge"></span>
+                    </h3>
+                    <div id="3_or_more_results" class="gallery"></div>
+                </div>
+
+                <div class="results-section">
+                    <h3>Images with 4 or More Matching Subject-Object Pairs
+                        <span id="4_or_more_stats" class="stats-badge"></span>
+                    </h3>
+                    <div id="4_or_more_results" class="gallery"></div>
+                </div>
+
+                <div class="results-section">
+                    <h3>Images with 5 or More Matching Subject-Object Pairs
+                        <span id="5_or_more_stats" class="stats-badge"></span>
+                    </h3>
+                    <div id="5_or_more_results" class="gallery"></div>
+                </div>
+            </div>
+
+            <!-- Matching Triples Tab -->
+            <div class="tab-content" id="triplesTab">
+                <div class="results-section">
+                    <h3>Images with 1 or More Matching Subject-Relation-Object Triples 
+                        <span id="1_or_more_full_stats" class="stats-badge"></span>
+                    </h3>
+                    <div id="1_or_more_full_results" class="gallery"></div>
+                </div>
+
+                <div class="results-section">
+                    <h3>Images with 2 or More Matching Subject-Relation-Object Triples 
+                        <span id="2_or_more_full_stats" class="stats-badge"></span>
+                    </h3>
+                    <div id="2_or_more_full_results" class="gallery"></div>
+                </div>
+
+                <div class="results-section">
+                    <h3>Images with 3 or More Matching Subject-Relation-Object Triples 
+                        <span id="3_or_more_full_stats" class="stats-badge"></span>
+                    </h3>
+                    <div id="3_or_more_full_results" class="gallery"></div>
+                </div>
+
+                <div class="results-section">
+                    <h3>Images with 4 or More Matching Subject-Relation-Object Triples
+                        <span id="4_or_more_full_stats" class="stats-badge"></span>
+                    </h3>
+                    <div id="4_or_more_full_results" class="gallery"></div>
+                </div>
+
+                <div class="results-section">
+                    <h3>Images with 5 or More Matching Subject-Relation-Object Triples
+                        <span id="5_or_more_full_stats" class="stats-badge"></span>
+                    </h3>
+                    <div id="5_or_more_full_results" class="gallery"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // Add active class to selected tab
+            event.target.classList.add('active');
+        }
+
+        function updateMetrics(metrics) {
+            document.getElementById('predictionTime').textContent = metrics.prediction_time;
+            document.getElementById('numPredictions').textContent = metrics.num_predictions;
+            document.getElementById('totalImages').textContent = metrics.total_unique_images;
+        }
+
+        function updateCategoryStats(category, images) {
+            if (images && images.length > 0) {
+                document.getElementById(`${category}_stats`).textContent = 
+                    `${images.length} images`;
+            }
+        }
+
+        function displayInputImage(file, predictions) {
+            const inputImage = document.getElementById('inputImage');
+            const inputFilename = document.getElementById('inputFilename');
+            const predictionsGrid = document.getElementById('predictionsGrid');
+
+            inputImage.src = URL.createObjectURL(file);
+            inputFilename.textContent = file.name;
+
+            predictionsGrid.innerHTML = '';
+            predictions.forEach(pred => {
+                const predCard = document.createElement('div');
+                predCard.className = 'prediction-card';
+                predCard.innerHTML = `
+                    <div>
+                        <span class="subject">${pred.subject.class}</span>
+                        <span class="relation">${pred.relation.class}</span>
+                        <span class="object">${pred.object.class}</span>
+                    </div>
+                `;
+                predictionsGrid.appendChild(predCard);
+            });
+        }
+
+        function displayResults(images, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            // Get predictions from the input tab
+            const predictions = Array.from(document.querySelectorAll('.prediction-card')).map(card => {
+                const subject = card.querySelector('.subject').textContent;
+                const relation = card.querySelector('.relation').textContent;
+                const object = card.querySelector('.object').textContent;
+                return { subject, relation, object };
+            });
+
+            if (images && images.length > 0) {
+                images.forEach(image => {
+                    const div = document.createElement('div');
+                    div.className = 'image-container';
+                    
+                    const matchingInfo = image.matching_triples !== undefined ? 
+                        `<strong>Matching Triples:</strong> ${image.matching_triples}/${image.total_triples}` :
+                        `<strong>Matching Pairs:</strong> ${image.matching_pairs}/${image.total_pairs}`;
+                    
+                    // Highlight matching relationships
+                    const relationshipsHtml = image.relationships.map(rel => {
+                        // Parse the relationship string (format: "subject -[relation]-> object")
+                        const [subject, relationPart, object] = rel.split(' -[');
+                        const relation = relationPart ? relationPart.split(']-> ')[0] : '';
+                        
+                        // Check if this relationship matches any prediction
+                        const isMatching = predictions.some(pred => {
+                            if (image.matching_triples !== undefined) {
+                                // For triples, check all three parts
+                                return subject === pred.subject && 
+                                       relation === pred.relation && 
+                                       object === pred.object;
+                            } else {
+                                // For pairs, only check subject and object
+                                return subject === pred.subject && object === pred.object;
+                            }
+                        });
+
+                        return `<div class="relationship-item ${isMatching ? 'matching' : ''}">${rel}</div>`;
+                    }).join('');
+                    
+                    div.innerHTML = `
+                        <img src="${image.url}" alt="Image ${image.image_id}" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%25\' height=\'100%25\'><rect width=\'100%25\' height=\'100%25\' fill=\'%23f8f9fa\'/><text x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23666\' font-family=\'Arial\' font-size=\'14\'>Image not found</text></svg>'; this.classList.add('error');">
+                        <div class="matching-info">
+                            <strong>Image ID:</strong> ${image.image_id}<br>
+                            ${matchingInfo}
+                        </div>
+                        <div class="relationships-list">
+                            <strong>Relationships:</strong>
+                            ${relationshipsHtml}
+                        </div>
+                    `;
+                    
+                    container.appendChild(div);
+                });
+            } else {
+                const inputImageId = document.getElementById('inputImageId').textContent;
+                container.innerHTML = `
+                    <div class="no-results">
+                        <p>No matching images found</p>
+                        <p class="image-id-info">Input Image ID: ${inputImageId}</p>
+                    </div>
+                `;
+            }
+        }
+
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select an image first');
+                return;
+            }
+
+            // Show loading state
+            document.getElementById('loadingSection').style.display = 'block';
+            document.getElementById('mainContent').style.display = 'none';
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                // Hide loading state and show main content
+                document.getElementById('loadingSection').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+
+                displayInputImage(file, data.predictions);
+                document.getElementById('inputImageId').textContent = data.metrics.input_image_id;
+                updateMetrics(data.metrics);
+
+                // Display results for different matching pair counts
+                displayResults(data.related_images['1_or_more'], '1_or_more_results');
+                displayResults(data.related_images['2_or_more'], '2_or_more_results');
+                displayResults(data.related_images['3_or_more'], '3_or_more_results');
+                displayResults(data.related_images['4_or_more'], '4_or_more_results');
+                displayResults(data.related_images['5_or_more'], '5_or_more_results');
+
+                // Display results for different matching triple counts
+                displayResults(data.related_images_full['1_or_more_full'], '1_or_more_full_results');
+                displayResults(data.related_images_full['2_or_more_full'], '2_or_more_full_results');
+                displayResults(data.related_images_full['3_or_more_full'], '3_or_more_full_results');
+                displayResults(data.related_images_full['4_or_more_full'], '4_or_more_full_results');
+                displayResults(data.related_images_full['5_or_more_full'], '5_or_more_full_results');
+
+                // Update stats badges
+                updateCategoryStats('1_or_more', data.related_images['1_or_more']);
+                updateCategoryStats('2_or_more', data.related_images['2_or_more']);
+                updateCategoryStats('3_or_more', data.related_images['3_or_more']);
+                updateCategoryStats('4_or_more', data.related_images['4_or_more']);
+                updateCategoryStats('5_or_more', data.related_images['5_or_more']);
+                updateCategoryStats('1_or_more_full', data.related_images_full['1_or_more_full']);
+                updateCategoryStats('2_or_more_full', data.related_images_full['2_or_more_full']);
+                updateCategoryStats('3_or_more_full', data.related_images_full['3_or_more_full']);
+                updateCategoryStats('4_or_more_full', data.related_images_full['4_or_more_full']);
+                updateCategoryStats('5_or_more_full', data.related_images_full['5_or_more_full']);
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while processing the image');
+                // Hide loading state and show main content
+                document.getElementById('loadingSection').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

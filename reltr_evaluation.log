@@ -1,0 +1,10 @@
+2025-04-23 23:20:17,424 - INFO - Sử dụng thiết bị: cpu
+2025-04-23 23:20:18,724 - INFO - Sử dụng 6 luồng để xử lý
+2025-04-23 23:20:18,724 - INFO - Mô hình RelTR và cơ sở dữ liệu đã được tải thành công.
+2025-04-23 23:20:18,724 - INFO - Sử dụng batch size tối ưu: 24
+2025-04-23 23:20:18,726 - INFO - Tổng số ảnh cần đánh giá: 100
+2025-04-23 23:20:18,727 - INFO - Đang đánh giá batch 1/5
+2025-04-23 23:37:28,653 - INFO - Đang đánh giá batch 2/5
+2025-04-23 23:54:08,640 - INFO - Đang đánh giá batch 3/5
+2025-04-24 00:11:29,444 - INFO - Đang đánh giá batch 4/5
+2025-04-24 00:27:50,657 - INFO - Đang đánh giá batch 5/5
