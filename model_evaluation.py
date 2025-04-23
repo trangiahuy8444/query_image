@@ -13,7 +13,6 @@ from tqdm import tqdm
 import multiprocessing
 import psutil
 import torch
-import torch.cuda
 import torch.serialization
 import argparse
 
@@ -40,26 +39,22 @@ class RelTREvaluator:
         """
         self.driver = GraphDatabase.driver(neo4j_uri, auth=(neo4j_username, neo4j_password))
         
-        # Kiểm tra và sử dụng GPU nếu có
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        # Sử dụng CPU để tránh lỗi device mismatch
+        self.device = torch.device('cpu')
         logger.info(f"Using device: {self.device}")
         
-        # Load model với GPU nếu có
+        # Load model với CPU
         try:
             # Thêm argparse.Namespace vào danh sách safe globals
             torch.serialization.add_safe_globals([argparse.Namespace])
             
             # Load model trực tiếp với torch.load
-            ckpt = torch.load(model_path, map_location=self.device, weights_only=False)
+            ckpt = torch.load(model_path, map_location='cpu', weights_only=False)
             self.model = load_model(model_path)
             
-            if torch.cuda.is_available():
-                self.model = self.model.to(self.device)
-                # Đảm bảo model ở chế độ eval
-                self.model.eval()
-                # Tối ưu hóa bộ nhớ GPU
-                torch.cuda.empty_cache()
-                
+            # Đảm bảo model ở chế độ eval
+            self.model.eval()
+            
             # Log thông tin về model
             logger.info(f"Model device: {next(self.model.parameters()).device}")
             logger.info(f"Model state: {self.model.training}")
@@ -576,20 +571,20 @@ class RelTREvaluator:
                 logger.error(f"No predictions for image: {image_id}")
                 return image_id, None
                 
-            # Đảm bảo tất cả tensor đều ở cùng device
+            # Đảm bảo tất cả tensor đều ở CPU
             for pred in predictions:
                 if 'subject' in pred:
                     if 'bbox' in pred['subject']:
-                        pred['subject']['bbox'] = pred['subject']['bbox'].to(self.device)
+                        pred['subject']['bbox'] = pred['subject']['bbox'].cpu()
                     if 'score' in pred['subject']:
-                        pred['subject']['score'] = pred['subject']['score'].to(self.device)
+                        pred['subject']['score'] = pred['subject']['score'].cpu()
                 if 'object' in pred:
                     if 'bbox' in pred['object']:
-                        pred['object']['bbox'] = pred['object']['bbox'].to(self.device)
+                        pred['object']['bbox'] = pred['object']['bbox'].cpu()
                     if 'score' in pred['object']:
-                        pred['object']['score'] = pred['object']['score'].to(self.device)
+                        pred['object']['score'] = pred['object']['score'].cpu()
                 if 'relation' in pred and 'score' in pred['relation']:
-                    pred['relation']['score'] = pred['relation']['score'].to(self.device)
+                    pred['relation']['score'] = pred['relation']['score'].cpu()
             
             # Log thông tin về predictions
             logger.info(f"Image {image_id}: Found {len(predictions)} predictions")
