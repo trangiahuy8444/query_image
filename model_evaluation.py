@@ -46,7 +46,8 @@ class RelTREvaluator:
             max_connection_lifetime=3600,
             max_connection_pool_size=50,
             connection_acquisition_timeout=60,
-            connection_timeout=30
+            connection_timeout=30,
+            max_retries=3
         )
         
         # Test kết nối
@@ -873,9 +874,36 @@ class RelTREvaluator:
         current_metrics['matching_percentage'] = (current_metrics['matching_percentage'] * total_images + record['matching_percentage']) / new_total
         current_metrics['total_images'] = new_total
 
+def check_neo4j_connection(uri, username, password):
+    """Kiểm tra kết nối đến Neo4j database"""
+    try:
+        driver = GraphDatabase.driver(
+            uri,
+            auth=(username, password),
+            encrypted=True,
+            trust="TRUST_ALL_CERTIFICATES",
+            max_connection_lifetime=3600,
+            max_connection_pool_size=50,
+            connection_acquisition_timeout=60,
+            connection_timeout=30,
+            max_retries=3
+        )
+        with driver.session() as session:
+            session.run("RETURN 1")
+        logger.info("Successfully connected to Neo4j database")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to connect to Neo4j: {str(e)}")
+        return False
+
 def main():
     """Hàm chính để thực hiện đánh giá"""
     try:
+        # Kiểm tra kết nối Neo4j trước
+        if not check_neo4j_connection("bolt://localhost:7687", "neo4j", "12345678"):
+            logger.error("Cannot proceed without Neo4j connection")
+            return
+            
         evaluator = RelTREvaluator()
         
         # Đánh giá số lượng ảnh cụ thể
