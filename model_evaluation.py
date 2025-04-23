@@ -519,7 +519,8 @@ class RelTREvaluator:
             'tpr': [],  # True Positive Rate
             'precision': [],
             'recall': [],
-            'f1_score': []
+            'f1_score': [],
+            'matching_percentage': []
         }
         
         for threshold in thresholds:
@@ -532,6 +533,7 @@ class RelTREvaluator:
                 metrics['precision'].append(0.0)
                 metrics['recall'].append(0.0)
                 metrics['f1_score'].append(0.0)
+                metrics['matching_percentage'].append(0.0)
                 continue
             
             # Tính toán các metrics
@@ -542,16 +544,18 @@ class RelTREvaluator:
             precision = total_matching / total_pairs if total_pairs > 0 else 0
             recall = total_matching / (total_pairs * total_images) if total_pairs * total_images > 0 else 0
             f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+            matching_percentage = sum(r['matching_percentage'] for r in filtered_results) / total_images if total_images > 0 else 0
             
             # Tính FPR và TPR
-            fpr = 1 - precision
-            tpr = recall
+            fpr = 1 - precision  # False Positive Rate = 1 - Precision
+            tpr = recall        # True Positive Rate = Recall
             
             metrics['fpr'].append(fpr)
             metrics['tpr'].append(tpr)
             metrics['precision'].append(precision)
             metrics['recall'].append(recall)
             metrics['f1_score'].append(f1_score)
+            metrics['matching_percentage'].append(matching_percentage)
         
         return metrics
 
