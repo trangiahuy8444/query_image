@@ -520,7 +520,7 @@ class RelTREvaluator:
 
     def plot_roc_curves(self, results, output_file='roc_curves.png'):
         """
-        Vẽ ROC curves cho các kết quả đánh giá theo từng danh mục.
+        Vẽ ROC curves và Precision-Recall curves cho các kết quả đánh giá.
         """
         plt.figure(figsize=(15, 10))
         
@@ -535,11 +535,15 @@ class RelTREvaluator:
         for result in results['pairs']:
             min_pairs = result['min_pairs']
             metrics = result['metrics']
-            plt.plot(metrics['recall'], metrics['precision'], 
-                    label=f'Min {min_pairs} pairs (F1={metrics["f1_score"]:.2f})')
+            # Tính FPR (False Positive Rate)
+            fpr = 1 - metrics['precision']
+            # TPR (True Positive Rate) chính là recall
+            tpr = metrics['recall']
+            plt.plot(fpr, tpr, 'o-', 
+                    label=f'Min {min_pairs} pairs (AUC={metrics["f1_score"]:.2f})')
         
-        plt.xlabel('Recall')
-        plt.ylabel('Precision')
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
         plt.legend()
         plt.grid(True)
         
@@ -554,11 +558,15 @@ class RelTREvaluator:
         for result in results['triplets']:
             min_pairs = result['min_pairs']
             metrics = result['metrics']
-            plt.plot(metrics['recall'], metrics['precision'], 
-                    label=f'Min {min_pairs} triplets (F1={metrics["f1_score"]:.2f})')
+            # Tính FPR (False Positive Rate)
+            fpr = 1 - metrics['precision']
+            # TPR (True Positive Rate) chính là recall
+            tpr = metrics['recall']
+            plt.plot(fpr, tpr, 'o-', 
+                    label=f'Min {min_pairs} triplets (AUC={metrics["f1_score"]:.2f})')
         
-        plt.xlabel('Recall')
-        plt.ylabel('Precision')
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
         plt.legend()
         plt.grid(True)
         
@@ -566,19 +574,14 @@ class RelTREvaluator:
         plt.subplot(2, 2, 3)
         plt.title('Precision-Recall for Subject-Object Pairs')
         
-        # Vẽ đường chéo 45 độ
-        plt.plot([0, 1], [0, 1], 'k--', label='Random')
-        
         for result in results['pairs']:
             min_pairs = result['min_pairs']
             metrics = result['metrics']
-            plt.plot([0, 1], [metrics['precision'], metrics['precision']], 
-                    label=f'Min {min_pairs} pairs (P={metrics["precision"]:.2f})')
-            plt.plot([0, 1], [metrics['recall'], metrics['recall']], 
-                    label=f'Min {min_pairs} pairs (R={metrics["recall"]:.2f})')
+            plt.plot(metrics['recall'], metrics['precision'], 'o-',
+                    label=f'Min {min_pairs} pairs (F1={metrics["f1_score"]:.2f})')
         
-        plt.xlabel('Threshold')
-        plt.ylabel('Score')
+        plt.xlabel('Recall')
+        plt.ylabel('Precision')
         plt.legend()
         plt.grid(True)
         
@@ -586,19 +589,14 @@ class RelTREvaluator:
         plt.subplot(2, 2, 4)
         plt.title('Precision-Recall for Triplets')
         
-        # Vẽ đường chéo 45 độ
-        plt.plot([0, 1], [0, 1], 'k--', label='Random')
-        
         for result in results['triplets']:
             min_pairs = result['min_pairs']
             metrics = result['metrics']
-            plt.plot([0, 1], [metrics['precision'], metrics['precision']], 
-                    label=f'Min {min_pairs} triplets (P={metrics["precision"]:.2f})')
-            plt.plot([0, 1], [metrics['recall'], metrics['recall']], 
-                    label=f'Min {min_pairs} triplets (R={metrics["recall"]:.2f})')
+            plt.plot(metrics['recall'], metrics['precision'], 'o-',
+                    label=f'Min {min_pairs} triplets (F1={metrics["f1_score"]:.2f})')
         
-        plt.xlabel('Threshold')
-        plt.ylabel('Score')
+        plt.xlabel('Recall')
+        plt.ylabel('Precision')
         plt.legend()
         plt.grid(True)
         
@@ -606,7 +604,7 @@ class RelTREvaluator:
         plt.savefig(output_file)
         plt.close()
         
-        logger.info(f"ROC curves and Precision-Recall saved to {output_file}")
+        logger.info(f"ROC curves and Precision-Recall curves saved to {output_file}")
 
     def get_all_images(self):
         """
