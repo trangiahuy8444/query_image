@@ -46,14 +46,11 @@ class RelTREvaluator:
         
         # Load model với GPU nếu có
         try:
-            # Thêm argparse.Namespace vào danh sách safe globals
-            torch.serialization.add_safe_globals([argparse.Namespace])
-            # Load model với weights_only=False
             self.model = load_model(model_path)
             if torch.cuda.is_available():
                 self.model = self.model.cuda()
-                # Tối ưu hóa bộ nhớ GPU
-                torch.cuda.empty_cache()
+                # Đảm bảo model ở chế độ eval
+                self.model.eval()
         except Exception as e:
             logger.error(f"Error loading model: {str(e)}")
             raise
@@ -552,15 +549,15 @@ class RelTREvaluator:
         return [os.path.splitext(f)[0] for f in image_files]
 
     def _process_image(self, image_id):
-        """
-        Xử lý một ảnh và trả về dự đoán.
-        """
         try:
             image_path = os.path.join(self.image_folder, f"{image_id}.jpg")
-            predictions = predict(image_path, self.model)
-            return image_id, predictions
+            # Chuyển ảnh lên GPU trước khi xử lý
+            image = predict(image_path, self.model)
+            if torch.cuda.is_available():
+                image = image.cuda()
+            return image_id, image
         except Exception as e:
-            logger.error(f"Lỗi khi xử lý ảnh {image_id}: {str(e)}")
+            logger.error(f"Error processing image {image_id}: {str(e)}")
             return image_id, None
 
     def _batch_query_neo4j(self, predictions_batch):
