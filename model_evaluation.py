@@ -49,8 +49,9 @@ class RelTREvaluator:
             # Thêm argparse.Namespace vào danh sách safe globals
             torch.serialization.add_safe_globals([argparse.Namespace])
             
-            # Load model với weights_only=False
-            self.model = load_model(model_path, weights_only=False)
+            # Load model trực tiếp với torch.load
+            ckpt = torch.load(model_path, map_location='cpu', weights_only=False)
+            self.model = load_model(model_path)
             
             if torch.cuda.is_available():
                 self.model = self.model.cuda()
