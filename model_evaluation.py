@@ -703,24 +703,28 @@ class RelTREvaluator:
         """
         # Cập nhật kết quả cho cặp subject-object
         for record in pairs_result:
-            min_pairs = 1  # Có thể điều chỉnh ngưỡng
-            if record['matching_pairs'] >= min_pairs:
-                self._update_metrics(all_results['pairs'], record, 'matching_pairs', 'total_pairs')
+            matching_pairs = record['matching_pairs']
+            # Cập nhật cho tất cả các ngưỡng từ 1 đến 5
+            for min_pairs in range(1, 6):
+                if matching_pairs >= min_pairs:
+                    self._update_metrics(all_results['pairs'], record, 'matching_pairs', 'total_pairs', min_pairs)
         
         # Cập nhật kết quả cho triplets
         for record in triplets_result:
-            min_pairs = 1  # Có thể điều chỉnh ngưỡng
-            if record['matching_triples'] >= min_pairs:
-                self._update_metrics(all_results['triplets'], record, 'matching_triples', 'total_triples')
+            matching_triples = record['matching_triples']
+            # Cập nhật cho tất cả các ngưỡng từ 1 đến 5
+            for min_pairs in range(1, 6):
+                if matching_triples >= min_pairs:
+                    self._update_metrics(all_results['triplets'], record, 'matching_triples', 'total_triples', min_pairs)
 
-    def _update_metrics(self, results, record, matching_field, total_field):
+    def _update_metrics(self, results, record, matching_field, total_field, min_pairs):
         """
         Cập nhật metrics cho một kết quả.
         """
-        min_pairs = 1  # Có thể điều chỉnh ngưỡng
-        if len(results) <= min_pairs - 1:
+        # Tìm hoặc tạo kết quả cho ngưỡng min_pairs
+        while len(results) < min_pairs:
             results.append({
-                'min_pairs': min_pairs,
+                'min_pairs': len(results) + 1,
                 'metrics': {
                     'precision': 0,
                     'recall': 0,
@@ -753,17 +757,8 @@ def main():
     try:
         evaluator = RelTREvaluator()
         
-        # Có thể chọn một trong các cách sau:
-        
-        # 1. Đánh giá tất cả các ảnh
-        # results = evaluator.evaluate_all_images()
-        
-        # 2. Đánh giá số lượng ảnh cụ thể
+        # Đánh giá số lượng ảnh cụ thể
         results = evaluator.evaluate_all_images(max_images=100)
-        
-        # 3. Đánh giá các ảnh cụ thể
-        # specific_images = ['2363159', '2361148', '2375089', '2379262']
-        # results = evaluator.evaluate_all_images(specific_images=specific_images)
         
         # Vẽ ROC curves và Precision-Recall
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
