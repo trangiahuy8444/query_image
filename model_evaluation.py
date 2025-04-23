@@ -557,13 +557,22 @@ class RelTREvaluator:
         return [os.path.splitext(f)[0] for f in image_files]
 
     def _process_image(self, image_id):
+        """
+        Xử lý một ảnh và trả về dự đoán.
+        """
         try:
             image_path = os.path.join(self.image_folder, f"{image_id}.jpg")
-            # Chuyển ảnh lên GPU trước khi xử lý
-            image = predict(image_path, self.model)
-            if torch.cuda.is_available():
-                image = image.cuda()
-            return image_id, image
+            if not os.path.exists(image_path):
+                logger.error(f"Image not found: {image_path}")
+                return image_id, None
+                
+            # Load và xử lý ảnh
+            predictions = predict(image_path, self.model)
+            if predictions is None:
+                logger.error(f"No predictions for image: {image_id}")
+                return image_id, None
+                
+            return image_id, predictions
         except Exception as e:
             logger.error(f"Error processing image {image_id}: {str(e)}")
             return image_id, None
@@ -586,6 +595,10 @@ class RelTREvaluator:
                 objects.add(pred['object']['class'])
                 prediction_pairs.append((pred['subject']['class'], pred['object']['class']))
                 prediction_triples.append((pred['subject']['class'], pred['relation']['class'], pred['object']['class']))
+            
+            if not subjects or not objects:
+                logger.warning("No valid predictions in batch")
+                return [], []
             
             # Truy vấn cho cặp subject-object
             pairs_query = """
@@ -652,11 +665,16 @@ class RelTREvaluator:
                 'prediction_triples': prediction_triples
             }
             
-            # Thực hiện truy vấn và lưu kết quả
-            pairs_result = list(session.run(pairs_query, params))
-            triplets_result = list(session.run(triplets_query, params))
-            
-            return pairs_result, triplets_result
+            try:
+                # Thực hiện truy vấn và lưu kết quả
+                pairs_result = list(session.run(pairs_query, params))
+                triplets_result = list(session.run(triplets_query, params))
+                
+                logger.info(f"Found {len(pairs_result)} pairs and {len(triplets_result)} triplets")
+                return pairs_result, triplets_result
+            except Exception as e:
+                logger.error(f"Error querying Neo4j: {str(e)}")
+                return [], []
 
     def evaluate_all_images(self, batch_size=None, max_images=None, specific_images=None):
         """
@@ -680,6 +698,29 @@ class RelTREvaluator:
             'pairs': [],
             'triplets': []
         }
+        
+        # Khởi tạo kết quả cho các ngưỡng
+        for min_pairs in range(1, 6):
+            all_results['pairs'].append({
+                'min_pairs': min_pairs,
+                'metrics': {
+                    'precision': 0,
+                    'recall': 0,
+                    'f1_score': 0,
+                    'matching_percentage': 0,
+                    'total_images': 0
+                }
+            })
+            all_results['triplets'].append({
+                'min_pairs': min_pairs,
+                'metrics': {
+                    'precision': 0,
+                    'recall': 0,
+                    'f1_score': 0,
+                    'matching_percentage': 0,
+                    'total_images': 0
+                }
+            })
         
         # Xử lý ảnh theo batch với đa luồng
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
