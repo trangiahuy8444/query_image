@@ -14,13 +14,14 @@ import multiprocessing
 import psutil
 import torch
 import torch.cuda
+import torch.serialization
 
 # Cấu hình logging để ghi lại thông tin và lỗi
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('reltr_evaluation.log'),
+        logging.FileHandler('reltr_evaluation.log', encoding='utf-8'),
         logging.StreamHandler()
     ]
 )
@@ -40,25 +41,32 @@ class RelTREvaluator:
         
         # Kiểm tra và sử dụng GPU nếu có
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        logger.info(f"Sử dụng thiết bị: {self.device}")
+        logger.info(f"Using device: {self.device}")
         
         # Load model với GPU nếu có
-        self.model = load_model(model_path)
-        if torch.cuda.is_available():
-            self.model = self.model.cuda()
-            # Tối ưu hóa bộ nhớ GPU
-            torch.cuda.empty_cache()
+        try:
+            # Thêm argparse.Namespace vào danh sách safe globals
+            torch.serialization.add_safe_globals(['argparse.Namespace'])
+            # Load model với weights_only=False
+            self.model = load_model(model_path)
+            if torch.cuda.is_available():
+                self.model = self.model.cuda()
+                # Tối ưu hóa bộ nhớ GPU
+                torch.cuda.empty_cache()
+        except Exception as e:
+            logger.error(f"Error loading model: {str(e)}")
+            raise
         
         self.image_folder = image_folder
         
         # Tự động xác định số lượng luồng tối ưu
         self.max_workers = self._get_optimal_workers()
-        logger.info(f"Sử dụng {self.max_workers} luồng để xử lý")
+        logger.info(f"Using {self.max_workers} threads")
         
         if not os.path.exists(image_folder):
-            raise FileNotFoundError(f"Thư mục ảnh không tìm thấy: {image_folder}")
+            raise FileNotFoundError(f"Image folder not found: {image_folder}")
             
-        logger.info("Mô hình RelTR và cơ sở dữ liệu đã được tải thành công.")
+        logger.info("RelTR model and database loaded successfully")
 
     def _get_optimal_workers(self):
         """
@@ -533,7 +541,7 @@ class RelTREvaluator:
         plt.savefig(output_file)
         plt.close()
         
-        logger.info(f"ROC curves và Precision-Recall đã được lưu vào {output_file}")
+        logger.info(f"ROC curves and Precision-Recall saved to {output_file}")
 
     def get_all_images(self):
         """
@@ -650,7 +658,7 @@ class RelTREvaluator:
         """
         if batch_size is None:
             batch_size = self._get_optimal_batch_size()
-            logger.info(f"Sử dụng batch size tối ưu: {batch_size}")
+            logger.info(f"Using optimal batch size: {batch_size}")
         
         if specific_images:
             all_images = specific_images
@@ -660,7 +668,7 @@ class RelTREvaluator:
                 all_images = all_images[:max_images]
         
         total_images = len(all_images)
-        logger.info(f"Tổng số ảnh cần đánh giá: {total_images}")
+        logger.info(f"Total images to evaluate: {total_images}")
         
         all_results = {
             'pairs': [],
@@ -671,7 +679,7 @@ class RelTREvaluator:
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             for i in range(0, total_images, batch_size):
                 batch_images = all_images[i:i + batch_size]
-                logger.info(f"Đang đánh giá batch {i//batch_size + 1}/{(total_images + batch_size - 1)//batch_size}")
+                logger.info(f"Evaluating batch {i//batch_size + 1}/{(total_images + batch_size - 1)//batch_size}")
                 
                 # Xử lý ảnh song song
                 future_to_image = {executor.submit(self._process_image, image_id): image_id for image_id in batch_images}
