@@ -91,17 +91,26 @@ class RelTREvaluator:
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         logger.info(f"Using device: {self.device}")
         
+        # Log thông tin GPU
+        if torch.cuda.is_available():
+            logger.info(f"GPU: {torch.cuda.get_device_name(0)}")
+            logger.info(f"CUDA Version: {torch.version.cuda}")
+        
         # Load model với GPU nếu có sẵn
         try:
             # Thêm argparse.Namespace vào danh sách safe globals
             torch.serialization.add_safe_globals([argparse.Namespace])
             
             # Load model trực tiếp với torch.load
-            ckpt = torch.load(model_path, map_location=self.device, weights_only=False)
+            ckpt = torch.load(model_path, map_location=self.device)
             self.model = load_model(model_path)
             
             # Chuyển model sang GPU nếu có sẵn
-            self.model = self.model.to(self.device)
+            if torch.cuda.is_available():
+                self.model = self.model.cuda()
+                # Đảm bảo tất cả các tham số của model đều ở GPU
+                for param in self.model.parameters():
+                    param.data = param.data.to(self.device)
             
             # Đảm bảo model ở chế độ eval
             self.model.eval()
@@ -109,6 +118,10 @@ class RelTREvaluator:
             # Log thông tin về model
             logger.info(f"Model device: {next(self.model.parameters()).device}")
             logger.info(f"Model state: {self.model.training}")
+            
+            # Kiểm tra xem model có thực sự ở GPU không
+            if torch.cuda.is_available():
+                logger.info(f"Model is on GPU: {next(self.model.parameters()).is_cuda}")
         except Exception as e:
             logger.error(f"Error loading model: {str(e)}")
             raise
