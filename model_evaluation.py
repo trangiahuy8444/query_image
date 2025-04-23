@@ -15,6 +15,7 @@ import psutil
 import torch
 import torch.cuda
 import torch.serialization
+import argparse
 
 # Cấu hình logging để ghi lại thông tin và lỗi
 logging.basicConfig(
@@ -46,7 +47,7 @@ class RelTREvaluator:
         # Load model với GPU nếu có
         try:
             # Thêm argparse.Namespace vào danh sách safe globals
-            torch.serialization.add_safe_globals(['argparse.Namespace'])
+            torch.serialization.add_safe_globals([argparse.Namespace])
             # Load model với weights_only=False
             self.model = load_model(model_path)
             if torch.cuda.is_available():
