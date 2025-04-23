@@ -462,7 +462,7 @@ class RelTREvaluator:
         
         return image_details
 
-    def calculate_roc_metrics(self, predictions, min_pairs_range=range(1, 6)):
+    def calculate_roc_metrics(self, predictions, min_pairs_range=range(1, 11)):
         """
         Tính toán ROC curve cho các ngưỡng min_pairs khác nhau.
         """
@@ -471,10 +471,13 @@ class RelTREvaluator:
             'triplets': []
         }
         
+        # Thêm các ngưỡng khác nhau để có nhiều điểm trên đường cong
+        thresholds = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+        
         for min_pairs in min_pairs_range:
             # Đánh giá dựa trên cặp subject-object
             pairs_results = self.query_images_by_pairs_count(predictions, min_pairs)
-            pairs_metrics = self._calculate_metrics(pairs_results)
+            pairs_metrics = self._calculate_metrics_with_thresholds(pairs_results, thresholds)
             results['pairs'].append({
                 'min_pairs': min_pairs,
                 'metrics': pairs_metrics
@@ -482,7 +485,7 @@ class RelTREvaluator:
             
             # Đánh giá dựa trên triplets
             triplets_results = self.query_images_by_full_pairs_count(predictions, min_pairs)
-            triplets_metrics = self._calculate_metrics(triplets_results)
+            triplets_metrics = self._calculate_metrics_with_thresholds(triplets_results, thresholds)
             results['triplets'].append({
                 'min_pairs': min_pairs,
                 'metrics': triplets_metrics
@@ -490,33 +493,51 @@ class RelTREvaluator:
         
         return results
 
-    def _calculate_metrics(self, results):
+    def _calculate_metrics_with_thresholds(self, results, thresholds):
         """
-        Tính toán các metrics từ kết quả truy vấn.
+        Tính toán các metrics với nhiều ngưỡng khác nhau.
         """
-        if not results:
-            return {
-                'precision': 0,
-                'recall': 0,
-                'f1_score': 0,
-                'matching_percentage': 0
-            }
-        
-        total_matching = sum(r['matching_pairs'] if 'matching_pairs' in r else r['matching_triples'] for r in results)
-        total_pairs = sum(r['total_pairs'] if 'total_pairs' in r else r['total_triples'] for r in results)
-        total_images = len(results)
-        
-        precision = total_matching / total_pairs if total_pairs > 0 else 0
-        recall = total_matching / (total_pairs * total_images) if total_pairs * total_images > 0 else 0
-        f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
-        matching_percentage = sum(r['matching_percentage'] for r in results) / total_images if total_images > 0 else 0
-        
-        return {
-            'precision': precision,
-            'recall': recall,
-            'f1_score': f1_score,
-            'matching_percentage': matching_percentage
+        metrics = {
+            'thresholds': thresholds,
+            'fpr': [],  # False Positive Rate
+            'tpr': [],  # True Positive Rate
+            'precision': [],
+            'recall': [],
+            'f1_score': []
         }
+        
+        for threshold in thresholds:
+            # Lọc kết quả theo ngưỡng
+            filtered_results = [r for r in results if r['matching_percentage'] >= threshold * 100]
+            
+            if not filtered_results:
+                metrics['fpr'].append(1.0)
+                metrics['tpr'].append(0.0)
+                metrics['precision'].append(0.0)
+                metrics['recall'].append(0.0)
+                metrics['f1_score'].append(0.0)
+                continue
+            
+            # Tính toán các metrics
+            total_matching = sum(r['matching_pairs'] if 'matching_pairs' in r else r['matching_triples'] for r in filtered_results)
+            total_pairs = sum(r['total_pairs'] if 'total_pairs' in r else r['total_triples'] for r in filtered_results)
+            total_images = len(filtered_results)
+            
+            precision = total_matching / total_pairs if total_pairs > 0 else 0
+            recall = total_matching / (total_pairs * total_images) if total_pairs * total_images > 0 else 0
+            f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+            
+            # Tính FPR và TPR
+            fpr = 1 - precision
+            tpr = recall
+            
+            metrics['fpr'].append(fpr)
+            metrics['tpr'].append(tpr)
+            metrics['precision'].append(precision)
+            metrics['recall'].append(recall)
+            metrics['f1_score'].append(f1_score)
+        
+        return metrics
 
     def plot_roc_curves(self, results, output_file='roc_curves.png'):
         """
@@ -535,12 +556,8 @@ class RelTREvaluator:
         for result in results['pairs']:
             min_pairs = result['min_pairs']
             metrics = result['metrics']
-            # Tính FPR (False Positive Rate)
-            fpr = 1 - metrics['precision']
-            # TPR (True Positive Rate) chính là recall
-            tpr = metrics['recall']
-            plt.plot(fpr, tpr, 'o-', 
-                    label=f'Min {min_pairs} pairs (AUC={metrics["f1_score"]:.2f})')
+            plt.plot(metrics['fpr'], metrics['tpr'], 'o-', 
+                    label=f'Min {min_pairs} pairs (AUC={np.trapz(metrics["tpr"], metrics["fpr"]):.2f})')
         
         plt.xlabel('False Positive Rate')
         plt.ylabel('True Positive Rate')
@@ -558,12 +575,8 @@ class RelTREvaluator:
         for result in results['triplets']:
             min_pairs = result['min_pairs']
             metrics = result['metrics']
-            # Tính FPR (False Positive Rate)
-            fpr = 1 - metrics['precision']
-            # TPR (True Positive Rate) chính là recall
-            tpr = metrics['recall']
-            plt.plot(fpr, tpr, 'o-', 
-                    label=f'Min {min_pairs} triplets (AUC={metrics["f1_score"]:.2f})')
+            plt.plot(metrics['fpr'], metrics['tpr'], 'o-', 
+                    label=f'Min {min_pairs} triplets (AUC={np.trapz(metrics["tpr"], metrics["fpr"]):.2f})')
         
         plt.xlabel('False Positive Rate')
         plt.ylabel('True Positive Rate')
@@ -578,7 +591,7 @@ class RelTREvaluator:
             min_pairs = result['min_pairs']
             metrics = result['metrics']
             plt.plot(metrics['recall'], metrics['precision'], 'o-',
-                    label=f'Min {min_pairs} pairs (F1={metrics["f1_score"]:.2f})')
+                    label=f'Min {min_pairs} pairs (F1={np.mean(metrics["f1_score"]):.2f})')
         
         plt.xlabel('Recall')
         plt.ylabel('Precision')
@@ -593,7 +606,7 @@ class RelTREvaluator:
             min_pairs = result['min_pairs']
             metrics = result['metrics']
             plt.plot(metrics['recall'], metrics['precision'], 'o-',
-                    label=f'Min {min_pairs} triplets (F1={metrics["f1_score"]:.2f})')
+                    label=f'Min {min_pairs} triplets (F1={np.mean(metrics["f1_score"]):.2f})')
         
         plt.xlabel('Recall')
         plt.ylabel('Precision')
@@ -915,8 +928,8 @@ def main():
             
         evaluator = RelTREvaluator()
         
-        # Đánh giá số lượng ảnh cụ thể
-        results = evaluator.evaluate_all_images(max_images=100)
+        # Đánh giá toàn bộ dữ liệu
+        results = evaluator.evaluate_all_images()
         
         # Vẽ ROC curves và Precision-Recall
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -938,11 +951,10 @@ def main():
             for result in results[metric_type]:
                 metrics = result['metrics']
                 logger.info(f"Min {result['min_pairs']} {metric_type}:")
-                logger.info(f"  Precision: {metrics['precision']:.4f}")
-                logger.info(f"  Recall: {metrics['recall']:.4f}")
-                logger.info(f"  F1 Score: {metrics['f1_score']:.4f}")
-                logger.info(f"  Matching Percentage: {metrics['matching_percentage']:.2f}%")
-                logger.info(f"  Total Images: {metrics['total_images']}")
+                logger.info(f"  AUC: {np.trapz(metrics['tpr'], metrics['fpr']):.4f}")
+                logger.info(f"  Average F1 Score: {np.mean(metrics['f1_score']):.4f}")
+                logger.info(f"  Average Precision: {np.mean(metrics['precision']):.4f}")
+                logger.info(f"  Average Recall: {np.mean(metrics['recall']):.4f}")
         
     except Exception as e:
         logger.error(f"Lỗi trong hàm main: {str(e)}")
