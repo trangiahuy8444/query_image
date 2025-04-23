@@ -81,7 +81,7 @@ def box_cxcywh_to_xyxy(x):
 def rescale_bboxes(out_bbox, size):
     img_w, img_h = size
     b = box_cxcywh_to_xyxy(out_bbox)
-    b = b * torch.tensor([img_w, img_h, img_w, img_h], dtype=torch.float32)
+    b = b * torch.tensor([img_w, img_h, img_w, img_h], dtype=torch.float32, device=b.device)
     return b
 
 # Hàm dự đoán với đầu vào là ảnh
@@ -107,6 +107,10 @@ def predict(image, model):
     # convert boxes from [0; 1] to image scales
     sub_bboxes_scaled = rescale_bboxes(outputs['sub_boxes'][0, keep], im.size)
     obj_bboxes_scaled = rescale_bboxes(outputs['obj_boxes'][0, keep], im.size)
+    
+    # Chuyển bboxes sang cùng device
+    sub_bboxes_scaled = sub_bboxes_scaled.to(device)
+    obj_bboxes_scaled = obj_bboxes_scaled.to(device)
     
     topk = 10 # display up to 10 images
     keep_queries = torch.nonzero(keep, as_tuple=True)[0]
