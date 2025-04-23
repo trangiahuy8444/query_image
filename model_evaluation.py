@@ -50,11 +50,11 @@ class RelTREvaluator:
             torch.serialization.add_safe_globals([argparse.Namespace])
             
             # Load model trực tiếp với torch.load
-            ckpt = torch.load(model_path, map_location='cpu', weights_only=False)
+            ckpt = torch.load(model_path, map_location=self.device, weights_only=False)
             self.model = load_model(model_path)
             
             if torch.cuda.is_available():
-                self.model = self.model.cuda()
+                self.model = self.model.to(self.device)
                 # Đảm bảo model ở chế độ eval
                 self.model.eval()
                 # Tối ưu hóa bộ nhớ GPU
@@ -572,6 +572,13 @@ class RelTREvaluator:
                 logger.error(f"No predictions for image: {image_id}")
                 return image_id, None
                 
+            # Đảm bảo tất cả tensor đều ở cùng device
+            for pred in predictions:
+                if 'subject' in pred and 'bbox' in pred['subject']:
+                    pred['subject']['bbox'] = pred['subject']['bbox'].to(self.device)
+                if 'object' in pred and 'bbox' in pred['object']:
+                    pred['object']['bbox'] = pred['object']['bbox'].to(self.device)
+            
             logger.info(f"Image {image_id}: Found {len(predictions)} predictions")
             for pred in predictions:
                 logger.info(f"  {pred['subject']['class']} -[{pred['relation']['class']}]-> {pred['object']['class']}")
