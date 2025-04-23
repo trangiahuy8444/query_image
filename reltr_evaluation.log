@@ -8,3 +8,24 @@
 2025-04-23 23:54:08,640 - INFO - Đang đánh giá batch 3/5
 2025-04-24 00:11:29,444 - INFO - Đang đánh giá batch 4/5
 2025-04-24 00:27:50,657 - INFO - Đang đánh giá batch 5/5
+2025-04-24 00:29:47,471 - INFO - ROC curves và Precision-Recall đã được lưu vào roc_curves_20250424_002946.png
+2025-04-24 00:29:47,472 - INFO - Kết quả đánh giá đã được lưu vào evaluation_results_20250424_002946.json
+2025-04-24 00:29:47,472 - INFO - Biểu đồ ROC và Precision-Recall đã được lưu vào roc_curves_20250424_002946.png
+2025-04-24 00:29:47,472 - INFO - 
+Thống kê tổng quan:
+2025-04-24 00:29:47,472 - INFO - 
+Kết quả cho pairs:
+2025-04-24 00:29:47,472 - INFO - Min 1 pairs:
+2025-04-24 00:29:47,472 - INFO -   Precision: 0.4500
+2025-04-24 00:29:47,472 - INFO -   Recall: 0.0045
+2025-04-24 00:29:47,472 - INFO -   F1 Score: 0.0076
+2025-04-24 00:29:47,472 - INFO -   Matching Percentage: 45.00%
+2025-04-24 00:29:47,472 - INFO -   Total Images: 1311
+2025-04-24 00:29:47,472 - INFO - 
+Kết quả cho triplets:
+2025-04-24 00:29:47,472 - INFO - Min 1 triplets:
+2025-04-24 00:29:47,472 - INFO -   Precision: 0.4046
+2025-04-24 00:29:47,472 - INFO -   Recall: 0.0053
+2025-04-24 00:29:47,472 - INFO -   F1 Score: 0.0088
+2025-04-24 00:29:47,472 - INFO -   Matching Percentage: 40.46%
+2025-04-24 00:29:47,472 - INFO -   Total Images: 1024

@@ -1,0 +1,26 @@
+{
+  "pairs": [
+    {
+      "min_pairs": 1,
+      "metrics": {
+        "precision": 0.4499544071912499,
+        "recall": 0.004549976635849864,
+        "f1_score": 0.007590370306297899,
+        "matching_percentage": 44.995440719125135,
+        "total_images": 1311
+      }
+    }
+  ],
+  "triplets": [
+    {
+      "min_pairs": 1,
+      "metrics": {
+        "precision": 0.404553385254068,
+        "recall": 0.005336394473418183,
+        "f1_score": 0.008753644969503045,
+        "matching_percentage": 40.455338525407015,
+        "total_images": 1024
+      }
+    }
+  ]
+}
