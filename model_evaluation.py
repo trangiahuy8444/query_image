@@ -59,6 +59,10 @@ class RelTREvaluator:
                 self.model.eval()
                 # Tối ưu hóa bộ nhớ GPU
                 torch.cuda.empty_cache()
+                
+            # Log thông tin về model
+            logger.info(f"Model device: {next(self.model.parameters()).device}")
+            logger.info(f"Model state: {self.model.training}")
         except Exception as e:
             logger.error(f"Error loading model: {str(e)}")
             raise
@@ -574,14 +578,27 @@ class RelTREvaluator:
                 
             # Đảm bảo tất cả tensor đều ở cùng device
             for pred in predictions:
-                if 'subject' in pred and 'bbox' in pred['subject']:
-                    pred['subject']['bbox'] = pred['subject']['bbox'].to(self.device)
-                if 'object' in pred and 'bbox' in pred['object']:
-                    pred['object']['bbox'] = pred['object']['bbox'].to(self.device)
+                if 'subject' in pred:
+                    if 'bbox' in pred['subject']:
+                        pred['subject']['bbox'] = pred['subject']['bbox'].to(self.device)
+                    if 'score' in pred['subject']:
+                        pred['subject']['score'] = pred['subject']['score'].to(self.device)
+                if 'object' in pred:
+                    if 'bbox' in pred['object']:
+                        pred['object']['bbox'] = pred['object']['bbox'].to(self.device)
+                    if 'score' in pred['object']:
+                        pred['object']['score'] = pred['object']['score'].to(self.device)
+                if 'relation' in pred and 'score' in pred['relation']:
+                    pred['relation']['score'] = pred['relation']['score'].to(self.device)
             
+            # Log thông tin về predictions
             logger.info(f"Image {image_id}: Found {len(predictions)} predictions")
             for pred in predictions:
                 logger.info(f"  {pred['subject']['class']} -[{pred['relation']['class']}]-> {pred['object']['class']}")
+                if 'subject' in pred and 'bbox' in pred['subject']:
+                    logger.info(f"    Subject bbox device: {pred['subject']['bbox'].device}")
+                if 'object' in pred and 'bbox' in pred['object']:
+                    logger.info(f"    Object bbox device: {pred['object']['bbox'].device}")
                 
             return image_id, predictions
         except Exception as e:
