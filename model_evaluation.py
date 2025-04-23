@@ -27,6 +27,23 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+def check_neo4j_connection(uri, username, password):
+    """Kiểm tra kết nối đến Neo4j database"""
+    try:
+        driver = GraphDatabase.driver(
+            uri,
+            auth=(username, password),
+            encrypted=True,
+            trust="TRUST_ALL_CERTIFICATES"
+        )
+        with driver.session() as session:
+            session.run("RETURN 1")
+        logger.info("Successfully connected to Neo4j database")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to connect to Neo4j: {str(e)}")
+        return False
+
 class RelTREvaluator:
     def __init__(self, 
                  neo4j_uri="bolt://localhost:7687",
@@ -42,12 +59,7 @@ class RelTREvaluator:
             neo4j_uri,
             auth=(neo4j_username, neo4j_password),
             encrypted=True,
-            trust="TRUST_ALL_CERTIFICATES",
-            max_connection_lifetime=3600,
-            max_connection_pool_size=50,
-            connection_acquisition_timeout=60,
-            connection_timeout=30,
-            max_retries=3
+            trust="TRUST_ALL_CERTIFICATES"
         )
         
         # Test kết nối
@@ -873,28 +885,6 @@ class RelTREvaluator:
         current_metrics['f1_score'] = (current_metrics['f1_score'] * total_images + f1_score) / new_total
         current_metrics['matching_percentage'] = (current_metrics['matching_percentage'] * total_images + record['matching_percentage']) / new_total
         current_metrics['total_images'] = new_total
-
-def check_neo4j_connection(uri, username, password):
-    """Kiểm tra kết nối đến Neo4j database"""
-    try:
-        driver = GraphDatabase.driver(
-            uri,
-            auth=(username, password),
-            encrypted=True,
-            trust="TRUST_ALL_CERTIFICATES",
-            max_connection_lifetime=3600,
-            max_connection_pool_size=50,
-            connection_acquisition_timeout=60,
-            connection_timeout=30,
-            max_retries=3
-        )
-        with driver.session() as session:
-            session.run("RETURN 1")
-        logger.info("Successfully connected to Neo4j database")
-        return True
-    except Exception as e:
-        logger.error(f"Failed to connect to Neo4j: {str(e)}")
-        return False
 
 def main():
     """Hàm chính để thực hiện đánh giá"""
