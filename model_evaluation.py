@@ -37,17 +37,16 @@ class RelTREvaluator:
         """
         Khởi tạo RelTREvaluator để đánh giá mô hình RelTR.
         """
-        # Cấu hình kết nối Neo4j với JWT token
+        # Cấu hình kết nối Neo4j
         self.driver = GraphDatabase.driver(
             neo4j_uri,
-            auth=("neo4j", "12345678"),  # Thông tin xác thực cơ bản
+            auth=(neo4j_username, neo4j_password),
             encrypted=True,
             trust="TRUST_ALL_CERTIFICATES",
             max_connection_lifetime=3600,
             max_connection_pool_size=50,
             connection_acquisition_timeout=60,
-            connection_timeout=30,
-            max_retry_time=30
+            connection_timeout=30
         )
         
         # Test kết nối
