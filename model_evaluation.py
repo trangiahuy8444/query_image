@@ -46,11 +46,18 @@ class RelTREvaluator:
         
         # Load model với GPU nếu có
         try:
-            self.model = load_model(model_path)
+            # Thêm argparse.Namespace vào danh sách safe globals
+            torch.serialization.add_safe_globals([argparse.Namespace])
+            
+            # Load model với weights_only=False
+            self.model = load_model(model_path, weights_only=False)
+            
             if torch.cuda.is_available():
                 self.model = self.model.cuda()
                 # Đảm bảo model ở chế độ eval
                 self.model.eval()
+                # Tối ưu hóa bộ nhớ GPU
+                torch.cuda.empty_cache()
         except Exception as e:
             logger.error(f"Error loading model: {str(e)}")
             raise
