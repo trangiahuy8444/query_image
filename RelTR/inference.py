@@ -89,6 +89,11 @@ def predict(image, model):
     im = Image.open(image) 
     # im = processImage(image)
     img = transform(im).unsqueeze(0)
+    
+    # Chuyển input sang cùng device với model
+    device = next(model.parameters()).device
+    img = img.to(device)
+    
     # propagate through the model
     outputs = model(img)
 
@@ -124,20 +129,20 @@ def predict(image, model):
             # Construct prediction dictionary
             prediction = {
                 "subject": {
-                    "class": subject_class
+                    "class": subject_class,
+                    "bbox": torch.tensor([sxmin, symin, sxmax, symax], device=device),
+                    "score": probas_sub[idx].max()
                 },
                 "relation": {
-                    "class": relation_class
+                    "class": relation_class,
+                    "score": probas[idx].max()
                 },
                 "object": {
-                    "class": object_class
+                    "class": object_class,
+                    "bbox": torch.tensor([oxmin, oymin, oxmax, oymax], device=device),
+                    "score": probas_obj[idx].max()
                 }
             }
-            
-            # if any(p['subject']['class'] == prediction['subject']['class'] and 
-            #         p['relation']['class'] == prediction['relation']['class'] and 
-            #         p['object']['class'] == prediction['object']['class'] for p in predictions):
-            #     continue  # Skip adding this prediction if it's a duplicate
             predictions.append(prediction)
 
     return predictions
