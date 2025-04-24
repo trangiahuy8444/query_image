@@ -27,9 +27,9 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 # Kết nối Neo4j
-uri = "bolt://localhost:7689"
+uri = "neo4j+s://b40b4f2a.databases.neo4j.io"
 username = "neo4j"
-password = "12345678"
+password = "fpKNUXKT-4z0kQMm1nuUaiXe8p70uIebc3y3a4Z8kUA"
 driver = GraphDatabase.driver(uri, auth=(username, password))
 
 # Load mô hình RelTR
@@ -399,6 +399,14 @@ def upload_and_predict():
 
         input_image_id = os.path.splitext(filename)[0]
 
+        # Calculate metrics after getting query results
+        total_images_in_db = 108077  # This should be replaced with actual count from database
+        metrics = calculate_metrics(predictions, {
+            'related_images': related_images,
+            'related_images_full': related_images_full,
+            'matching_pairs_results': matching_pairs_results
+        }, total_images_in_db)
+        
         return jsonify({
             "predictions": predictions,
             "matching_pairs_results": matching_pairs_results,
@@ -409,7 +417,8 @@ def upload_and_predict():
                 "num_predictions": len(predictions),
                 "total_unique_images": total_images,
                 "input_image_id": input_image_id,
-                "output_folder": output_folder
+                "output_folder": output_folder,
+                "roc_pr_metrics": metrics  # Add the new metrics to the response
             }
         })
 
@@ -439,6 +448,76 @@ def get_matching_pairs_results(graph, subject_classes, relation_classes, object_
         for image in images:
             image['url'] = get_image_url(image['image_id'])
     return matching_pairs_results
+
+def calculate_metrics(predictions, query_results, total_images_in_db):
+    """
+    Calculate ROC and precision-recall metrics from query results
+    
+    Args:
+        predictions: List of predicted relationships
+        query_results: Dictionary containing query results from different methods
+        total_images_in_db: Total number of images in the database
+    
+    Returns:
+        Dictionary containing various metrics for ROC and precision-recall analysis
+    """
+    metrics = {}
+    
+    # Process results from query_images_by_pairs_count
+    for threshold, results in query_results.get('related_images', {}).items():
+        tp = len(results)  # True positives - images correctly retrieved
+        fp = 0  # False positives - would need ground truth to calculate
+        fn = 0  # False negatives - would need ground truth to calculate
+        tn = total_images_in_db - tp  # True negatives - remaining images
+        
+        # Calculate basic metrics
+        precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+        recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+        f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+        
+        metrics[f'pairs_{threshold}'] = {
+            'true_positives': tp,
+            'false_positives': fp,
+            'false_negatives': fn,
+            'true_negatives': tn,
+            'precision': precision,
+            'recall': recall,
+            'f1_score': f1_score,
+            'total_retrieved': len(results)
+        }
+    
+    # Process results from query_images_by_full_pairs_count
+    for threshold, results in query_results.get('related_images_full', {}).items():
+        tp = len(results)
+        fp = 0
+        fn = 0
+        tn = total_images_in_db - tp
+        
+        precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+        recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+        f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+        
+        metrics[f'full_triples_{threshold}'] = {
+            'true_positives': tp,
+            'false_positives': fp,
+            'false_negatives': fn,
+            'true_negatives': tn,
+            'precision': precision,
+            'recall': recall,
+            'f1_score': f1_score,
+            'total_retrieved': len(results)
+        }
+    
+    # Process results from find_images_with_matching_pairs
+    matching_pairs_results = query_results.get('matching_pairs_results', {})
+    total_matching_pairs = sum(len(images) for images in matching_pairs_results.values())
+    
+    metrics['matching_pairs'] = {
+        'total_retrieved': total_matching_pairs,
+        'unique_images': len(set(img['image_id'] for images in matching_pairs_results.values() for img in images))
+    }
+    
+    return metrics
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)
