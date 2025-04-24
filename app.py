@@ -441,4 +441,4 @@ def get_matching_pairs_results(graph, subject_classes, relation_classes, object_
     return matching_pairs_results
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5002)

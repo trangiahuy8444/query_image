@@ -527,111 +527,38 @@ class RelTREvaluator:
         
         return image_details
 
-    def calculate_roc_metrics(self, predictions, min_pairs_range=range(1, 11)):
+    def calculate_roc_metrics(self, predictions, ground_truth, thresholds):
         """
-        Tính toán ROC curve cho các ngưỡng min_pairs khác nhau.
-        """
-        results = {
-            'pairs': [],
-            'triplets': []
-        }
-        
-        # Thêm các ngưỡng khác nhau để có nhiều điểm trên đường cong
-        thresholds = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-        
-        for min_pairs in min_pairs_range:
-            # Đánh giá dựa trên cặp subject-object
-            pairs_results = self.query_images_by_pairs_count(predictions, min_pairs)
-            pairs_metrics = self._calculate_metrics_with_thresholds(pairs_results, thresholds)
-            results['pairs'].append({
-                'min_pairs': min_pairs,
-                'metrics': pairs_metrics
-            })
-            
-            # Đánh giá dựa trên triplets
-            triplets_results = self.query_images_by_full_pairs_count(predictions, min_pairs)
-            triplets_metrics = self._calculate_metrics_with_thresholds(triplets_results, thresholds)
-            results['triplets'].append({
-                'min_pairs': min_pairs,
-                'metrics': triplets_metrics
-            })
-        
-        return results
-
-    def _calculate_metrics_with_thresholds(self, results, thresholds):
-        """
-        Calculate metrics for different confidence thresholds.
+        Tính toán các metrics cho ROC curve.
         
         Args:
-            results (list): List of results from query_images_by_pairs_count
-            thresholds (list): List of confidence thresholds to evaluate
+            predictions (list): Danh sách các dự đoán dưới dạng (subject_class, relation_class, object_class)
+            ground_truth (list): Danh sách các ground truth dưới dạng (subject_class, relation_class, object_class)
+            thresholds (list): Danh sách các ngưỡng confidence
         
         Returns:
-            dict: Dictionary containing TPR and FPR for each threshold
+            tuple: (fpr_list, tpr_list, thresholds)
         """
-        metrics = {
-            'thresholds': [],
-            'tpr': [],
-            'fpr': [],
-            'precision': [],
-            'recall': [],
-            'f1_score': [],
-            'total_images': 0
-        }
+        fpr_list = []
+        tpr_list = []
         
         for threshold in thresholds:
-            # Filter predictions by confidence threshold
-            filtered_results = []
-            for result in results:
-                filtered_preds = [
-                    (p['subject']['class'], p['relation']['class'], p['object']['class'])
-                    for p in result['predictions']
-                    if p['confidence'] >= threshold
-                ]
-                if filtered_preds:  # Only include results with predictions above threshold
-                    filtered_results.append({
-                        'predictions': filtered_preds,
-                        'ground_truth': result['ground_truth']
-                    })
+            # Lọc dự đoán theo ngưỡng confidence
+            filtered_preds = [
+                pred for pred in predictions 
+                if pred[1] >= threshold  # Giả sử confidence nằm ở vị trí thứ 2 (relation)
+            ]
             
-            if not filtered_results:
-                continue
+            # Tính precision và recall
+            precision, recall = calculate_precision_recall(filtered_preds, ground_truth)
             
-            # Calculate TP, FP, FN across all filtered results
-            total_tp = 0
-            total_fp = 0
-            total_fn = 0
+            # Tính FPR (False Positive Rate)
+            fpr = 1 - precision
             
-            for result in filtered_results:
-                pred_set = set(result['predictions'])
-                gt_set = set(result['ground_truth'])
-                
-                tp = len(pred_set.intersection(gt_set))
-                fp = len(pred_set - gt_set)
-                fn = len(gt_set - pred_set)
-                
-                total_tp += tp
-                total_fp += fp
-                total_fn += fn
-            
-            # Calculate metrics
-            precision = total_tp / (total_tp + total_fp) if (total_tp + total_fp) > 0 else 0
-            recall = total_tp / (total_tp + total_fn) if (total_tp + total_fn) > 0 else 0
-            f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
-            
-            # For ROC curve
-            tpr = recall  # TPR is same as recall
-            fpr = total_fp / (total_fp + total_fn) if (total_fp + total_fn) > 0 else 0  # FPR calculation
-            
-            metrics['thresholds'].append(threshold)
-            metrics['tpr'].append(tpr)
-            metrics['fpr'].append(fpr)
-            metrics['precision'].append(precision)
-            metrics['recall'].append(recall)
-            metrics['f1_score'].append(f1_score)
-            metrics['total_images'] = len(filtered_results)
+            fpr_list.append(fpr)
+            tpr_list.append(recall)
         
-        return metrics
+        return fpr_list, tpr_list, thresholds
 
     def plot_roc_curves(self, results, output_file='roc_curves.png'):
         """
@@ -1120,7 +1047,13 @@ class RelTREvaluator:
 
     def predict(self, image_path):
         """
-        Dự đoán các mối quan hệ trong ảnh.
+        Dự đoán các mối quan hệ trong ảnh, chỉ lấy class names.
+        
+        Args:
+            image_path (str): Đường dẫn đến ảnh
+            
+        Returns:
+            list: Danh sách các mối quan hệ dự đoán dưới dạng (subject_class, relation_class, object_class)
         """
         try:
             # Đảm bảo model ở chế độ eval
@@ -1137,10 +1070,6 @@ class RelTREvaluator:
             
             # Chuyển tensor sang device phù hợp và thêm batch dimension
             image_tensor = image_tensor.to(self.device).unsqueeze(0)
-            
-            # Log thông tin về tensor và device
-            logger.info(f"Input tensor device: {image_tensor.device}")
-            logger.info(f"Model device: {next(self.model.parameters()).device}")
             
             with torch.no_grad():
                 # Thực hiện dự đoán
@@ -1163,12 +1092,16 @@ class RelTREvaluator:
                 # Lọc các dự đoán có confidence > 0.3
                 keep = max_scores > 0.3
                 
-                # Chuyển đổi kết quả
-                pred_logits = pred_logits[keep]
-                pred_boxes = pred_boxes[keep]
-                scores = scores[keep]
-                
-                return pred_logits, pred_boxes, scores
+                # Chuyển đổi kết quả thành danh sách các mối quan hệ
+                predictions = []
+                for i in range(len(keep)):
+                    if keep[i]:
+                        subject_class = CLASSES[pred_classes[i][0]]
+                        relation_class = REL_CLASSES[pred_classes[i][1]]
+                        object_class = CLASSES[pred_classes[i][2]]
+                        predictions.append((subject_class, relation_class, object_class))
+            
+            return predictions
                 
         except Exception as e:
             logger.error(f"Error in predict: {str(e)}")
@@ -1229,8 +1162,8 @@ def calculate_precision_recall(predictions, ground_truth):
     Tính toán precision và recall cho một tập dự đoán.
     
     Args:
-        predictions (list): Danh sách các dự đoán
-        ground_truth (list): Danh sách các ground truth
+        predictions (list): Danh sách các dự đoán dưới dạng (subject_class, relation_class, object_class)
+        ground_truth (list): Danh sách các ground truth dưới dạng (subject_class, relation_class, object_class)
     
     Returns:
         tuple: (precision, recall)
@@ -1239,8 +1172,8 @@ def calculate_precision_recall(predictions, ground_truth):
         return 0.0, 0.0
         
     # Chuyển đổi thành set để dễ so sánh
-    pred_set = set((p['subject']['class'], p['relation']['class'], p['object']['class']) for p in predictions)
-    gt_set = set(ground_truth)
+    pred_set = set(tuple(pred) for pred in predictions)
+    gt_set = set(tuple(gt) for gt in ground_truth)
     
     # Tính true positives
     true_positives = len(pred_set.intersection(gt_set))
@@ -1256,8 +1189,8 @@ def calculate_roc_metrics(predictions, ground_truth, thresholds):
     Tính toán các metrics cho ROC curve.
     
     Args:
-        predictions (list): Danh sách các dự đoán
-        ground_truth (list): Danh sách các ground truth
+        predictions (list): Danh sách các dự đoán dưới dạng (subject_class, relation_class, object_class)
+        ground_truth (list): Danh sách các ground truth dưới dạng (subject_class, relation_class, object_class)
         thresholds (list): Danh sách các ngưỡng confidence
     
     Returns:
@@ -1269,8 +1202,8 @@ def calculate_roc_metrics(predictions, ground_truth, thresholds):
     for threshold in thresholds:
         # Lọc dự đoán theo ngưỡng confidence
         filtered_preds = [
-            p for p in predictions 
-            if p['relation']['score'] >= threshold
+            pred for pred in predictions 
+            if pred[1] >= threshold  # Giả sử confidence nằm ở vị trí thứ 2 (relation)
         ]
         
         # Tính precision và recall
