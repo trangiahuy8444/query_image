@@ -33,9 +33,13 @@ class QueryMetricsVisualizer:
         
     def get_total_images_count(self):
         """Get total number of images in the database"""
-        with self.driver.session() as session:
-            result = session.run("MATCH (n:Object) RETURN COUNT(DISTINCT n.image_id) as count")
-            return result.single()["count"]
+        try:
+            with self.driver.session() as session:
+                result = session.run("MATCH (n:Object) RETURN COUNT(DISTINCT n.image_id) as count")
+                return result.single()["count"]
+        except Exception as e:
+            print(f"Error getting total images count: {str(e)}")
+            return 0
     
     def _prepare_roc_data(self):
         """Prepare data for ROC curve"""
@@ -203,10 +207,10 @@ class QueryMetricsVisualizer:
                     print(f"  F1 Score: {data.get('f1_score', 0):.2f}")
                     print(f"  Total Retrieved: {data.get('total_retrieved', 0)}")
 
-    def query_and_visualize(self, image_path, server_url='neo4j+s://b40b4f2a.databases.neo4j.io'):
+    def query_and_visualize(self, image_path, server_url='http://localhost:5002'):
         """Query an image and visualize the results"""
         try:
-            # Query the image
+            # Query the image through Flask server
             with open(image_path, 'rb') as f:
                 files = {'file': f}
                 response = requests.post(f'{server_url}/upload', files=files)
