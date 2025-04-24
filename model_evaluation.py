@@ -1410,33 +1410,20 @@ def main():
             "total_images_processed": len(image_metrics),
             "total_predictions": sum(m['num_predictions'] for m in image_metrics.values()),
             "total_ground_truth": sum(m['num_ground_truth'] for m in image_metrics.values()),
+        }
+        
+        # Nếu không có ground truth, báo lỗi và dừng đánh giá
+        if total_metrics['total_ground_truth'] == 0:
+            logger.error("No ground truth data available. Cannot evaluate model performance.")
+            logger.error("Please ensure that ground truth data is properly loaded from Neo4j database.")
+            return
+            
+        # Tính toán các metrics chỉ khi có ground truth
+        total_metrics.update({
             "mean_precision": np.mean([m['precision'] for m in image_metrics.values()]),
             "mean_recall": np.mean([m['recall'] for m in image_metrics.values()]),
             "mean_f1": np.mean([m['f1_score'] for m in image_metrics.values()])
-        }
-        
-        # Nếu không có ground truth, tạo dữ liệu giả cho visualization
-        if total_metrics['total_ground_truth'] == 0:
-            logger.warning("No ground truth data available. Using synthetic data for visualization.")
-            # Tạo dữ liệu giả với phân phối ngẫu nhiên
-            synthetic_precisions = np.random.uniform(0.3, 0.8, len(image_metrics))
-            synthetic_recalls = np.random.uniform(0.2, 0.7, len(image_metrics))
-            synthetic_f1s = 2 * (synthetic_precisions * synthetic_recalls) / (synthetic_precisions + synthetic_recalls)
-            
-            # Cập nhật metrics với dữ liệu giả
-            total_metrics.update({
-                "mean_precision": np.mean(synthetic_precisions),
-                "mean_recall": np.mean(synthetic_recalls),
-                "mean_f1": np.mean(synthetic_f1s)
-            })
-            
-            # Cập nhật metrics cho từng ảnh
-            for i, (image_id, _) in enumerate(image_metrics.items()):
-                image_metrics[image_id].update({
-                    "precision": synthetic_precisions[i],
-                    "recall": synthetic_recalls[i],
-                    "f1_score": synthetic_f1s[i]
-                })
+        })
         
         # Vẽ ROC curves
         plot_roc_curves(image_metrics)
