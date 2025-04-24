@@ -1,0 +1,224 @@
+{
+    "150542": {
+        "image_path": "./image_test/150542.jpg",
+        "predictions": [
+            {
+                "subject": "train",
+                "relation": "on",
+                "object": "track",
+                "score": 0.915999710559845
+            },
+            {
+                "subject": "sign",
+                "relation": "on",
+                "object": "train",
+                "score": 0.756899356842041
+            },
+            {
+                "subject": "window",
+                "relation": "on",
+                "object": "train",
+                "score": 0.6779984831809998
+            },
+            {
+                "subject": "track",
+                "relation": "under",
+                "object": "train",
+                "score": 0.43354910612106323
+            },
+            {
+                "subject": "windshield",
+                "relation": "on",
+                "object": "train",
+                "score": 0.48041966557502747
+            },
+            {
+                "subject": "wire",
+                "relation": "above",
+                "object": "train",
+                "score": 0.6167474389076233
+            },
+            {
+                "subject": "sign",
+                "relation": "on",
+                "object": "pole",
+                "score": 0.646508514881134
+            },
+            {
+                "subject": "door",
+                "relation": "on",
+                "object": "train",
+                "score": 0.4179682433605194
+            },
+            {
+                "subject": "rock",
+                "relation": "near",
+                "object": "track",
+                "score": 0.39977073669433594
+            }
+        ],
+        "ground_truth": [],
+        "metrics": {
+            "Precision": 0.0,
+            "Recall": 0,
+            "F1 Score": 0,
+            "AUC-ROC": 0.0,
+            "Average Precision": 0.0,
+            "True Positives": 0,
+            "False Positives": 9,
+            "False Negatives": 0
+        }
+    },
+    "286068": {
+        "image_path": "./image_test/286068.jpg",
+        "predictions": [
+            {
+                "subject": "ski",
+                "relation": "on",
+                "object": "snow",
+                "score": 0.5476270914077759
+            },
+            {
+                "subject": "man",
+                "relation": "wearing",
+                "object": "pant",
+                "score": 0.7134552597999573
+            },
+            {
+                "subject": "man",
+                "relation": "wearing",
+                "object": "jacket",
+                "score": 0.7159797549247742
+            },
+            {
+                "subject": "pant",
+                "relation": "on",
+                "object": "man",
+                "score": 0.5689600110054016
+            },
+            {
+                "subject": "man",
+                "relation": "has",
+                "object": "hand",
+                "score": 0.8353537321090698
+            },
+            {
+                "subject": "man",
+                "relation": "on",
+                "object": "ski",
+                "score": 0.8800510764122009
+            },
+            {
+                "subject": "track",
+                "relation": "on",
+                "object": "snow",
+                "score": 0.6188675761222839
+            },
+            {
+                "subject": "pole",
+                "relation": "in",
+                "object": "hand",
+                "score": 0.6193202137947083
+            },
+            {
+                "subject": "man",
+                "relation": "on",
+                "object": "snow",
+                "score": 0.5453416705131531
+            },
+            {
+                "subject": "fence",
+                "relation": "in",
+                "object": "snow",
+                "score": 0.48916953802108765
+            }
+        ],
+        "ground_truth": [],
+        "metrics": {
+            "Precision": 0.0,
+            "Recall": 0,
+            "F1 Score": 0,
+            "AUC-ROC": 0.0,
+            "Average Precision": 0.0,
+            "True Positives": 0,
+            "False Positives": 10,
+            "False Negatives": 0
+        }
+    },
+    "498377": {
+        "image_path": "./image_test/498377.jpg",
+        "predictions": [
+            {
+                "subject": "plane",
+                "relation": "has",
+                "object": "tail",
+                "score": 0.8637655973434448
+            },
+            {
+                "subject": "plane",
+                "relation": "has",
+                "object": "door",
+                "score": 0.8431505560874939
+            },
+            {
+                "subject": "tail",
+                "relation": "of",
+                "object": "plane",
+                "score": 0.8726449012756348
+            },
+            {
+                "subject": "plane",
+                "relation": "has",
+                "object": "wing",
+                "score": 0.7811021208763123
+            },
+            {
+                "subject": "plane",
+                "relation": "has",
+                "object": "wheel",
+                "score": 0.8175164461135864
+            },
+            {
+                "subject": "engine",
+                "relation": "of",
+                "object": "plane",
+                "score": 0.8008356690406799
+            },
+            {
+                "subject": "wing",
+                "relation": "of",
+                "object": "plane",
+                "score": 0.76494961977005
+            },
+            {
+                "subject": "plane",
+                "relation": "has",
+                "object": "engine",
+                "score": 0.7058483362197876
+            },
+            {
+                "subject": "nose",
+                "relation": "of",
+                "object": "plane",
+                "score": 0.8066188097000122
+            },
+            {
+                "subject": "door",
+                "relation": "on",
+                "object": "plane",
+                "score": 0.6803572773933411
+            }
+        ],
+        "ground_truth": [],
+        "metrics": {
+            "Precision": 0.0,
+            "Recall": 0,
+            "F1 Score": 0,
+            "AUC-ROC": 0.0,
+            "Average Precision": 0.0,
+            "True Positives": 0,
+            "False Positives": 10,
+            "False Negatives": 0
+        }
+    }
+}
