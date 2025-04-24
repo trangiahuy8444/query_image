@@ -831,7 +831,9 @@ class RelTREvaluator:
                     'recall': 0,
                     'f1_score': 0,
                     'matching_percentage': 0,
-                    'total_images': 0
+                    'total_images': 0,
+                    'fpr': 0,  # Thêm FPR
+                    'tpr': 0   # Thêm TPR
                 }
             })
             all_results['triplets'].append({
@@ -841,7 +843,9 @@ class RelTREvaluator:
                     'recall': 0,
                     'f1_score': 0,
                     'matching_percentage': 0,
-                    'total_images': 0
+                    'total_images': 0,
+                    'fpr': 0,  # Thêm FPR
+                    'tpr': 0   # Thêm TPR
                 }
             })
         
