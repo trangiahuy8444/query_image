@@ -378,36 +378,81 @@ def evaluate_sample_images(image_ids, model):
     all_y_true = []
     all_y_scores = []
     
+    # Tạo thư mục output nếu chưa tồn tại
+    os.makedirs('./output', exist_ok=True)
+    
+    # Dictionary để lưu dữ liệu của từng ảnh
+    image_data = {}
+    
     for image_id in image_ids:
         try:
-            print(f"\nProcessing image: {image_id}")
+            print(f"\n{'='*50}")
+            print(f"Processing image: {image_id}")
+            print(f"{'='*50}")
             
             # Đảm bảo image_id là string và thêm .jpg
             image_id_str = f"{image_id}.jpg" if not image_id.endswith('.jpg') else image_id
             image_path = os.path.join('./image_test', image_id_str)
             
+            print(f"Looking for image at path: {image_path}")
             if not os.path.exists(image_path):
                 print(f"Warning: Image file not found: {image_path}")
                 continue
             
             # Dự đoán với mô hình
+            print("\nMaking predictions with the model...")
             predictions = predict(image_path, model)
-            print(f"\nNumber of predictions: {len(predictions)}")
-            print("Predictions:")
-            for pred in predictions:
-                print(f"{pred['subject']['class']} -[{pred['relation']['class']}]-> {pred['object']['class']}")
+            print(f"Number of predictions: {len(predictions)}")
+            
+            # Format predictions for JSON
+            formatted_predictions = []
+            if predictions:
+                print("Predictions:")
+                for i, pred in enumerate(predictions, 1):
+                    pred_info = {
+                        'subject': pred['subject']['class'],
+                        'relation': pred['relation']['class'],
+                        'object': pred['object']['class'],
+                        'score': float(pred['relation']['score'])
+                    }
+                    formatted_predictions.append(pred_info)
+                    print(f"{i}. {pred_info['subject']} -[{pred_info['relation']}]-> {pred_info['object']} (score: {pred_info['score']:.4f})")
+            else:
+                print("No predictions made by the model")
             
             # Lấy ground truth từ Neo4j
+            print("\nRetrieving ground truth from Neo4j...")
             ground_truth = get_ground_truth_from_neo4j(image_id)
-            print(f"\nNumber of ground truth relationships: {len(ground_truth)}")
-            print("Ground truth relationships:")
-            for gt in ground_truth:
-                print(f"{gt[0]} -[{gt[1]}]-> {gt[2]}")
+            print(f"Number of ground truth relationships: {len(ground_truth)}")
+            
+            # Format ground truth for JSON
+            formatted_ground_truth = []
+            if ground_truth:
+                print("Ground truth relationships:")
+                for i, gt in enumerate(ground_truth, 1):
+                    gt_info = {
+                        'subject': gt[0],
+                        'relation': gt[1],
+                        'object': gt[2]
+                    }
+                    formatted_ground_truth.append(gt_info)
+                    print(f"{i}. {gt_info['subject']} -[{gt_info['relation']}]-> {gt_info['object']}")
+            else:
+                print("No ground truth relationships found in Neo4j")
             
             # Tính toán metrics
+            print("\nCalculating metrics...")
             metrics = calculate_metrics(predictions, ground_truth)
-            print("\nMetrics for this image:")
+            print("Metrics for this image:")
             print(json.dumps(metrics, indent=4))
+            
+            # Lưu dữ liệu của ảnh này
+            image_data[image_id] = {
+                'image_path': image_path,
+                'predictions': formatted_predictions,
+                'ground_truth': formatted_ground_truth,
+                'metrics': metrics
+            }
             
             # Lưu dữ liệu để vẽ biểu đồ
             y_true = [1 if (s, r, o) in ground_truth else 0 for (s, r, o) in predictions]
@@ -420,9 +465,18 @@ def evaluate_sample_images(image_ids, model):
             
         except Exception as e:
             print(f"Error processing image {image_id}: {str(e)}")
+            import traceback
+            print(traceback.format_exc())
             continue
     
+    # Lưu dữ liệu của tất cả ảnh vào file JSON
+    output_json_path = './output/sample_images_data.json'
+    print(f"\nSaving data to {output_json_path}")
+    with open(output_json_path, 'w', encoding='utf-8') as f:
+        json.dump(image_data, f, indent=4, ensure_ascii=False)
+    
     if all_y_true and all_y_scores:
+        print("\nPlotting curves for all sample images...")
         # Vẽ biểu đồ tổng hợp
         plt.figure(figsize=(12, 6))
         
@@ -454,13 +508,24 @@ def evaluate_sample_images(image_ids, model):
         plt.grid(True)
         
         plt.tight_layout()
-        plt.savefig('./output/sample_images_curves.png')
+        output_path = './output/sample_images_curves.png'
+        print(f"Saving curves to: {output_path}")
+        plt.savefig(output_path)
         plt.close()
         
         # Tính toán metrics tổng hợp
+        print("\nCalculating total metrics for all sample images...")
         total_metrics = calculate_metrics(all_predictions, all_ground_truth)
-        print("\nTotal metrics for all sample images:")
+        print("Total metrics:")
         print(json.dumps(total_metrics, indent=4))
+        
+        # Lưu metrics tổng hợp vào file JSON
+        total_metrics_path = './output/total_metrics.json'
+        print(f"Saving total metrics to {total_metrics_path}")
+        with open(total_metrics_path, 'w', encoding='utf-8') as f:
+            json.dump(total_metrics, f, indent=4, ensure_ascii=False)
+    else:
+        print("\nNo valid data to plot curves or calculate total metrics")
 
 def categorize_images_by_pairs(min_pairs=1, max_pairs=5):
     """
@@ -680,7 +745,9 @@ def evaluate_all_categories(output_dir='./output'):
 
 if __name__ == "__main__":
     # Load mô hình
+    print("Loading model...")
     model = load_model('./RelTR/ckpt/fine_tune1/checkpoint0049.pth')
+    print("Model loaded successfully")
     
     # Test một số ảnh mẫu
     sample_image_ids = [
@@ -689,6 +756,7 @@ if __name__ == "__main__":
         "498377"   # Ảnh có ít nhất 3 cặp
     ]
     
+    print(f"\nStarting evaluation of {len(sample_image_ids)} sample images...")
     # Đánh giá ảnh mẫu
     evaluate_sample_images(sample_image_ids, model)
     
