@@ -993,10 +993,17 @@ def main():
             for result in results[metric_type]:
                 metrics = result['metrics']
                 logger.info(f"Min {result['min_pairs']} {metric_type}:")
-                logger.info(f"  AUC: {np.trapz(metrics['tpr'], metrics['fpr']):.4f}")
-                logger.info(f"  Average F1 Score: {np.mean(metrics['f1_score']):.4f}")
-                logger.info(f"  Average Precision: {np.mean(metrics['precision']):.4f}")
-                logger.info(f"  Average Recall: {np.mean(metrics['recall']):.4f}")
+                if isinstance(metrics['tpr'], (list, np.ndarray)) and isinstance(metrics['fpr'], (list, np.ndarray)):
+                    if len(metrics['tpr']) > 0 and len(metrics['fpr']) > 0:
+                        auc = np.trapezoid(metrics['tpr'], metrics['fpr'])
+                        logger.info(f"  AUC: {auc:.4f}")
+                    else:
+                        logger.info("  AUC: N/A (No data points)")
+                else:
+                    logger.info("  AUC: N/A (Invalid data format)")
+                logger.info(f"  Average F1 Score: {np.mean(metrics['f1_score']) if isinstance(metrics['f1_score'], (list, np.ndarray)) else metrics['f1_score']:.4f}")
+                logger.info(f"  Average Precision: {np.mean(metrics['precision']) if isinstance(metrics['precision'], (list, np.ndarray)) else metrics['precision']:.4f}")
+                logger.info(f"  Average Recall: {np.mean(metrics['recall']) if isinstance(metrics['recall'], (list, np.ndarray)) else metrics['recall']:.4f}")
         
     except Exception as e:
         logger.error(f"Lỗi trong hàm main: {str(e)}")
