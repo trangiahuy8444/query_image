@@ -1238,7 +1238,7 @@ def plot_metrics(results, output_dir='./plots'):
     
     for result in results:
         predictions = result['predictions']
-        ground_truth = result.get('ground_truth', [])
+        ground_truth = result['ground_truth']
         
         if not ground_truth:
             continue
@@ -1354,65 +1354,46 @@ def main():
                 logger.info(f"\nProcessing image {image_id}...")
                 
                 # Dự đoán các mối quan hệ trong ảnh
-                predictions = predict(image_path, evaluator.model)
+                predictions = evaluator.predict(image_path)
                 if not predictions:
                     logger.error(f"No predictions for image: {image_id}")
                     continue
                 
-                # Lấy ground truth
+                # Lấy ground truth từ Neo4j
                 ground_truth = evaluator._get_ground_truth(image_id)
+                if not ground_truth:
+                    logger.warning(f"No ground truth found for image: {image_id}")
+                    continue
                 
                 logger.info(f"Found {len(predictions)} predictions")
                 for pred in predictions:
-                    logger.info(f"  {pred['subject']['class']} -[{pred['relation']['class']}]-> {pred['object']['class']} (conf: {pred['relation']['score']:.2f})")
+                    logger.info(f"  {pred[0]} -[{pred[1]}]-> {pred[2]}")
                 
-                # Truy vấn ảnh theo cặp subject-object
-                logger.info("Querying for matching pairs...")
-                pairs_results = {
-                    "1_or_more": evaluator.query_images_by_pairs_count(predictions, 1),
-                    "2_or_more": evaluator.query_images_by_pairs_count(predictions, 2),
-                    "3_or_more": evaluator.query_images_by_pairs_count(predictions, 3),
-                    "4_or_more": evaluator.query_images_by_pairs_count(predictions, 4),
-                    "5_or_more": evaluator.query_images_by_pairs_count(predictions, 5),
-                }
+                logger.info(f"Found {len(ground_truth)} ground truth relationships")
+                for gt in ground_truth:
+                    logger.info(f"  {gt[0]} -[{gt[1]}]-> {gt[2]}")
                 
-                # Truy vấn ảnh theo bộ ba đầy đủ
-                logger.info("Querying for matching triplets...")
-                triplets_results = {
-                    "1_or_more_full": evaluator.query_images_by_full_pairs_count(predictions, 1),
-                    "2_or_more_full": evaluator.query_images_by_full_pairs_count(predictions, 2),
-                    "3_or_more_full": evaluator.query_images_by_full_pairs_count(predictions, 3),
-                    "4_or_more_full": evaluator.query_images_by_full_pairs_count(predictions, 4),
-                    "5_or_more_full": evaluator.query_images_by_full_pairs_count(predictions, 5),
-                }
-                
-                # Tính toán các chỉ số
-                metrics = {
-                    "num_predictions": len(predictions),
-                    "pairs_matches": {k: len(v) for k, v in pairs_results.items()},
-                    "triplets_matches": {k: len(v) for k, v in triplets_results.items()},
-                    "total_unique_images": len(set(
-                        [img['image_id'] for results in pairs_results.values() for img in results] +
-                        [img['image_id'] for results in triplets_results.values() for img in results]
-                    ))
-                }
+                # Tính toán precision và recall
+                precision, recall = calculate_precision_recall(predictions, ground_truth)
+                f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
                 
                 # Lưu kết quả
                 result = {
                     'image_id': image_id,
                     'predictions': predictions,
                     'ground_truth': ground_truth,
-                    'pairs_results': pairs_results,
-                    'triplets_results': triplets_results,
-                    'metrics': metrics
+                    'metrics': {
+                        'precision': precision,
+                        'recall': recall,
+                        'f1_score': f1_score
+                    }
                 }
                 results.append(result)
                 
                 logger.info(f"\nMetrics for image {image_id}:")
-                logger.info(f"- Number of predictions: {metrics['num_predictions']}")
-                logger.info(f"- Pairs matches: {metrics['pairs_matches']}")
-                logger.info(f"- Triplets matches: {metrics['triplets_matches']}")
-                logger.info(f"- Total unique matching images: {metrics['total_unique_images']}")
+                logger.info(f"- Precision: {precision:.4f}")
+                logger.info(f"- Recall: {recall:.4f}")
+                logger.info(f"- F1 Score: {f1_score:.4f}")
                 
             except Exception as e:
                 logger.error(f"Error processing image {image_id}: {str(e)}")
@@ -1426,22 +1407,13 @@ def main():
         # Tính toán tổng hợp các chỉ số
         total_metrics = {
             "total_images_processed": len(results),
-            "total_predictions": sum(r['metrics']['num_predictions'] for r in results),
-            "avg_predictions_per_image": sum(r['metrics']['num_predictions'] for r in results) / len(results),
-            "total_unique_matching_images": len(set(
-                img['image_id'] 
-                for r in results 
-                for results in r['pairs_results'].values() 
-                for img in results
-            )),
-            "pairs_matches_summary": {
-                k: sum(r['metrics']['pairs_matches'][k] for r in results)
-                for k in results[0]['metrics']['pairs_matches'].keys()
-            },
-            "triplets_matches_summary": {
-                k: sum(r['metrics']['triplets_matches'][k] for r in results)
-                for k in results[0]['metrics']['triplets_matches'].keys()
-            }
+            "total_predictions": sum(len(r['predictions']) for r in results),
+            "total_ground_truth": sum(len(r['ground_truth']) for r in results),
+            "avg_predictions_per_image": sum(len(r['predictions']) for r in results) / len(results),
+            "avg_ground_truth_per_image": sum(len(r['ground_truth']) for r in results) / len(results),
+            "mean_precision": np.mean([r['metrics']['precision'] for r in results]),
+            "mean_recall": np.mean([r['metrics']['recall'] for r in results]),
+            "mean_f1": np.mean([r['metrics']['f1_score'] for r in results])
         }
         
         # Vẽ biểu đồ và tính toán metrics
@@ -1460,10 +1432,9 @@ def main():
         logger.info(f"\nEvaluation completed:")
         logger.info(f"- Total images processed: {total_metrics['total_images_processed']}")
         logger.info(f"- Total predictions: {total_metrics['total_predictions']}")
+        logger.info(f"- Total ground truth: {total_metrics['total_ground_truth']}")
         logger.info(f"- Average predictions per image: {total_metrics['avg_predictions_per_image']:.2f}")
-        logger.info(f"- Total unique matching images: {total_metrics['total_unique_matching_images']}")
-        logger.info(f"- Pairs matches summary: {total_metrics['pairs_matches_summary']}")
-        logger.info(f"- Triplets matches summary: {total_metrics['triplets_matches_summary']}")
+        logger.info(f"- Average ground truth per image: {total_metrics['avg_ground_truth_per_image']:.2f}")
         logger.info(f"- Mean Precision: {total_metrics['mean_precision']:.4f}")
         logger.info(f"- Mean Recall: {total_metrics['mean_recall']:.4f}")
         logger.info(f"- Mean F1 Score: {total_metrics['mean_f1']:.4f}")
