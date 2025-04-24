@@ -900,8 +900,12 @@ class RelTREvaluator:
                     # Truy vấn Neo4j cho batch
                     pairs_result, triplets_result = self._batch_query_neo4j(batch_predictions)
                     
-                    # Cập nhật kết quả
-                    self._update_results(all_results, pairs_result, triplets_result)
+                    if pairs_result or triplets_result:
+                        logger.info(f"Found {len(pairs_result)} pairs and {len(triplets_result)} triplets")
+                        # Cập nhật kết quả
+                        self._update_results(all_results, pairs_result, triplets_result)
+                    else:
+                        logger.warning(f"Batch {i//batch_size + 1}: No results from Neo4j query")
                 else:
                     logger.warning(f"Batch {i//batch_size + 1}: No valid predictions")
                 
@@ -910,6 +914,17 @@ class RelTREvaluator:
                     torch.cuda.empty_cache()
                 import gc
                 gc.collect()
+        
+        # Kiểm tra kết quả cuối cùng
+        for metric_type in ['pairs', 'triplets']:
+            for result in all_results[metric_type]:
+                metrics = result['metrics']
+                logger.info(f"\nResults for {metric_type} with min_pairs={result['min_pairs']}:")
+                logger.info(f"Total images: {metrics['total_images']}")
+                logger.info(f"Number of data points: {len(metrics['fpr'])}")
+                if len(metrics['fpr']) > 0:
+                    logger.info(f"FPR range: {min(metrics['fpr']):.4f} to {max(metrics['fpr']):.4f}")
+                    logger.info(f"TPR range: {min(metrics['tpr']):.4f} to {max(metrics['tpr']):.4f}")
         
         return all_results
 
