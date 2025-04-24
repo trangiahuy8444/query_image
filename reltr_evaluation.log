@@ -1221,3 +1221,17 @@
 2025-04-24 17:17:24,025 - INFO - Found 0 pairs and 0 triplets
 2025-04-24 17:17:24,026 - WARNING - Batch 3: No results from Neo4j query
 2025-04-24 17:17:24,378 - INFO - Evaluating batch 4/5
+2025-04-24 17:19:11,399 - INFO - Neo4j server is running
+2025-04-24 17:19:11,400 - ERROR - Failed to connect to Neo4j: The config settings "encrypted", "trust", "trusted_certificates", and "ssl_context" can only be used with the URI schemes ['bolt', 'neo4j']. Use the other URI schemes ['bolt+ssc', 'bolt+s', 'neo4j+ssc', 'neo4j+s'] for setting encryption settings.
+2025-04-24 17:19:11,400 - ERROR - Cannot proceed without Neo4j connection
+2025-04-24 17:19:41,348 - INFO - Neo4j server is running
+2025-04-24 17:19:41,961 - INFO - Successfully connected to Neo4j database
+2025-04-24 17:19:42,398 - INFO - Successfully connected to Neo4j database
+2025-04-24 17:19:42,401 - INFO - Using device: cpu
+2025-04-24 17:19:44,209 - INFO - Model device: cpu
+2025-04-24 17:19:44,209 - INFO - Model state: False
+2025-04-24 17:19:44,209 - INFO - Using 6 threads
+2025-04-24 17:19:44,210 - INFO - RelTR model and database loaded successfully
+2025-04-24 17:19:44,294 - INFO - Using optimal batch size: 24
+2025-04-24 17:19:44,298 - INFO - Total images to evaluate: 100
+2025-04-24 17:19:44,300 - INFO - Evaluating batch 1/5

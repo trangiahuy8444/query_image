@@ -33,8 +33,7 @@ def check_neo4j_connection(uri, username, password):
     try:
         driver = GraphDatabase.driver(
             uri,
-            auth=(username, password),
-            encrypted=True  # Bật mã hóa cho kết nối Aura
+            auth=(username, password)
         )
         with driver.session() as session:
             result = session.run("RETURN 'Hello, Neo4j!'")
@@ -74,8 +73,7 @@ class RelTREvaluator:
         # Cấu hình kết nối Neo4j
         self.driver = GraphDatabase.driver(
             neo4j_uri,
-            auth=(neo4j_username, neo4j_password),
-            encrypted=True  # Bật mã hóa cho kết nối Aura
+            auth=(neo4j_username, neo4j_password)
         )
         
         # Test kết nối
