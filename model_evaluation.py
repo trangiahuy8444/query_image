@@ -34,17 +34,17 @@ def check_neo4j_connection(uri, username, password):
         driver = GraphDatabase.driver(
             uri,
             auth=(username, password),
-            encrypted=False
+            encrypted=True  # Bật mã hóa cho kết nối Aura
         )
         with driver.session() as session:
-            session.run("RETURN 1")
-        logger.info("Successfully connected to Neo4j database")
-        return True
+            result = session.run("RETURN 'Hello, Neo4j!'")
+            logger.info("Successfully connected to Neo4j database")
+            return True
     except Exception as e:
         logger.error(f"Failed to connect to Neo4j: {str(e)}")
         return False
 
-def check_neo4j_server(host="localhost", port=7687):
+def check_neo4j_server(host="b40b4f2a.databases.neo4j.io", port=7687):
     """Kiểm tra xem Neo4j server có đang chạy không"""
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -63,9 +63,9 @@ def check_neo4j_server(host="localhost", port=7687):
 
 class RelTREvaluator:
     def __init__(self, 
-                 neo4j_uri="bolt://localhost:7687",
+                 neo4j_uri="neo4j+s://b40b4f2a.databases.neo4j.io",
                  neo4j_username="neo4j",
-                 neo4j_password="12345678",
+                 neo4j_password="fpKNUXKT-4z0kQMm1nuUaiXe8p70uIebc3y3a4Z8kUA",
                  model_path='./RelTR/ckpt/fine_tune1/checkpoint0049.pth',
                  image_folder='./data/vg_focused/images'):
         """
@@ -75,14 +75,14 @@ class RelTREvaluator:
         self.driver = GraphDatabase.driver(
             neo4j_uri,
             auth=(neo4j_username, neo4j_password),
-            encrypted=False
+            encrypted=True  # Bật mã hóa cho kết nối Aura
         )
         
         # Test kết nối
         try:
             with self.driver.session() as session:
-                session.run("RETURN 1")
-            logger.info("Successfully connected to Neo4j database")
+                result = session.run("RETURN 'Hello, Neo4j!'")
+                logger.info("Successfully connected to Neo4j database")
         except Exception as e:
             logger.error(f"Failed to connect to Neo4j: {str(e)}")
             raise
@@ -1004,7 +1004,7 @@ def main():
             return
             
         # Kiểm tra kết nối Neo4j
-        if not check_neo4j_connection("bolt://localhost:7687", "neo4j", "12345678"):
+        if not check_neo4j_connection("neo4j+s://b40b4f2a.databases.neo4j.io", "neo4j", "fpKNUXKT-4z0kQMm1nuUaiXe8p70uIebc3y3a4Z8kUA"):
             logger.error("Cannot proceed without Neo4j connection")
             return
             
