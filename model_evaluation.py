@@ -238,15 +238,17 @@ class RelTREvaluator:
         # Chuyển đổi thành set để dễ dàng so sánh
         predicted_set = set(predictions)
         ground_truth_set = set(ground_truth)
-
-        TP = len(predicted_set.intersection(ground_truth_set))  # True Positives
-        FP = len(predicted_set - ground_truth_set)  # False Positives
-        FN = len(ground_truth_set - predicted_set)  # False Negatives
         
+        # Tính toán các metrics
+        TP = len(predicted_set.intersection(ground_truth_set))
+        FP = len(predicted_set - ground_truth_set)
+        FN = len(ground_truth_set - predicted_set)
+        
+        # Tính precision, recall và F1 score
         precision = TP / (TP + FP) if (TP + FP) > 0 else 0
         recall = TP / (TP + FN) if (TP + FN) > 0 else 0
         f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
-
+        
         return {
             'TP': TP,
             'FP': FP,
@@ -998,6 +1000,70 @@ class RelTREvaluator:
         if hasattr(self, 'driver'):
             self.driver.close()
             logger.info("Neo4j connection closed")
+
+    def _update_results(self, roc_results, pairs_result, triplets_result):
+        """
+        Cập nhật kết quả ROC với các cặp và triplets mới.
+        """
+        # Cập nhật kết quả cho cặp subject-object
+        for result in roc_results['pairs']:
+            min_pairs = result['min_pairs']
+            metrics = result['metrics']
+            
+            # Lọc kết quả theo min_pairs
+            filtered_pairs = [r for r in pairs_result if r['matching_pairs'] >= min_pairs]
+            
+            if filtered_pairs:
+                # Tính toán các metrics
+                total_matching = sum(r['matching_pairs'] for r in filtered_pairs)
+                total_pairs = sum(r['total_pairs'] for r in filtered_pairs)
+                total_images = len(filtered_pairs)
+                
+                precision = total_matching / total_pairs if total_pairs > 0 else 0
+                recall = total_matching / (total_pairs * total_images) if total_pairs * total_images > 0 else 0
+                f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+                
+                # Cập nhật metrics
+                metrics['precision'].append(precision)
+                metrics['recall'].append(recall)
+                metrics['f1_score'].append(f1_score)
+                metrics['total_images'] += total_images
+                
+                # Tính FPR và TPR
+                fpr = 1 - precision
+                tpr = recall
+                metrics['fpr'].append(fpr)
+                metrics['tpr'].append(tpr)
+        
+        # Cập nhật kết quả cho triplets
+        for result in roc_results['triplets']:
+            min_pairs = result['min_pairs']
+            metrics = result['metrics']
+            
+            # Lọc kết quả theo min_pairs
+            filtered_triplets = [r for r in triplets_result if r['matching_triples'] >= min_pairs]
+            
+            if filtered_triplets:
+                # Tính toán các metrics
+                total_matching = sum(r['matching_triples'] for r in filtered_triplets)
+                total_triples = sum(r['total_triples'] for r in filtered_triplets)
+                total_images = len(filtered_triplets)
+                
+                precision = total_matching / total_triples if total_triples > 0 else 0
+                recall = total_matching / (total_triples * total_images) if total_triples * total_images > 0 else 0
+                f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+                
+                # Cập nhật metrics
+                metrics['precision'].append(precision)
+                metrics['recall'].append(recall)
+                metrics['f1_score'].append(f1_score)
+                metrics['total_images'] += total_images
+                
+                # Tính FPR và TPR
+                fpr = 1 - precision
+                tpr = recall
+                metrics['fpr'].append(fpr)
+                metrics['tpr'].append(tpr)
 
 def main():
     """Hàm chính để thực hiện đánh giá"""
