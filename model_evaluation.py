@@ -96,8 +96,8 @@ class RelTREvaluator:
         
         # Load model với GPU nếu có sẵn
         try:
-            # Load model trực tiếp với torch.load
-            ckpt = torch.load(model_path, map_location=self.device)
+            # Load model với weights_only=False vì chúng ta tin tưởng nguồn của checkpoint
+            ckpt = torch.load(model_path, map_location=self.device, weights_only=False)
             self.model = load_model(model_path)
             
             # Chuyển model sang GPU nếu có sẵn
