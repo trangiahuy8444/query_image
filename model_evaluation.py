@@ -523,6 +523,7 @@ class RelTREvaluator:
             'matching_percentage': []
         }
         
+        # Tạo các điểm dữ liệu cho đường cong
         for threshold in thresholds:
             # Lọc kết quả theo ngưỡng
             filtered_results = [r for r in results if r['matching_percentage'] >= threshold * 100]
@@ -541,6 +542,7 @@ class RelTREvaluator:
             total_pairs = sum(r['total_pairs'] if 'total_pairs' in r else r['total_triples'] for r in filtered_results)
             total_images = len(filtered_results)
             
+            # Tính toán các metrics cho điểm hiện tại
             precision = total_matching / total_pairs if total_pairs > 0 else 0
             recall = total_matching / (total_pairs * total_images) if total_pairs * total_images > 0 else 0
             f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
@@ -550,12 +552,29 @@ class RelTREvaluator:
             fpr = 1 - precision  # False Positive Rate = 1 - Precision
             tpr = recall        # True Positive Rate = Recall
             
+            # Thêm điểm dữ liệu vào metrics
             metrics['fpr'].append(fpr)
             metrics['tpr'].append(tpr)
             metrics['precision'].append(precision)
             metrics['recall'].append(recall)
             metrics['f1_score'].append(f1_score)
             metrics['matching_percentage'].append(matching_percentage)
+        
+        # Thêm điểm (0,0) và (1,1) cho đường cong ROC
+        metrics['fpr'].insert(0, 0.0)
+        metrics['tpr'].insert(0, 0.0)
+        metrics['fpr'].append(1.0)
+        metrics['tpr'].append(1.0)
+        
+        # Sắp xếp các điểm theo FPR để vẽ đường cong ROC
+        sorted_indices = np.argsort(metrics['fpr'])
+        metrics['fpr'] = np.array(metrics['fpr'])[sorted_indices]
+        metrics['tpr'] = np.array(metrics['tpr'])[sorted_indices]
+        
+        # Sắp xếp các điểm theo Recall để vẽ đường cong Precision-Recall
+        sorted_indices = np.argsort(metrics['recall'])
+        metrics['recall'] = np.array(metrics['recall'])[sorted_indices]
+        metrics['precision'] = np.array(metrics['precision'])[sorted_indices]
         
         return metrics
 
