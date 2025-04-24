@@ -85,7 +85,7 @@ class RelTREvaluator:
             logger.error(f"Failed to connect to Neo4j: {str(e)}")
             raise
         
-        # Kiểm tra và cấu hình GPU
+        # Kiểm tra và cấu hình GPU cho Google Colab
         if not torch.cuda.is_available():
             logger.warning("CUDA is not available. Please check your GPU installation.")
             self.device = torch.device('cpu')
@@ -95,6 +95,10 @@ class RelTREvaluator:
             torch.cuda.set_device(0)
             # Xóa cache GPU
             torch.cuda.empty_cache()
+            # Đặt số lượng thread cho CUDA
+            torch.set_num_threads(1)
+            # Đặt số lượng thread cho OpenMP
+            os.environ['OMP_NUM_THREADS'] = '1'
             
         logger.info(f"Using device: {self.device}")
         
@@ -103,12 +107,15 @@ class RelTREvaluator:
             logger.info(f"GPU: {torch.cuda.get_device_name(0)}")
             logger.info(f"CUDA Version: {torch.version.cuda}")
             logger.info(f"GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1024**3:.2f} GB")
+            logger.info(f"Current GPU Memory Usage: {torch.cuda.memory_allocated(0) / 1024**3:.2f} GB")
+            logger.info(f"Max GPU Memory Usage: {torch.cuda.max_memory_allocated(0) / 1024**3:.2f} GB")
         
         # Load model với GPU nếu có sẵn
         try:
             # Sử dụng context manager safe_globals để cho phép load argparse.Namespace
             from torch.serialization import safe_globals
             with safe_globals([argparse.Namespace]):
+                # Load model với map_location để đảm bảo chuyển sang GPU
                 ckpt = torch.load(model_path, map_location=self.device)
                 self.model = load_model(model_path)
             
@@ -124,6 +131,9 @@ class RelTREvaluator:
                 logger.info(f"Model is on GPU: {next(self.model.parameters()).is_cuda}")
                 logger.info(f"Model device: {next(self.model.parameters()).device}")
                 logger.info(f"Model state: {self.model.training}")
+                # Log thông tin về model
+                logger.info(f"Model parameters: {sum(p.numel() for p in self.model.parameters())}")
+                logger.info(f"Model parameters on GPU: {sum(p.numel() for p in self.model.parameters() if p.is_cuda)}")
             
         except Exception as e:
             logger.error(f"Error loading model: {str(e)}")
@@ -700,38 +710,39 @@ class RelTREvaluator:
                 return image_id, None
                 
             # Load và xử lý ảnh
-            predictions = predict(image_path, self.model)
-            if predictions is None or len(predictions) == 0:
-                logger.error(f"No predictions for image: {image_id}")
-                return image_id, None
-                
-            # Đảm bảo tất cả tensor đều ở đúng device
-            processed_predictions = []
-            for pred in predictions:
-                processed_pred = {
-                    'subject': {
-                        'class': pred['subject']['class'],
-                        'bbox': pred['subject']['bbox'].to(self.device) if isinstance(pred['subject']['bbox'], torch.Tensor) else pred['subject']['bbox'],
-                        'score': pred['subject']['score'].to(self.device) if isinstance(pred['subject']['score'], torch.Tensor) else pred['subject']['score']
-                    },
-                    'object': {
-                        'class': pred['object']['class'],
-                        'bbox': pred['object']['bbox'].to(self.device) if isinstance(pred['object']['bbox'], torch.Tensor) else pred['object']['bbox'],
-                        'score': pred['object']['score'].to(self.device) if isinstance(pred['object']['score'], torch.Tensor) else pred['object']['score']
-                    },
-                    'relation': {
-                        'class': pred['relation']['class'],
-                        'score': pred['relation']['score'].to(self.device) if isinstance(pred['relation']['score'], torch.Tensor) else pred['relation']['score']
+            with torch.cuda.device(self.device):
+                predictions = predict(image_path, self.model)
+                if predictions is None or len(predictions) == 0:
+                    logger.error(f"No predictions for image: {image_id}")
+                    return image_id, None
+                    
+                # Đảm bảo tất cả tensor đều ở đúng device
+                processed_predictions = []
+                for pred in predictions:
+                    processed_pred = {
+                        'subject': {
+                            'class': pred['subject']['class'],
+                            'bbox': pred['subject']['bbox'].to(self.device) if isinstance(pred['subject']['bbox'], torch.Tensor) else pred['subject']['bbox'],
+                            'score': pred['subject']['score'].to(self.device) if isinstance(pred['subject']['score'], torch.Tensor) else pred['subject']['score']
+                        },
+                        'object': {
+                            'class': pred['object']['class'],
+                            'bbox': pred['object']['bbox'].to(self.device) if isinstance(pred['object']['bbox'], torch.Tensor) else pred['object']['bbox'],
+                            'score': pred['object']['score'].to(self.device) if isinstance(pred['object']['score'], torch.Tensor) else pred['object']['score']
+                        },
+                        'relation': {
+                            'class': pred['relation']['class'],
+                            'score': pred['relation']['score'].to(self.device) if isinstance(pred['relation']['score'], torch.Tensor) else pred['relation']['score']
+                        }
                     }
-                }
-                processed_predictions.append(processed_pred)
-            
-            # Log thông tin về predictions
-            logger.info(f"Image {image_id}: Found {len(processed_predictions)} predictions")
-            for pred in processed_predictions:
-                logger.info(f"  {pred['subject']['class']} -[{pred['relation']['class']}]-> {pred['object']['class']}")
-            
-            return image_id, processed_predictions
+                    processed_predictions.append(processed_pred)
+                
+                # Log thông tin về predictions
+                logger.info(f"Image {image_id}: Found {len(processed_predictions)} predictions")
+                for pred in processed_predictions:
+                    logger.info(f"  {pred['subject']['class']} -[{pred['relation']['class']}]-> {pred['object']['class']}")
+                
+                return image_id, processed_predictions
         except Exception as e:
             logger.error(f"Error processing image {image_id}: {str(e)}")
             return image_id, None
