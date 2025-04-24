@@ -610,7 +610,7 @@ def evaluate_sample_images(image_ids, model):
             
             # Đảm bảo image_id là string và thêm .jpg
             image_id_str = f"{image_id}.jpg" if not image_id.endswith('.jpg') else image_id
-            image_path = os.path.join('./data/vg_focused/images', image_id_str)
+            image_path = os.path.join('./image_test', image_id_str)
             
             if not os.path.exists(image_path):
                 print(f"Warning: Image file not found: {image_path}")
@@ -655,9 +655,9 @@ if __name__ == "__main__":
     
     # Test một số ảnh mẫu
     sample_image_ids = [
-        "712998",  # Ảnh có ít nhất 1 cặp
-        "713055",  # Ảnh có ít nhất 2 cặp
-        "713179"   # Ảnh có ít nhất 3 cặp
+        "150542",  # Ảnh có ít nhất 1 cặp
+        "286068",  # Ảnh có ít nhất 2 cặp
+        "498377"   # Ảnh có ít nhất 3 cặp
     ]
     
     # Đánh giá ảnh mẫu
