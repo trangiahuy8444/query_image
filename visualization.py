@@ -203,7 +203,7 @@ class QueryMetricsVisualizer:
                     print(f"  F1 Score: {data.get('f1_score', 0):.2f}")
                     print(f"  Total Retrieved: {data.get('total_retrieved', 0)}")
 
-    def query_and_visualize(self, image_path, server_url='http://localhost:5002'):
+    def query_and_visualize(self, image_path, server_url='neo4j+s://b40b4f2a.databases.neo4j.io'):
         """Query an image and visualize the results"""
         try:
             # Query the image
