@@ -526,8 +526,11 @@ class RelTREvaluator:
             'matching_percentage': []
         }
         
+        # Tạo nhiều điểm dữ liệu hơn cho đường cong
+        all_thresholds = np.linspace(0, 1, 20)  # Tạo 20 điểm từ 0 đến 1
+        
         # Tạo các điểm dữ liệu cho đường cong
-        for threshold in thresholds:
+        for threshold in all_thresholds:
             # Lọc kết quả theo ngưỡng
             filtered_results = [r for r in results if r['matching_percentage'] >= threshold * 100]
             
