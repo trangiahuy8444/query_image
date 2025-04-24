@@ -1097,9 +1097,9 @@ class RelTREvaluator:
                 for i in range(len(keep)):
                     if keep[i]:
                         # Convert tensor indices to Python scalars
-                        subject_idx = pred_classes[i][0].item()
-                        relation_idx = pred_classes[i][1].item()
-                        object_idx = pred_classes[i][2].item()
+                        subject_idx = pred_classes[i].item()  # Remove [0] indexing
+                        relation_idx = pred_classes[i].item()  # Remove [1] indexing
+                        object_idx = pred_classes[i].item()  # Remove [2] indexing
                         
                         subject_class = CLASSES[subject_idx]
                         relation_class = REL_CLASSES[relation_idx]
