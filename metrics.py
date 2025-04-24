@@ -242,24 +242,45 @@ def get_ground_truth_from_neo4j(image_id):
     
     try:
         with driver.session() as session:
-            # Truy vấn mối quan hệ subject-relation-object trong cơ sở dữ liệu Neo4j
+            # In ra thông tin debug
+            print(f"\nQuerying Neo4j for image_id: {image_id}")
+            
+            # Kiểm tra xem image_id có tồn tại trong database không
+            check_query = """
+            MATCH (n:Object)
+            WHERE n.image_id = $image_id
+            RETURN count(n) as node_count
+            """
+            result = session.run(check_query, {"image_id": image_id})
+            node_count = result.single()["node_count"]
+            print(f"Number of nodes found for image_id: {node_count}")
+            
+            if node_count == 0:
+                print(f"Warning: No nodes found for image_id {image_id}")
+                return []
+            
+            # Truy vấn mối quan hệ subject-relation-object
             query = """
             MATCH (s:Object)-[r:RELATIONSHIP]->(o:Object)
             WHERE s.image_id = $image_id AND o.image_id = $image_id
             RETURN s.category AS subject, r.type AS relation, o.category AS object
             """
             result = session.run(query, {"image_id": image_id})
-
+            
+            # In ra số lượng relationships tìm thấy
+            relationships = list(result)
+            print(f"Number of relationships found: {len(relationships)}")
+            
             # Lưu các mối quan hệ vào ground_truth
-            for record in result:
+            for record in relationships:
                 subject = record['subject']
                 relation = record['relation']
                 object_ = record['object']
                 ground_truth.append((subject, relation, object_))
+                print(f"Found relationship: {subject} -[{relation}]-> {object_}")
 
     except Exception as e:
         print(f"Error retrieving ground truth for image {image_id}: {str(e)}")
-        # Trường hợp lỗi, có thể trả về một danh sách trống hoặc dữ liệu mặc định
         return []
 
     return ground_truth
@@ -532,6 +553,52 @@ def plot_category_metrics(categories_metrics, output_dir='./output'):
     plt.savefig(os.path.join(output_dir, 'category_metrics_comparison.png'))
     plt.close()
 
+def plot_all_curves(categories_data, output_dir='./output'):
+    """
+    Vẽ tất cả các đường ROC và Precision-Recall cho 10 danh mục trên cùng một biểu đồ.
+    """
+    # Chuẩn bị màu sắc cho các đường
+    colors = plt.cm.tab10(np.linspace(0, 1, 10))
+    
+    # Vẽ ROC curves
+    plt.figure(figsize=(12, 6))
+    for i, (category, (y_true, y_scores)) in enumerate(categories_data.items()):
+        if len(set(y_true)) >= 2:  # Chỉ vẽ nếu có ít nhất 2 lớp
+            fpr, tpr, _ = roc_curve(y_true, y_scores)
+            roc_auc = auc(fpr, tpr)
+            plt.plot(fpr, tpr, color=colors[i], lw=2,
+                    label=f'{category} (AUC = {roc_auc:.2f})')
+    
+    plt.plot([0, 1], [0, 1], color='gray', linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curves for All Categories')
+    plt.legend(loc="lower right")
+    plt.grid(True)
+    plt.savefig(os.path.join(output_dir, 'all_categories_roc_curves.png'))
+    plt.close()
+    
+    # Vẽ Precision-Recall curves
+    plt.figure(figsize=(12, 6))
+    for i, (category, (y_true, y_scores)) in enumerate(categories_data.items()):
+        if len(set(y_true)) >= 2:  # Chỉ vẽ nếu có ít nhất 2 lớp
+            precision, recall, _ = precision_recall_curve(y_true, y_scores)
+            avg_precision = average_precision_score(y_true, y_scores)
+            plt.plot(recall, precision, color=colors[i], lw=2,
+                    label=f'{category} (AP = {avg_precision:.2f})')
+    
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.title('Precision-Recall Curves for All Categories')
+    plt.legend(loc="lower left")
+    plt.grid(True)
+    plt.savefig(os.path.join(output_dir, 'all_categories_precision_recall_curves.png'))
+    plt.close()
+
 def evaluate_all_categories(output_dir='./output'):
     """
     Đánh giá tất cả các danh mục và vẽ biểu đồ.
@@ -550,6 +617,7 @@ def evaluate_all_categories(output_dir='./output'):
     
     # Đánh giá từng danh mục
     categories_metrics = {}
+    categories_data = {}  # Lưu trữ dữ liệu để vẽ curves
     
     # Đánh giá các danh mục pairs
     print("\nEvaluating pair categories...")
@@ -560,13 +628,7 @@ def evaluate_all_categories(output_dir='./output'):
             if result is not None:
                 metrics, y_true, y_scores = result
                 categories_metrics[category] = metrics
-                
-                # Vẽ ROC và Precision-Recall cho từng danh mục
-                if y_true and y_scores:
-                    plot_roc_curve(y_true, y_scores, 
-                                output_path=os.path.join(output_dir, f'{category}_roc_curve.png'))
-                    plot_precision_recall_curve(y_true, y_scores,
-                                            output_path=os.path.join(output_dir, f'{category}_precision_recall_curve.png'))
+                categories_data[category] = (y_true, y_scores)
     
     # Đánh giá các danh mục triplets
     print("\nEvaluating triplet categories...")
@@ -577,20 +639,14 @@ def evaluate_all_categories(output_dir='./output'):
             if result is not None:
                 metrics, y_true, y_scores = result
                 categories_metrics[category] = metrics
-                
-                # Vẽ ROC và Precision-Recall cho từng danh mục
-                if y_true and y_scores:
-                    plot_roc_curve(y_true, y_scores,
-                                output_path=os.path.join(output_dir, f'{category}_roc_curve.png'))
-                    plot_precision_recall_curve(y_true, y_scores,
-                                            output_path=os.path.join(output_dir, f'{category}_precision_recall_curve.png'))
+                categories_data[category] = (y_true, y_scores)
     
     if not categories_metrics:
         print("\nWarning: No valid metrics were calculated for any category")
         return None
     
-    # Vẽ biểu đồ so sánh metrics giữa các danh mục
-    plot_category_metrics(categories_metrics, output_dir)
+    # Vẽ tất cả các curves trên cùng một biểu đồ
+    plot_all_curves(categories_data, output_dir)
     
     # Lưu kết quả vào file JSON
     with open(os.path.join(output_dir, 'category_metrics.json'), 'w') as f:
@@ -650,23 +706,12 @@ def evaluate_sample_images(image_ids, model):
             continue
 
 if __name__ == "__main__":
-    # Load mô hình
-    model = load_model('./RelTR/ckpt/fine_tune1/checkpoint0049.pth')
+    # Đánh giá tất cả các danh mục
+    categories_metrics = evaluate_all_categories()
     
-    # Test một số ảnh mẫu
-    sample_image_ids = [
-        "150542",  # Ảnh có ít nhất 1 cặp
-        "286068",  # Ảnh có ít nhất 2 cặp
-        "498377"   # Ảnh có ít nhất 3 cặp
-    ]
-    
-    # Đánh giá ảnh mẫu
-    evaluate_sample_images(sample_image_ids, model)
-    
-    # Sau khi kiểm tra xong, bạn có thể chạy đánh giá toàn bộ
-    # categories_metrics = evaluate_all_categories()
-    # if categories_metrics is not None:
-    #     print("\nMetrics for all categories:")
-    #     print(json.dumps(categories_metrics, indent=4))
-    # else:
-    #     print("\nEvaluation failed. Please check the logs for details.")
+    if categories_metrics is not None:
+        # In kết quả
+        print("\nMetrics for all categories:")
+        print(json.dumps(categories_metrics, indent=4))
+    else:
+        print("\nEvaluation failed. Please check the logs for details.")
