@@ -148,13 +148,17 @@ class RelTREvaluator:
         # Tính toán số luồng tối ưu
         if torch.cuda.is_available():
             # Nếu có GPU, giảm số luồng CPU để tránh xung đột
-            optimal_workers = min(cpu_count - 2, 4)  # Để lại 2 core cho hệ thống và GPU
+            optimal_workers = max(1, min(cpu_count - 2, 4))  # Để lại 2 core cho hệ thống và GPU
         else:
-            optimal_workers = min(cpu_count - 1, 6)  # Để lại 1 core cho hệ thống
+            optimal_workers = max(1, min(cpu_count - 1, 6))  # Để lại 1 core cho hệ thống
         
         # Điều chỉnh dựa trên RAM
         if total_memory_gb >= 16:
             optimal_workers = min(optimal_workers, 8)  # Tối đa 8 luồng cho 16GB RAM
+        
+        logger.info(f"CPU cores: {cpu_count}")
+        logger.info(f"Total RAM: {total_memory_gb:.2f} GB")
+        logger.info(f"Calculated optimal workers: {optimal_workers}")
         
         return optimal_workers
 
