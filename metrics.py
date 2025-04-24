@@ -432,7 +432,7 @@ def categorize_images_by_pairs(min_pairs=1, max_pairs=5):
             ORDER BY pair_count DESC
             """
             result = session.run(query, {"num_pairs": num_pairs})
-            image_ids = [record["image_id"] for record in result]
+            image_ids = [str(record["image_id"]) for record in result]  # Chuyển đổi image_id thành string
             categories[f"pairs_{num_pairs}"] = image_ids
     return categories
 
@@ -451,7 +451,7 @@ def categorize_images_by_triplets(min_triplets=1, max_triplets=5):
             ORDER BY triplet_count DESC
             """
             result = session.run(query, {"num_triplets": num_triplets})
-            image_ids = [record["image_id"] for record in result]
+            image_ids = [str(record["image_id"]) for record in result]  # Chuyển đổi image_id thành string
             categories[f"triplets_{num_triplets}"] = image_ids
     return categories
 
@@ -463,17 +463,36 @@ def evaluate_category(category_name, image_ids, model):
     y_true = []
     y_scores = []
     
+    print(f"\nEvaluating category: {category_name}")
+    print(f"Number of images in category: {len(image_ids)}")
+    
     for image_id in image_ids:
-        image_path = os.path.join('./data/vg_focused/images', image_id)
-        predictions = predict(image_path, model)
-        ground_truth = get_ground_truth_from_neo4j(image_id)
-        
-        metrics = calculate_metrics(predictions, ground_truth)
-        metrics_list.append(metrics)
-        
-        # Lưu các giá trị thực tế và dự đoán
-        y_true.extend([1 if (s, r, o) in ground_truth else 0 for (s, r, o) in predictions])
-        y_scores.extend([pred['relation']['score'] for pred in predictions])
+        try:
+            # Đảm bảo image_id là string và thêm .jpg
+            image_id_str = f"{image_id}.jpg" if not image_id.endswith('.jpg') else image_id
+            image_path = os.path.join('./data/vg_focused/images', image_id_str)
+            
+            if not os.path.exists(image_path):
+                print(f"Warning: Image file not found: {image_path}")
+                continue
+                
+            predictions = predict(image_path, model)
+            ground_truth = get_ground_truth_from_neo4j(image_id)
+            
+            metrics = calculate_metrics(predictions, ground_truth)
+            metrics_list.append(metrics)
+            
+            # Lưu các giá trị thực tế và dự đoán
+            y_true.extend([1 if (s, r, o) in ground_truth else 0 for (s, r, o) in predictions])
+            y_scores.extend([pred['relation']['score'] for pred in predictions])
+            
+        except Exception as e:
+            print(f"Error processing image {image_id}: {str(e)}")
+            continue
+    
+    if not metrics_list:
+        print(f"Warning: No valid metrics for category {category_name}")
+        return None, None, None
     
     # Tính toán metrics trung bình
     avg_metrics = {
@@ -524,35 +543,51 @@ def evaluate_all_categories(output_dir='./output'):
     model = load_model('./RelTR/ckpt/fine_tune1/checkpoint0049.pth')
     
     # Phân loại ảnh
+    print("\nCategorizing images by pairs...")
     pair_categories = categorize_images_by_pairs()
+    print("\nCategorizing images by triplets...")
     triplet_categories = categorize_images_by_triplets()
     
     # Đánh giá từng danh mục
     categories_metrics = {}
     
     # Đánh giá các danh mục pairs
+    print("\nEvaluating pair categories...")
     for category, image_ids in pair_categories.items():
         if image_ids:  # Chỉ đánh giá nếu có ảnh trong danh mục
-            metrics, y_true, y_scores = evaluate_category(category, image_ids, model)
-            categories_metrics[category] = metrics
-            
-            # Vẽ ROC và Precision-Recall cho từng danh mục
-            plot_roc_curve(y_true, y_scores, 
-                          output_path=os.path.join(output_dir, f'{category}_roc_curve.png'))
-            plot_precision_recall_curve(y_true, y_scores,
-                                      output_path=os.path.join(output_dir, f'{category}_precision_recall_curve.png'))
+            print(f"\nProcessing category: {category}")
+            result = evaluate_category(category, image_ids, model)
+            if result is not None:
+                metrics, y_true, y_scores = result
+                categories_metrics[category] = metrics
+                
+                # Vẽ ROC và Precision-Recall cho từng danh mục
+                if y_true and y_scores:
+                    plot_roc_curve(y_true, y_scores, 
+                                output_path=os.path.join(output_dir, f'{category}_roc_curve.png'))
+                    plot_precision_recall_curve(y_true, y_scores,
+                                            output_path=os.path.join(output_dir, f'{category}_precision_recall_curve.png'))
     
     # Đánh giá các danh mục triplets
+    print("\nEvaluating triplet categories...")
     for category, image_ids in triplet_categories.items():
         if image_ids:  # Chỉ đánh giá nếu có ảnh trong danh mục
-            metrics, y_true, y_scores = evaluate_category(category, image_ids, model)
-            categories_metrics[category] = metrics
-            
-            # Vẽ ROC và Precision-Recall cho từng danh mục
-            plot_roc_curve(y_true, y_scores,
-                          output_path=os.path.join(output_dir, f'{category}_roc_curve.png'))
-            plot_precision_recall_curve(y_true, y_scores,
-                                      output_path=os.path.join(output_dir, f'{category}_precision_recall_curve.png'))
+            print(f"\nProcessing category: {category}")
+            result = evaluate_category(category, image_ids, model)
+            if result is not None:
+                metrics, y_true, y_scores = result
+                categories_metrics[category] = metrics
+                
+                # Vẽ ROC và Precision-Recall cho từng danh mục
+                if y_true and y_scores:
+                    plot_roc_curve(y_true, y_scores,
+                                output_path=os.path.join(output_dir, f'{category}_roc_curve.png'))
+                    plot_precision_recall_curve(y_true, y_scores,
+                                            output_path=os.path.join(output_dir, f'{category}_precision_recall_curve.png'))
+    
+    if not categories_metrics:
+        print("\nWarning: No valid metrics were calculated for any category")
+        return None
     
     # Vẽ biểu đồ so sánh metrics giữa các danh mục
     plot_category_metrics(categories_metrics, output_dir)
@@ -567,6 +602,9 @@ if __name__ == "__main__":
     # Đánh giá tất cả các danh mục
     categories_metrics = evaluate_all_categories()
     
-    # In kết quả
-    print("\nMetrics for all categories:")
-    print(json.dumps(categories_metrics, indent=4))
+    if categories_metrics is not None:
+        # In kết quả
+        print("\nMetrics for all categories:")
+        print(json.dumps(categories_metrics, indent=4))
+    else:
+        print("\nEvaluation failed. Please check the logs for details.")
