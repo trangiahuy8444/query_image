@@ -41,6 +41,10 @@ REL_CLASSES = ['__background__', 'above', 'across', 'against', 'along', 'and', '
                 'to', 'under', 'using', 'walking in', 'walking on', 'watching', 'wearing', 'wears', 'with']
 
 def load_model(checkpoint_path='./ckpt/checkpoint0149.pth'):
+    # Kiểm tra và cấu hình GPU
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(f"Using device: {device}")
+    
     # Thiết lập model một lần
     position_embedding = PositionEmbeddingSine(128, normalize=True)
     backbone = Backbone('resnet50', False, False, False)
@@ -56,9 +60,6 @@ def load_model(checkpoint_path='./ckpt/checkpoint0149.pth'):
 
     model = RelTR(backbone, transformer, num_classes=151, num_rel_classes=51,
                   num_entities=100, num_triplets=200)
-
-    # Kiểm tra và cấu hình GPU
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
     # Load checkpoint với map_location phù hợp
     ckpt = torch.load(checkpoint_path, map_location=device)
@@ -70,17 +71,17 @@ def load_model(checkpoint_path='./ckpt/checkpoint0149.pth'):
         # Đảm bảo tất cả các tham số của model đều ở GPU
         for param in model.parameters():
             param.data = param.data.to(device)
-    
-    # Đặt model ở chế độ eval
-    model.eval()
-    
-    print(f"Model loaded on {device}")
-    if torch.cuda.is_available():
+        # Đặt model ở chế độ eval
+        model.eval()
+        # Kiểm tra xem model có thực sự ở GPU không
         print(f"Model is on GPU: {next(model.parameters()).is_cuda}")
         print(f"Model device: {next(model.parameters()).device}")
         print(f"Model state: {model.training}")
         print(f"Model parameters: {sum(p.numel() for p in model.parameters())}")
         print(f"Model parameters on GPU: {sum(p.numel() for p in model.parameters() if p.is_cuda)}")
+    else:
+        model.eval()
+        print("Model loaded on CPU")
 
     return model
 
