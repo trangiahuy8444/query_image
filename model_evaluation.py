@@ -85,14 +85,24 @@ class RelTREvaluator:
             logger.error(f"Failed to connect to Neo4j: {str(e)}")
             raise
         
-        # Sử dụng GPU nếu có sẵn
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        # Kiểm tra và cấu hình GPU
+        if not torch.cuda.is_available():
+            logger.warning("CUDA is not available. Please check your GPU installation.")
+            self.device = torch.device('cpu')
+        else:
+            self.device = torch.device('cuda')
+            # Đặt GPU là device mặc định
+            torch.cuda.set_device(0)
+            # Xóa cache GPU
+            torch.cuda.empty_cache()
+            
         logger.info(f"Using device: {self.device}")
         
         # Log thông tin GPU
         if torch.cuda.is_available():
             logger.info(f"GPU: {torch.cuda.get_device_name(0)}")
             logger.info(f"CUDA Version: {torch.version.cuda}")
+            logger.info(f"GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1024**3:.2f} GB")
         
         # Load model với GPU nếu có sẵn
         try:
@@ -108,17 +118,13 @@ class RelTREvaluator:
                 # Đảm bảo tất cả các tham số của model đều ở GPU
                 for param in self.model.parameters():
                     param.data = param.data.to(self.device)
-            
-            # Đảm bảo model ở chế độ eval
-            self.model.eval()
-            
-            # Log thông tin về model
-            logger.info(f"Model device: {next(self.model.parameters()).device}")
-            logger.info(f"Model state: {self.model.training}")
-            
-            # Kiểm tra xem model có thực sự ở GPU không
-            if torch.cuda.is_available():
+                # Đặt model ở chế độ eval
+                self.model.eval()
+                # Kiểm tra xem model có thực sự ở GPU không
                 logger.info(f"Model is on GPU: {next(self.model.parameters()).is_cuda}")
+                logger.info(f"Model device: {next(self.model.parameters()).device}")
+                logger.info(f"Model state: {self.model.training}")
+            
         except Exception as e:
             logger.error(f"Error loading model: {str(e)}")
             raise
@@ -588,11 +594,11 @@ class RelTREvaluator:
         """
         Vẽ ROC curves và Precision-Recall curves cho các kết quả đánh giá.
         """
-        plt.figure(figsize=(15, 10))
+        plt.figure(figsize=(20, 15))
         
         # Tạo subplot cho ROC curves
         plt.subplot(2, 2, 1)
-        plt.title('ROC Curves for Subject-Object Pairs')
+        plt.title('ROC Curves for Subject-Object Pairs', fontsize=12)
         
         # Vẽ đường chéo 45 độ
         plt.plot([0, 1], [0, 1], 'k--', label='Random')
@@ -605,16 +611,16 @@ class RelTREvaluator:
                 if len(metrics['fpr']) > 0 and len(metrics['tpr']) > 0:
                     auc = np.trapezoid(metrics['tpr'], metrics['fpr'])
                     plt.plot(metrics['fpr'], metrics['tpr'], 'o-', 
-                            label=f'Min {min_pairs} pairs (AUC={auc:.2f})')
+                            label=f'Min {min_pairs} pairs (AUC={auc:.3f})')
         
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True Positive Rate')
-        plt.legend()
+        plt.xlabel('False Positive Rate', fontsize=10)
+        plt.ylabel('True Positive Rate', fontsize=10)
+        plt.legend(fontsize=8)
         plt.grid(True)
         
         # Tạo subplot cho ROC curves của triplets
         plt.subplot(2, 2, 2)
-        plt.title('ROC Curves for Triplets')
+        plt.title('ROC Curves for Triplets', fontsize=12)
         
         # Vẽ đường chéo 45 độ
         plt.plot([0, 1], [0, 1], 'k--', label='Random')
@@ -627,16 +633,16 @@ class RelTREvaluator:
                 if len(metrics['fpr']) > 0 and len(metrics['tpr']) > 0:
                     auc = np.trapezoid(metrics['tpr'], metrics['fpr'])
                     plt.plot(metrics['fpr'], metrics['tpr'], 'o-', 
-                            label=f'Min {min_pairs} triplets (AUC={auc:.2f})')
+                            label=f'Min {min_pairs} triplets (AUC={auc:.3f})')
         
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True Positive Rate')
-        plt.legend()
+        plt.xlabel('False Positive Rate', fontsize=10)
+        plt.ylabel('True Positive Rate', fontsize=10)
+        plt.legend(fontsize=8)
         plt.grid(True)
         
         # Tạo subplot cho Precision-Recall của cặp subject-object
         plt.subplot(2, 2, 3)
-        plt.title('Precision-Recall for Subject-Object Pairs')
+        plt.title('Precision-Recall for Subject-Object Pairs', fontsize=12)
         
         for result in results['pairs']:
             min_pairs = result['min_pairs']
@@ -645,16 +651,16 @@ class RelTREvaluator:
                 if len(metrics['recall']) > 0 and len(metrics['precision']) > 0:
                     f1 = np.mean(metrics['f1_score']) if isinstance(metrics['f1_score'], (list, np.ndarray)) else metrics['f1_score']
                     plt.plot(metrics['recall'], metrics['precision'], 'o-',
-                            label=f'Min {min_pairs} pairs (F1={f1:.2f})')
+                            label=f'Min {min_pairs} pairs (F1={f1:.3f})')
         
-        plt.xlabel('Recall')
-        plt.ylabel('Precision')
-        plt.legend()
+        plt.xlabel('Recall', fontsize=10)
+        plt.ylabel('Precision', fontsize=10)
+        plt.legend(fontsize=8)
         plt.grid(True)
         
         # Tạo subplot cho Precision-Recall của triplets
         plt.subplot(2, 2, 4)
-        plt.title('Precision-Recall for Triplets')
+        plt.title('Precision-Recall for Triplets', fontsize=12)
         
         for result in results['triplets']:
             min_pairs = result['min_pairs']
@@ -663,15 +669,15 @@ class RelTREvaluator:
                 if len(metrics['recall']) > 0 and len(metrics['precision']) > 0:
                     f1 = np.mean(metrics['f1_score']) if isinstance(metrics['f1_score'], (list, np.ndarray)) else metrics['f1_score']
                     plt.plot(metrics['recall'], metrics['precision'], 'o-',
-                            label=f'Min {min_pairs} triplets (F1={f1:.2f})')
+                            label=f'Min {min_pairs} triplets (F1={f1:.3f})')
         
-        plt.xlabel('Recall')
-        plt.ylabel('Precision')
-        plt.legend()
+        plt.xlabel('Recall', fontsize=10)
+        plt.ylabel('Precision', fontsize=10)
+        plt.legend(fontsize=8)
         plt.grid(True)
         
         plt.tight_layout()
-        plt.savefig(output_file)
+        plt.savefig(output_file, dpi=300, bbox_inches='tight')
         plt.close()
         
         logger.info(f"ROC curves and Precision-Recall curves saved to {output_file}")
