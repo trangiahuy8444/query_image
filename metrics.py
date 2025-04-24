@@ -598,13 +598,75 @@ def evaluate_all_categories(output_dir='./output'):
     
     return categories_metrics
 
-if __name__ == "__main__":
-    # Đánh giá tất cả các danh mục
-    categories_metrics = evaluate_all_categories()
+def evaluate_sample_images(image_ids, model):
+    """
+    Đánh giá một số ảnh mẫu để kiểm tra kết quả.
+    """
+    print("\nEvaluating sample images...")
     
-    if categories_metrics is not None:
-        # In kết quả
-        print("\nMetrics for all categories:")
-        print(json.dumps(categories_metrics, indent=4))
-    else:
-        print("\nEvaluation failed. Please check the logs for details.")
+    for image_id in image_ids:
+        try:
+            print(f"\nProcessing image: {image_id}")
+            
+            # Đảm bảo image_id là string và thêm .jpg
+            image_id_str = f"{image_id}.jpg" if not image_id.endswith('.jpg') else image_id
+            image_path = os.path.join('./data/vg_focused/images', image_id_str)
+            
+            if not os.path.exists(image_path):
+                print(f"Warning: Image file not found: {image_path}")
+                continue
+            
+            # Dự đoán với mô hình
+            predictions = predict(image_path, model)
+            print(f"Number of predictions: {len(predictions)}")
+            print("Predictions:")
+            for pred in predictions:
+                print(f"{pred['subject']['class']} -[{pred['relation']['class']}]-> {pred['object']['class']}")
+            
+            # Lấy ground truth từ Neo4j
+            ground_truth = get_ground_truth_from_neo4j(image_id)
+            print(f"\nNumber of ground truth relationships: {len(ground_truth)}")
+            print("Ground truth relationships:")
+            for gt in ground_truth:
+                print(f"{gt[0]} -[{gt[1]}]-> {gt[2]}")
+            
+            # Tính toán metrics
+            metrics = calculate_metrics(predictions, ground_truth)
+            print("\nMetrics for this image:")
+            print(json.dumps(metrics, indent=4))
+            
+            # Tính toán và vẽ ROC và Precision-Recall
+            y_true = [1 if (s, r, o) in ground_truth else 0 for (s, r, o) in predictions]
+            y_scores = [pred['relation']['score'] for pred in predictions]
+            
+            if len(set(y_true)) >= 2:  # Chỉ vẽ nếu có ít nhất 2 lớp
+                plot_roc_curve(y_true, y_scores, 
+                             output_path=f'./output/sample_{image_id}_roc_curve.png')
+                plot_precision_recall_curve(y_true, y_scores,
+                                         output_path=f'./output/sample_{image_id}_precision_recall_curve.png')
+            
+        except Exception as e:
+            print(f"Error processing image {image_id}: {str(e)}")
+            continue
+
+if __name__ == "__main__":
+    # Load mô hình
+    model = load_model('./RelTR/ckpt/fine_tune1/checkpoint0049.pth')
+    
+    # Test một số ảnh mẫu
+    sample_image_ids = [
+        "712998",  # Ảnh có ít nhất 1 cặp
+        "713055",  # Ảnh có ít nhất 2 cặp
+        "713179"   # Ảnh có ít nhất 3 cặp
+    ]
+    
+    # Đánh giá ảnh mẫu
+    evaluate_sample_images(sample_image_ids, model)
+    
+    # Sau khi kiểm tra xong, bạn có thể chạy đánh giá toàn bộ
+    # categories_metrics = evaluate_all_categories()
+    # if categories_metrics is not None:
+    #     print("\nMetrics for all categories:")
+    #     print(json.dumps(categories_metrics, indent=4))
+    # else:
+    #     print("\nEvaluation failed. Please check the logs for details.")
