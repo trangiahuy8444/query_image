@@ -2,7 +2,7 @@ import os
 import json
 import logging
 from neo4j import GraphDatabase
-from RelTR.inference import load_model, predict
+from RelTR.inference import load_model, predict, CLASSES, REL_CLASSES
 from sklearn.metrics import roc_curve, auc, average_precision_score
 import matplotlib.pyplot as plt
 import numpy as np
