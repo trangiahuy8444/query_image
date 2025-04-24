@@ -1096,9 +1096,15 @@ class RelTREvaluator:
                 predictions = []
                 for i in range(len(keep)):
                     if keep[i]:
-                        subject_class = CLASSES[pred_classes[i][0]]
-                        relation_class = REL_CLASSES[pred_classes[i][1]]
-                        object_class = CLASSES[pred_classes[i][2]]
+                        # Convert tensor indices to Python scalars
+                        subject_idx = pred_classes[i][0].item()
+                        relation_idx = pred_classes[i][1].item()
+                        object_idx = pred_classes[i][2].item()
+                        
+                        subject_class = CLASSES[subject_idx]
+                        relation_class = REL_CLASSES[relation_idx]
+                        object_class = CLASSES[object_idx]
+                        
                         predictions.append((subject_class, relation_class, object_class))
             
             return predictions
