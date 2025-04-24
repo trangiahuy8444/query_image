@@ -245,36 +245,25 @@ class RelTREvaluator:
                 return None
             
             # Get predictions using the model
-            pred_logits, pred_boxes, scores = self.predict(image_path)
+            predictions = predict(image_path, self.model)
             
-            # Get max confidence scores and corresponding indices
-            max_scores, pred_classes = scores.max(dim=-1)
-            
-            # Convert predictions to list of dictionaries with confidence
-            predictions = []
-            for i in range(len(max_scores)):
+            if not predictions:
+                logger.error(f"No predictions returned for image {image_id}")
+                return None
+                
+            # Filter predictions with confidence > 0.3
+            filtered_predictions = []
+            for pred in predictions:
                 try:
-                    confidence = max_scores[i].item()
-                    subject_idx = pred_classes[i][0].item()
-                    relation_idx = pred_classes[i][1].item()
-                    object_idx = pred_classes[i][2].item()
-                    
-                    subject_class = CLASSES[subject_idx]
-                    relation_class = REL_CLASSES[relation_idx]
-                    object_class = CLASSES[object_idx]
-                    
-                    predictions.append({
-                        'subject': {'class': subject_class},
-                        'relation': {'class': relation_class},
-                        'object': {'class': object_class},
-                        'confidence': confidence
-                    })
+                    confidence = pred['relation']['score']
+                    if confidence > 0.3:
+                        filtered_predictions.append(pred)
                 except Exception as e:
-                    logger.error(f"Error processing prediction {i}: {str(e)}")
+                    logger.error(f"Error processing prediction: {str(e)}")
                     continue
             
-            logger.info(f"Found {len(predictions)} predictions for image {image_id}")
-            return predictions
+            logger.info(f"Found {len(filtered_predictions)} predictions for image {image_id}")
+            return filtered_predictions
             
         except Exception as e:
             logger.error(f"Error getting predictions for image {image_id}: {str(e)}")
@@ -1275,50 +1264,108 @@ def main():
                 logger.info(f"\nProcessing image {image_id}...")
                 
                 # Dự đoán các mối quan hệ trong ảnh
-                predictions = evaluator._get_predictions(image_id)
+                predictions = predict(image_path, evaluator.model)
                 if not predictions:
                     logger.error(f"No predictions for image: {image_id}")
                     continue
                 
                 logger.info(f"Found {len(predictions)} predictions")
                 for pred in predictions:
-                    logger.info(f"  {pred['subject']['class']} -[{pred['relation']['class']}]-> {pred['object']['class']} (conf: {pred['confidence']:.2f})")
+                    logger.info(f"  {pred['subject']['class']} -[{pred['relation']['class']}]-> {pred['object']['class']} (conf: {pred['relation']['score']:.2f})")
                 
                 # Truy vấn ảnh theo cặp subject-object
                 logger.info("Querying for matching pairs...")
-                pairs_results = evaluator.query_images_by_pairs_count(predictions, min_pairs=1)
-                logger.info(f"Found {len(pairs_results)} matching pairs")
+                pairs_results = {
+                    "1_or_more": evaluator.query_images_by_pairs_count(predictions, 1),
+                    "2_or_more": evaluator.query_images_by_pairs_count(predictions, 2),
+                    "3_or_more": evaluator.query_images_by_pairs_count(predictions, 3),
+                    "4_or_more": evaluator.query_images_by_pairs_count(predictions, 4),
+                    "5_or_more": evaluator.query_images_by_pairs_count(predictions, 5),
+                }
                 
                 # Truy vấn ảnh theo bộ ba đầy đủ
                 logger.info("Querying for matching triplets...")
-                triplets_results = evaluator.query_images_by_full_pairs_count(predictions, min_pairs=1)
-                logger.info(f"Found {len(triplets_results)} matching triplets")
+                triplets_results = {
+                    "1_or_more_full": evaluator.query_images_by_full_pairs_count(predictions, 1),
+                    "2_or_more_full": evaluator.query_images_by_full_pairs_count(predictions, 2),
+                    "3_or_more_full": evaluator.query_images_by_full_pairs_count(predictions, 3),
+                    "4_or_more_full": evaluator.query_images_by_full_pairs_count(predictions, 4),
+                    "5_or_more_full": evaluator.query_images_by_full_pairs_count(predictions, 5),
+                }
+                
+                # Tính toán các chỉ số
+                metrics = {
+                    "num_predictions": len(predictions),
+                    "pairs_matches": {k: len(v) for k, v in pairs_results.items()},
+                    "triplets_matches": {k: len(v) for k, v in triplets_results.items()},
+                    "total_unique_images": len(set(
+                        [img['image_id'] for results in pairs_results.values() for img in results] +
+                        [img['image_id'] for results in triplets_results.values() for img in results]
+                    ))
+                }
                 
                 # Lưu kết quả
                 result = {
                     'image_id': image_id,
                     'predictions': predictions,
                     'pairs_results': pairs_results,
-                    'triplets_results': triplets_results
+                    'triplets_results': triplets_results,
+                    'metrics': metrics
                 }
                 results.append(result)
                 
+                logger.info(f"\nMetrics for image {image_id}:")
+                logger.info(f"- Number of predictions: {metrics['num_predictions']}")
+                logger.info(f"- Pairs matches: {metrics['pairs_matches']}")
+                logger.info(f"- Triplets matches: {metrics['triplets_matches']}")
+                logger.info(f"- Total unique matching images: {metrics['total_unique_images']}")
+                
             except Exception as e:
                 logger.error(f"Error processing image {image_id}: {str(e)}")
+                logger.error(f"Stack trace: {traceback.format_exc()}")
                 continue
         
         if not results:
             logger.error("No results were generated. Please check the logs for errors.")
             return
             
+        # Tính toán tổng hợp các chỉ số
+        total_metrics = {
+            "total_images_processed": len(results),
+            "total_predictions": sum(r['metrics']['num_predictions'] for r in results),
+            "avg_predictions_per_image": sum(r['metrics']['num_predictions'] for r in results) / len(results),
+            "total_unique_matching_images": len(set(
+                img['image_id'] 
+                for r in results 
+                for results in r['pairs_results'].values() 
+                for img in results
+            )),
+            "pairs_matches_summary": {
+                k: sum(r['metrics']['pairs_matches'][k] for r in results)
+                for k in results[0]['metrics']['pairs_matches'].keys()
+            },
+            "triplets_matches_summary": {
+                k: sum(r['metrics']['triplets_matches'][k] for r in results)
+                for k in results[0]['metrics']['triplets_matches'].keys()
+            }
+        }
+        
         # Lưu kết quả vào file
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         results_file = f"evaluation_results_{timestamp}.json"
         with open(results_file, 'w') as f:
-            json.dump(results, f, indent=2)
+            json.dump({
+                'individual_results': results,
+                'total_metrics': total_metrics
+            }, f, indent=2)
         
         logger.info(f"\nEvaluation completed:")
-        logger.info(f"- Total images processed: {len(results)}")
+        logger.info(f"- Total images processed: {total_metrics['total_images_processed']}")
+        logger.info(f"- Total predictions: {total_metrics['total_predictions']}")
+        logger.info(f"- Average predictions per image: {total_metrics['avg_predictions_per_image']:.2f}")
+        logger.info(f"- Total unique matching images: {total_metrics['total_unique_matching_images']}")
+        logger.info(f"- Pairs matches summary: {total_metrics['pairs_matches_summary']}")
+        logger.info(f"- Triplets matches summary: {total_metrics['triplets_matches_summary']}")
         logger.info(f"- Results saved to: {results_file}")
         
     except Exception as e:
