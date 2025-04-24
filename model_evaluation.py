@@ -3,7 +3,7 @@ import json
 import logging
 from neo4j import GraphDatabase
 from RelTR.inference import load_model, predict
-from sklearn.metrics import roc_curve, auc
+from sklearn.metrics import roc_curve, auc, average_precision_score
 import matplotlib.pyplot as plt
 import numpy as np
 from collections import defaultdict
@@ -16,6 +16,10 @@ import torch
 import torch.serialization
 import argparse
 import socket
+from PIL import Image
+import torchvision.transforms as T
+import torch.nn.functional as F
+import traceback
 
 # Cấu hình logging để ghi lại thông tin và lỗi
 logging.basicConfig(
@@ -85,7 +89,7 @@ class RelTREvaluator:
             logger.error(f"Failed to connect to Neo4j: {str(e)}")
             raise
         
-        # Kiểm tra và cấu hình GPU cho Google Colab
+        # Kiểm tra và cấu hình GPU
         if not torch.cuda.is_available():
             logger.warning("CUDA is not available. Please check your GPU installation.")
             self.device = torch.device('cpu')
@@ -226,19 +230,39 @@ class RelTREvaluator:
 
     def _get_predictions(self, image_id):
         """
-        Dự đoán các mối quan hệ từ mô hình RelTR cho một ảnh.
+        Predict relationships from RelTR model for an image.
         
         Args:
-            image_id (str): ID của ảnh
+            image_id (str): Image ID
         
         Returns:
-            list: Các mối quan hệ dự đoán từ mô hình
+            list: List of tuples (subject, relation, object, confidence)
         """
         image_path = os.path.join(self.image_folder, f"{image_id}.jpg")
-        if not os.path.exists(image_path):  # Kiểm tra xem ảnh có tồn tại không
-            raise FileNotFoundError(f"Ảnh {image_id}.jpg không tìm thấy trong thư mục {self.image_folder}.")
-        predictions = predict(image_path, self.model)
-        return [(p['subject']['class'], p['relation']['class'], p['object']['class']) for p in predictions]
+        if not os.path.exists(image_path):
+            raise FileNotFoundError(f"Image {image_id}.jpg not found in folder {self.image_folder}.")
+        
+        pred_logits, pred_boxes, scores = self.predict(image_path)
+        
+        # Get max confidence scores and corresponding indices
+        max_scores, pred_classes = scores.max(dim=-1)
+        
+        # Convert predictions to list of tuples with confidence
+        predictions = []
+        for i in range(len(max_scores)):
+            if max_scores[i] > 0:  # Only include non-zero confidence predictions
+                subject_class = self.id2label[pred_classes[i][0].item()]
+                relation_class = self.id2label[pred_classes[i][1].item()]
+                object_class = self.id2label[pred_classes[i][2].item()]
+                confidence = max_scores[i].item()
+                predictions.append({
+                    'subject': {'class': subject_class},
+                    'relation': {'class': relation_class},
+                    'object': {'class': object_class},
+                    'confidence': confidence
+                })
+        
+        return predictions
 
     def _evaluate_relations(self, ground_truth, predictions):
         """
@@ -530,73 +554,76 @@ class RelTREvaluator:
 
     def _calculate_metrics_with_thresholds(self, results, thresholds):
         """
-        Tính toán các metrics với nhiều ngưỡng khác nhau.
+        Calculate metrics for different confidence thresholds.
+        
+        Args:
+            results (list): List of results from query_images_by_pairs_count
+            thresholds (list): List of confidence thresholds to evaluate
+        
+        Returns:
+            dict: Dictionary containing TPR and FPR for each threshold
         """
         metrics = {
-            'thresholds': thresholds,
-            'fpr': [],  # False Positive Rate
-            'tpr': [],  # True Positive Rate
+            'thresholds': [],
+            'tpr': [],
+            'fpr': [],
             'precision': [],
             'recall': [],
             'f1_score': [],
-            'matching_percentage': []
+            'total_images': 0
         }
         
-        # Tạo nhiều điểm dữ liệu hơn cho đường cong
-        all_thresholds = np.linspace(0, 1, 20)  # Tạo 20 điểm từ 0 đến 1
-        
-        # Tạo các điểm dữ liệu cho đường cong
-        for threshold in all_thresholds:
-            # Lọc kết quả theo ngưỡng
-            filtered_results = [r for r in results if r['matching_percentage'] >= threshold * 100]
+        for threshold in thresholds:
+            # Filter predictions by confidence threshold
+            filtered_results = []
+            for result in results:
+                filtered_preds = [
+                    (p['subject']['class'], p['relation']['class'], p['object']['class'])
+                    for p in result['predictions']
+                    if p['confidence'] >= threshold
+                ]
+                if filtered_preds:  # Only include results with predictions above threshold
+                    filtered_results.append({
+                        'predictions': filtered_preds,
+                        'ground_truth': result['ground_truth']
+                    })
             
             if not filtered_results:
-                metrics['fpr'].append(1.0)
-                metrics['tpr'].append(0.0)
-                metrics['precision'].append(0.0)
-                metrics['recall'].append(0.0)
-                metrics['f1_score'].append(0.0)
-                metrics['matching_percentage'].append(0.0)
                 continue
             
-            # Tính toán các metrics
-            total_matching = sum(r['matching_pairs'] if 'matching_pairs' in r else r['matching_triples'] for r in filtered_results)
-            total_pairs = sum(r['total_pairs'] if 'total_pairs' in r else r['total_triples'] for r in filtered_results)
-            total_images = len(filtered_results)
+            # Calculate TP, FP, FN across all filtered results
+            total_tp = 0
+            total_fp = 0
+            total_fn = 0
             
-            # Tính toán các metrics cho điểm hiện tại
-            precision = total_matching / total_pairs if total_pairs > 0 else 0
-            recall = total_matching / (total_pairs * total_images) if total_pairs * total_images > 0 else 0
+            for result in filtered_results:
+                pred_set = set(result['predictions'])
+                gt_set = set(result['ground_truth'])
+                
+                tp = len(pred_set.intersection(gt_set))
+                fp = len(pred_set - gt_set)
+                fn = len(gt_set - pred_set)
+                
+                total_tp += tp
+                total_fp += fp
+                total_fn += fn
+            
+            # Calculate metrics
+            precision = total_tp / (total_tp + total_fp) if (total_tp + total_fp) > 0 else 0
+            recall = total_tp / (total_tp + total_fn) if (total_tp + total_fn) > 0 else 0
             f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
-            matching_percentage = sum(r['matching_percentage'] for r in filtered_results) / total_images if total_images > 0 else 0
             
-            # Tính FPR và TPR
-            fpr = 1 - precision  # False Positive Rate = 1 - Precision
-            tpr = recall        # True Positive Rate = Recall
+            # For ROC curve
+            tpr = recall  # TPR is same as recall
+            fpr = total_fp / (total_fp + total_fn) if (total_fp + total_fn) > 0 else 0  # FPR calculation
             
-            # Thêm điểm dữ liệu vào metrics
-            metrics['fpr'].append(fpr)
+            metrics['thresholds'].append(threshold)
             metrics['tpr'].append(tpr)
+            metrics['fpr'].append(fpr)
             metrics['precision'].append(precision)
             metrics['recall'].append(recall)
             metrics['f1_score'].append(f1_score)
-            metrics['matching_percentage'].append(matching_percentage)
-        
-        # Thêm điểm (0,0) và (1,1) cho đường cong ROC
-        metrics['fpr'].insert(0, 0.0)
-        metrics['tpr'].insert(0, 0.0)
-        metrics['fpr'].append(1.0)
-        metrics['tpr'].append(1.0)
-        
-        # Sắp xếp các điểm theo FPR để vẽ đường cong ROC
-        sorted_indices = np.argsort(metrics['fpr'])
-        metrics['fpr'] = np.array(metrics['fpr'])[sorted_indices]
-        metrics['tpr'] = np.array(metrics['tpr'])[sorted_indices]
-        
-        # Sắp xếp các điểm theo Recall để vẽ đường cong Precision-Recall
-        sorted_indices = np.argsort(metrics['recall'])
-        metrics['recall'] = np.array(metrics['recall'])[sorted_indices]
-        metrics['precision'] = np.array(metrics['precision'])[sorted_indices]
+            metrics['total_images'] = len(filtered_results)
         
         return metrics
 
@@ -1085,6 +1112,101 @@ class RelTREvaluator:
                 metrics['fpr'].append(fpr)
                 metrics['tpr'].append(tpr)
 
+    def predict(self, image_path):
+        """
+        Dự đoán các mối quan hệ trong ảnh.
+        """
+        try:
+            # Đảm bảo model ở chế độ eval
+            self.model.eval()
+            
+            # Load và xử lý ảnh
+            image = Image.open(image_path).convert('RGB')
+            transform = T.Compose([
+                T.Resize(800),
+                T.ToTensor(),
+                T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+            ])
+            image_tensor = transform(image)
+            
+            # Chuyển tensor sang device phù hợp và thêm batch dimension
+            image_tensor = image_tensor.to(self.device).unsqueeze(0)
+            
+            # Log thông tin về tensor và device
+            logger.info(f"Input tensor device: {image_tensor.device}")
+            logger.info(f"Model device: {next(self.model.parameters()).device}")
+            
+            with torch.no_grad():
+                # Thực hiện dự đoán
+                outputs = self.model(image_tensor)
+                
+                # Xử lý kết quả
+                pred_logits = outputs['pred_logits'][0]  # Remove batch dimension
+                pred_boxes = outputs['pred_boxes'][0]  # Remove batch dimension
+                
+                # Chuyển kết quả về CPU để xử lý tiếp
+                pred_logits = pred_logits.cpu()
+                pred_boxes = pred_boxes.cpu()
+                
+                # Áp dụng softmax cho logits
+                scores = F.softmax(pred_logits, dim=-1)
+                
+                return pred_logits, pred_boxes, scores
+                
+        except Exception as e:
+            logger.error(f"Error in predict: {str(e)}")
+            logger.error(f"Stack trace: {traceback.format_exc()}")
+            raise
+
+    def evaluate(self, image_ids=None):
+        """
+        Evaluate the model on the test set.
+        
+        Args:
+            image_ids (list, optional): List of image IDs to evaluate. If None, evaluates on all test images.
+        
+        Returns:
+            dict: Dictionary containing evaluation metrics
+        """
+        if image_ids is None:
+            image_ids = self.test_image_ids
+        
+        results = []
+        for image_id in tqdm(image_ids, desc="Evaluating images"):
+            try:
+                # Get predictions with confidence scores
+                predictions = self._get_predictions(image_id)
+                
+                # Get ground truth
+                ground_truth = self._get_ground_truth(image_id)
+                
+                # Store results
+                results.append({
+                    'predictions': predictions,
+                    'ground_truth': ground_truth
+                })
+                
+            except Exception as e:
+                print(f"Error processing image {image_id}: {str(e)}")
+                continue
+        
+        # Generate thresholds from 0 to 1
+        thresholds = np.linspace(0, 1, 20)
+        
+        # Calculate metrics for different thresholds
+        metrics = self._calculate_metrics_with_thresholds(results, thresholds)
+        
+        # Calculate AUC-ROC
+        metrics['auc_roc'] = auc(metrics['fpr'], metrics['tpr'])
+        
+        # Calculate average precision
+        metrics['average_precision'] = average_precision_score(
+            np.array(metrics['recall']), 
+            np.array(metrics['precision'])
+        )
+        
+        return metrics
+
 def main():
     """Hàm chính để thực hiện đánh giá"""
     try:
@@ -1100,36 +1222,64 @@ def main():
             
         evaluator = RelTREvaluator()
         
-        # Đánh giá toàn bộ dữ liệu
-        results = evaluator.evaluate_all_images(max_images = 100)
+        # Lấy danh sách tất cả các ảnh
+        all_images = evaluator.get_all_images()
+        max_images = 100  # Giới hạn số lượng ảnh để test
+        test_images = all_images[:max_images]
         
-        # Vẽ ROC curves và Precision-Recall
+        logger.info(f"Processing {len(test_images)} images")
+        
+        results = []
+        for image_id in test_images:
+            try:
+                # Lấy đường dẫn ảnh
+                image_path = os.path.join(evaluator.image_folder, f"{image_id}.jpg")
+                if not os.path.exists(image_path):
+                    logger.error(f"Image not found: {image_path}")
+                    continue
+                
+                # Dự đoán các mối quan hệ trong ảnh
+                predictions = evaluator._get_predictions(image_id)
+                if not predictions:
+                    logger.error(f"No predictions for image: {image_id}")
+                    continue
+                
+                # Truy vấn ảnh theo cặp subject-object
+                pairs_results = evaluator.query_images_by_pairs_count(predictions, min_pairs=1)
+                
+                # Truy vấn ảnh theo bộ ba đầy đủ
+                triplets_results = evaluator.query_images_by_full_pairs_count(predictions, min_pairs=1)
+                
+                # Lưu kết quả
+                result = {
+                    'image_id': image_id,
+                    'predictions': predictions,
+                    'pairs_results': pairs_results,
+                    'triplets_results': triplets_results
+                }
+                results.append(result)
+                
+                logger.info(f"Processed image {image_id}:")
+                logger.info(f"- Number of predictions: {len(predictions)}")
+                logger.info(f"- Number of matching pairs: {len(pairs_results)}")
+                logger.info(f"- Number of matching triplets: {len(triplets_results)}")
+                
+            except Exception as e:
+                logger.error(f"Error processing image {image_id}: {str(e)}")
+                continue
+        
+        # Lưu kết quả vào file
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_file = f"roc_curves_{timestamp}.png"
-        evaluator.plot_roc_curves(results, output_file)
-        
-        # Lưu kết quả
         results_file = f"evaluation_results_{timestamp}.json"
         with open(results_file, 'w') as f:
             json.dump(results, f, indent=2)
         
-        logger.info(f"Kết quả đánh giá đã được lưu vào {results_file}")
-        logger.info(f"Biểu đồ ROC và Precision-Recall đã được lưu vào {output_file}")
-        
-        # In thống kê tổng quan
-        logger.info("\nThống kê tổng quan:")
-        for category, results in results['category_results'].items():
-            logger.info(f"\nKết quả cho {category}:")
-            logger.info(f"Số lượng ảnh: {len(results['images'])}")
-            logger.info(f"Tổng số dự đoán: {results['total_predictions']}")
-            logger.info(f"Dự đoán đúng: {results['correct_predictions']}")
-            logger.info(f"Tổng số ground truth: {results['total_ground_truth']}")
-            logger.info(f"Precision: {results['correct_predictions'] / results['total_predictions'] if results['total_predictions'] > 0 else 0:.4f}")
-            logger.info(f"Recall: {results['correct_predictions'] / results['total_ground_truth'] if results['total_ground_truth'] > 0 else 0:.4f}")
-            logger.info(f"F1 Score: {2 * (results['correct_predictions'] / results['total_predictions'] * results['correct_predictions'] / results['total_ground_truth']) / (results['correct_predictions'] / results['total_predictions'] + results['correct_predictions'] / results['total_ground_truth']) if (results['correct_predictions'] / results['total_predictions'] + results['correct_predictions'] / results['total_ground_truth']) > 0 else 0:.4f}")
+        logger.info(f"\nEvaluation completed:")
+        logger.info(f"- Total images processed: {len(results)}")
+        logger.info(f"- Results saved to: {results_file}")
         
     except Exception as e:
-        logger.error(f"Lỗi trong hàm main: {str(e)}")
+        logger.error(f"Error in main function: {str(e)}")
 
 if __name__ == "__main__":
     main()
