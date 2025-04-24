@@ -694,30 +694,32 @@ class RelTREvaluator:
                 return image_id, None
                 
             # Đảm bảo tất cả tensor đều ở đúng device
+            processed_predictions = []
             for pred in predictions:
-                if 'subject' in pred:
-                    if 'bbox' in pred['subject']:
-                        pred['subject']['bbox'] = pred['subject']['bbox'].to(self.device)
-                    if 'score' in pred['subject']:
-                        pred['subject']['score'] = pred['subject']['score'].to(self.device)
-                if 'object' in pred:
-                    if 'bbox' in pred['object']:
-                        pred['object']['bbox'] = pred['object']['bbox'].to(self.device)
-                    if 'score' in pred['object']:
-                        pred['object']['score'] = pred['object']['score'].to(self.device)
-                if 'relation' in pred and 'score' in pred['relation']:
-                    pred['relation']['score'] = pred['relation']['score'].to(self.device)
+                processed_pred = {
+                    'subject': {
+                        'class': pred['subject']['class'],
+                        'bbox': pred['subject']['bbox'].to(self.device) if isinstance(pred['subject']['bbox'], torch.Tensor) else pred['subject']['bbox'],
+                        'score': pred['subject']['score'].to(self.device) if isinstance(pred['subject']['score'], torch.Tensor) else pred['subject']['score']
+                    },
+                    'object': {
+                        'class': pred['object']['class'],
+                        'bbox': pred['object']['bbox'].to(self.device) if isinstance(pred['object']['bbox'], torch.Tensor) else pred['object']['bbox'],
+                        'score': pred['object']['score'].to(self.device) if isinstance(pred['object']['score'], torch.Tensor) else pred['object']['score']
+                    },
+                    'relation': {
+                        'class': pred['relation']['class'],
+                        'score': pred['relation']['score'].to(self.device) if isinstance(pred['relation']['score'], torch.Tensor) else pred['relation']['score']
+                    }
+                }
+                processed_predictions.append(processed_pred)
             
             # Log thông tin về predictions
-            logger.info(f"Image {image_id}: Found {len(predictions)} predictions")
-            for pred in predictions:
+            logger.info(f"Image {image_id}: Found {len(processed_predictions)} predictions")
+            for pred in processed_predictions:
                 logger.info(f"  {pred['subject']['class']} -[{pred['relation']['class']}]-> {pred['object']['class']}")
-                if 'subject' in pred and 'bbox' in pred['subject']:
-                    logger.info(f"    Subject bbox device: {pred['subject']['bbox'].device}")
-                if 'object' in pred and 'bbox' in pred['object']:
-                    logger.info(f"    Object bbox device: {pred['object']['bbox'].device}")
-                
-            return image_id, predictions
+            
+            return image_id, processed_predictions
         except Exception as e:
             logger.error(f"Error processing image {image_id}: {str(e)}")
             return image_id, None
@@ -726,6 +728,10 @@ class RelTREvaluator:
         """
         Truy vấn Neo4j cho một batch dự đoán.
         """
+        if not hasattr(self, 'driver'):
+            logger.error("Neo4j driver not initialized")
+            return [], []
+            
         with self.driver.session() as session:
             # Chuẩn bị dữ liệu cho truy vấn
             subjects = set()
@@ -935,73 +941,64 @@ class RelTREvaluator:
         # Cập nhật kết quả cho cặp subject-object
         for record in pairs_result:
             matching_pairs = record['matching_pairs']
+            total_pairs = record['total_pairs']
+            matching_percentage = record['matching_percentage']
+            
             # Cập nhật cho tất cả các ngưỡng từ 1 đến 5
             for min_pairs in range(1, 6):
                 if matching_pairs >= min_pairs:
-                    self._update_metrics(all_results['pairs'], record, 'matching_pairs', 'total_pairs', min_pairs)
+                    metrics = all_results['pairs'][min_pairs - 1]['metrics']
+                    
+                    # Tính toán các metrics
+                    precision = matching_pairs / total_pairs if total_pairs > 0 else 0
+                    recall = matching_pairs / (total_pairs * (metrics['total_images'] + 1)) if total_pairs * (metrics['total_images'] + 1) > 0 else 0
+                    f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+                    fpr = 1 - precision  # False Positive Rate
+                    tpr = recall        # True Positive Rate
+                    
+                    # Thêm điểm dữ liệu vào metrics
+                    metrics['precision'].append(precision)
+                    metrics['recall'].append(recall)
+                    metrics['f1_score'].append(f1_score)
+                    metrics['matching_percentage'].append(matching_percentage)
+                    metrics['fpr'].append(fpr)
+                    metrics['tpr'].append(tpr)
+                    metrics['total_images'] += 1
         
         # Cập nhật kết quả cho triplets
         for record in triplets_result:
             matching_triples = record['matching_triples']
+            total_triples = record['total_triples']
+            matching_percentage = record['matching_percentage']
+            
             # Cập nhật cho tất cả các ngưỡng từ 1 đến 5
             for min_pairs in range(1, 6):
                 if matching_triples >= min_pairs:
-                    self._update_metrics(all_results['triplets'], record, 'matching_triples', 'total_triples', min_pairs)
+                    metrics = all_results['triplets'][min_pairs - 1]['metrics']
+                    
+                    # Tính toán các metrics
+                    precision = matching_triples / total_triples if total_triples > 0 else 0
+                    recall = matching_triples / (total_triples * (metrics['total_images'] + 1)) if total_triples * (metrics['total_images'] + 1) > 0 else 0
+                    f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+                    fpr = 1 - precision  # False Positive Rate
+                    tpr = recall        # True Positive Rate
+                    
+                    # Thêm điểm dữ liệu vào metrics
+                    metrics['precision'].append(precision)
+                    metrics['recall'].append(recall)
+                    metrics['f1_score'].append(f1_score)
+                    metrics['matching_percentage'].append(matching_percentage)
+                    metrics['fpr'].append(fpr)
+                    metrics['tpr'].append(tpr)
+                    metrics['total_images'] += 1
 
-    def _update_metrics(self, results, record, matching_field, total_field, min_pairs):
+    def __del__(self):
         """
-        Cập nhật metrics cho một kết quả.
+        Đóng kết nối Neo4j khi đối tượng bị hủy.
         """
-        # Tìm hoặc tạo kết quả cho ngưỡng min_pairs
-        while len(results) < min_pairs:
-            results.append({
-                'min_pairs': len(results) + 1,
-                'metrics': {
-                    'precision': [],
-                    'recall': [],
-                    'f1_score': [],
-                    'matching_percentage': [],
-                    'total_images': 0,
-                    'fpr': [],
-                    'tpr': []
-                }
-            })
-        
-        current_metrics = results[min_pairs - 1]['metrics']
-        matching = record[matching_field]
-        total = record[total_field]
-        
-        # Cập nhật metrics
-        total_images = current_metrics['total_images']
-        new_total = total_images + 1
-        
-        # Tính toán các metrics cho điểm hiện tại
-        precision = matching / total if total > 0 else 0
-        recall = matching / (total * new_total) if total * new_total > 0 else 0
-        f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
-        fpr = 1 - precision  # False Positive Rate
-        tpr = recall        # True Positive Rate
-        
-        # Thêm điểm dữ liệu vào metrics
-        current_metrics['precision'].append(precision)
-        current_metrics['recall'].append(recall)
-        current_metrics['f1_score'].append(f1_score)
-        current_metrics['matching_percentage'].append(record['matching_percentage'])
-        current_metrics['fpr'].append(fpr)
-        current_metrics['tpr'].append(tpr)
-        current_metrics['total_images'] = new_total
-        
-        # Sắp xếp các điểm theo FPR để vẽ đường cong ROC
-        if len(current_metrics['fpr']) > 1:
-            sorted_indices = np.argsort(current_metrics['fpr'])
-            current_metrics['fpr'] = np.array(current_metrics['fpr'])[sorted_indices].tolist()
-            current_metrics['tpr'] = np.array(current_metrics['tpr'])[sorted_indices].tolist()
-        
-        # Sắp xếp các điểm theo Recall để vẽ đường cong Precision-Recall
-        if len(current_metrics['recall']) > 1:
-            sorted_indices = np.argsort(current_metrics['recall'])
-            current_metrics['recall'] = np.array(current_metrics['recall'])[sorted_indices].tolist()
-            current_metrics['precision'] = np.array(current_metrics['precision'])[sorted_indices].tolist()
+        if hasattr(self, 'driver'):
+            self.driver.close()
+            logger.info("Neo4j connection closed")
 
 def main():
     """Hàm chính để thực hiện đánh giá"""
