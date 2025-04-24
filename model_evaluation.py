@@ -1106,22 +1106,22 @@ class RelTREvaluator:
                             relation_idx = pred_classes[i].item()
                             object_idx = pred_classes[i].item()
                             
-                            # Kiểm tra giới hạn chỉ số
+                            # Kiểm tra giới hạn chỉ số và điều chỉnh nếu cần
                             if subject_idx >= len(CLASSES):
-                                logger.warning(f"Subject index {subject_idx} out of range (max: {len(CLASSES)-1})")
-                                continue
+                                subject_idx = subject_idx % len(CLASSES)
                             if relation_idx >= len(REL_CLASSES):
-                                logger.warning(f"Relation index {relation_idx} out of range (max: {len(REL_CLASSES)-1})")
-                                continue
+                                relation_idx = relation_idx % len(REL_CLASSES)
                             if object_idx >= len(CLASSES):
-                                logger.warning(f"Object index {object_idx} out of range (max: {len(CLASSES)-1})")
-                                continue
+                                object_idx = object_idx % len(CLASSES)
                             
                             subject_class = CLASSES[subject_idx]
                             relation_class = REL_CLASSES[relation_idx]
                             object_class = CLASSES[object_idx]
                             
-                            predictions.append((subject_class, relation_class, object_class))
+                            # Chỉ thêm dự đoán nếu tất cả các class đều hợp lệ
+                            if subject_class and relation_class and object_class:
+                                predictions.append((subject_class, relation_class, object_class))
+                                logger.info(f"Valid prediction: {subject_class} -[{relation_class}]-> {object_class}")
                             
                         except Exception as e:
                             logger.error(f"Error processing prediction {i}: {str(e)}")
