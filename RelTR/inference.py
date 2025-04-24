@@ -57,15 +57,30 @@ def load_model(checkpoint_path='./ckpt/checkpoint0149.pth'):
     model = RelTR(backbone, transformer, num_classes=151, num_rel_classes=51,
                   num_entities=100, num_triplets=200)
 
-    # Load checkpoint
-    ckpt = torch.load(checkpoint_path, map_location='cpu')
-    model.load_state_dict(ckpt['model'])
-    model.eval()
-
-    # Chuyển model sang GPU nếu có
+    # Kiểm tra và cấu hình GPU
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = model.to(device)
+    
+    # Load checkpoint với map_location phù hợp
+    ckpt = torch.load(checkpoint_path, map_location=device)
+    model.load_state_dict(ckpt['model'])
+    
+    # Chuyển model sang GPU nếu có sẵn
+    if torch.cuda.is_available():
+        model = model.cuda()
+        # Đảm bảo tất cả các tham số của model đều ở GPU
+        for param in model.parameters():
+            param.data = param.data.to(device)
+    
+    # Đặt model ở chế độ eval
+    model.eval()
+    
     print(f"Model loaded on {device}")
+    if torch.cuda.is_available():
+        print(f"Model is on GPU: {next(model.parameters()).is_cuda}")
+        print(f"Model device: {next(model.parameters()).device}")
+        print(f"Model state: {model.training}")
+        print(f"Model parameters: {sum(p.numel() for p in model.parameters())}")
+        print(f"Model parameters on GPU: {sum(p.numel() for p in model.parameters() if p.is_cuda)}")
 
     return model
 
