@@ -1059,76 +1059,33 @@ class RelTREvaluator:
             # Đảm bảo model ở chế độ eval
             self.model.eval()
             
-            # Load và xử lý ảnh
-            image = Image.open(image_path).convert('RGB')
-            transform = T.Compose([
-                T.Resize(800),
-                T.ToTensor(),
-                T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-            ])
-            image_tensor = transform(image)
+            # Sử dụng hàm predict có sẵn từ RelTR.inference
+            predictions = predict(image_path, self.model)
             
-            # Chuyển tensor sang device phù hợp và thêm batch dimension
-            image_tensor = image_tensor.to(self.device).unsqueeze(0)
+            if not predictions:
+                logger.error(f"No predictions returned for image: {image_path}")
+                return []
             
-            with torch.no_grad():
-                # Thực hiện dự đoán
-                outputs = self.model(image_tensor)
-                
-                # Xử lý kết quả
-                pred_logits = outputs['pred_logits'][0]  # Remove batch dimension
-                pred_boxes = outputs['pred_boxes'][0]  # Remove batch dimension
-                
-                # Chuyển kết quả về CPU để xử lý tiếp
-                pred_logits = pred_logits.cpu()
-                pred_boxes = pred_boxes.cpu()
-                
-                # Áp dụng softmax cho logits
-                scores = F.softmax(pred_logits, dim=-1)
-                
-                # Lấy max scores và indices
-                max_scores, pred_classes = scores.max(dim=-1)
-                
-                # Lọc các dự đoán có confidence > 0.3
-                keep = max_scores > 0.3
-                
-                # Log thông tin về số lượng classes
-                logger.info(f"Number of classes: {len(CLASSES)}")
-                logger.info(f"Number of relation classes: {len(REL_CLASSES)}")
-                
-                # Chuyển đổi kết quả thành danh sách các mối quan hệ
-                predictions = []
-                for i in range(len(keep)):
-                    if keep[i]:
-                        try:
-                            # Convert tensor indices to Python scalars
-                            subject_idx = pred_classes[i].item()
-                            relation_idx = pred_classes[i].item()
-                            object_idx = pred_classes[i].item()
-                            
-                            # Kiểm tra giới hạn chỉ số và điều chỉnh nếu cần
-                            if subject_idx >= len(CLASSES):
-                                subject_idx = subject_idx % len(CLASSES)
-                            if relation_idx >= len(REL_CLASSES):
-                                relation_idx = relation_idx % len(REL_CLASSES)
-                            if object_idx >= len(CLASSES):
-                                object_idx = object_idx % len(CLASSES)
-                            
-                            subject_class = CLASSES[subject_idx]
-                            relation_class = REL_CLASSES[relation_idx]
-                            object_class = CLASSES[object_idx]
-                            
-                            # Chỉ thêm dự đoán nếu tất cả các class đều hợp lệ
-                            if subject_class and relation_class and object_class:
-                                predictions.append((subject_class, relation_class, object_class))
-                                logger.info(f"Valid prediction: {subject_class} -[{relation_class}]-> {object_class}")
-                            
-                        except Exception as e:
-                            logger.error(f"Error processing prediction {i}: {str(e)}")
-                            continue
-                
-                logger.info(f"Found {len(predictions)} valid predictions")
-                return predictions
+            # Lọc các dự đoán có confidence > 0.3 và không phải N/A
+            valid_predictions = []
+            for pred in predictions:
+                try:
+                    subject_class = pred['subject']['class']
+                    relation_class = pred['relation']['class']
+                    object_class = pred['object']['class']
+                    confidence = pred['relation']['score']
+                    
+                    if (confidence > 0.3 and 
+                        subject_class != "N/A" and 
+                        object_class != "N/A"):
+                        valid_predictions.append((subject_class, relation_class, object_class))
+                        logger.info(f"Valid prediction: {subject_class} -[{relation_class}]-> {object_class}")
+                except Exception as e:
+                    logger.error(f"Error processing prediction: {str(e)}")
+                    continue
+            
+            logger.info(f"Found {len(valid_predictions)} valid predictions")
+            return valid_predictions
                 
         except Exception as e:
             logger.error(f"Error in predict: {str(e)}")
@@ -1383,13 +1340,24 @@ def main():
                 # Dự đoán các mối quan hệ trong ảnh
                 predictions = evaluator.predict(image_path)
                 if not predictions:
-                    logger.error(f"No predictions for image: {image_id}")
+                    logger.error(f"No valid predictions for image: {image_id}")
                     continue
                 
                 # Lấy ground truth từ Neo4j
                 ground_truth = evaluator._get_ground_truth(image_id)
                 if not ground_truth:
                     logger.warning(f"No ground truth found for image: {image_id}")
+                    # Thêm kết quả với ground truth rỗng
+                    results.append({
+                        'image_id': image_id,
+                        'predictions': predictions,
+                        'ground_truth': [],
+                        'metrics': {
+                            'precision': 0.0,
+                            'recall': 0.0,
+                            'f1_score': 0.0
+                        }
+                    })
                     continue
                 
                 logger.info(f"Found {len(predictions)} predictions")
