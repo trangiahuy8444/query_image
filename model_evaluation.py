@@ -96,9 +96,11 @@ class RelTREvaluator:
         
         # Load model với GPU nếu có sẵn
         try:
-            # Load model với weights_only=False vì chúng ta tin tưởng nguồn của checkpoint
-            ckpt = torch.load(model_path, map_location=self.device, weights_only=False)
-            self.model = load_model(model_path)
+            # Sử dụng context manager safe_globals để cho phép load argparse.Namespace
+            from torch.serialization import safe_globals
+            with safe_globals([argparse.Namespace]):
+                ckpt = torch.load(model_path, map_location=self.device)
+                self.model = load_model(model_path)
             
             # Chuyển model sang GPU nếu có sẵn
             if torch.cuda.is_available():
