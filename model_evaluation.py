@@ -98,9 +98,6 @@ class RelTREvaluator:
         
         # Load model với GPU nếu có sẵn
         try:
-            # Thêm argparse.Namespace vào danh sách safe globals
-            torch.serialization.add_safe_globals([argparse.Namespace])
-            
             # Load model trực tiếp với torch.load
             ckpt = torch.load(model_path, map_location=self.device)
             self.model = load_model(model_path)
@@ -838,7 +835,8 @@ class RelTREvaluator:
 
     def evaluate_all_images(self, batch_size=None, max_images=None, specific_images=None):
         """
-        Đánh giá các ảnh trong thư mục.
+        Đánh giá các ảnh trong thư mục dựa trên các mối quan hệ được dự đoán.
+        Tính toán kết quả theo từng danh mục và vẽ ROC curves.
         """
         if batch_size is None:
             batch_size = self._get_optimal_batch_size()
@@ -854,14 +852,25 @@ class RelTREvaluator:
         total_images = len(all_images)
         logger.info(f"Total images to evaluate: {total_images}")
         
-        all_results = {
+        # Dictionary để lưu kết quả theo danh mục
+        category_results = defaultdict(lambda: {
+            'total_predictions': 0,
+            'correct_predictions': 0,
+            'total_ground_truth': 0,
+            'images': set(),
+            'predictions': [],
+            'ground_truth': []
+        })
+        
+        # Dictionary để lưu kết quả cho ROC curves
+        roc_results = {
             'pairs': [],
             'triplets': []
         }
         
         # Khởi tạo kết quả cho các ngưỡng
         for min_pairs in range(1, 6):
-            all_results['pairs'].append({
+            roc_results['pairs'].append({
                 'min_pairs': min_pairs,
                 'metrics': {
                     'precision': [],
@@ -873,7 +882,7 @@ class RelTREvaluator:
                     'tpr': []
                 }
             })
-            all_results['triplets'].append({
+            roc_results['triplets'].append({
                 'min_pairs': min_pairs,
                 'metrics': {
                     'precision': [],
@@ -900,6 +909,25 @@ class RelTREvaluator:
                     image_id, predictions = future.result()
                     if predictions:
                         batch_predictions.extend(predictions)
+                        # Lấy ground truth cho ảnh này
+                        ground_truth = self._get_ground_truth(image_id)
+                        
+                        # Phân loại các mối quan hệ theo danh mục
+                        for pred in predictions:
+                            pred_category = pred['relation']['class']
+                            category_results[pred_category]['total_predictions'] += 1
+                            category_results[pred_category]['images'].add(image_id)
+                            category_results[pred_category]['predictions'].append(pred)
+                            
+                            # Kiểm tra xem dự đoán có khớp với ground truth không
+                            pred_tuple = (pred['subject']['class'], pred['relation']['class'], pred['object']['class'])
+                            if pred_tuple in ground_truth:
+                                category_results[pred_category]['correct_predictions'] += 1
+                        
+                        # Cập nhật tổng số ground truth cho mỗi danh mục
+                        for gt in ground_truth:
+                            category_results[gt[1]]['total_ground_truth'] += 1
+                            category_results[gt[1]]['ground_truth'].append(gt)
                 
                 if batch_predictions:
                     logger.info(f"Batch {i//batch_size + 1}: Processing {len(batch_predictions)} predictions")
@@ -908,8 +936,8 @@ class RelTREvaluator:
                     
                     if pairs_result or triplets_result:
                         logger.info(f"Found {len(pairs_result)} pairs and {len(triplets_result)} triplets")
-                        # Cập nhật kết quả
-                        self._update_results(all_results, pairs_result, triplets_result)
+                        # Cập nhật kết quả ROC
+                        self._update_results(roc_results, pairs_result, triplets_result)
                     else:
                         logger.warning(f"Batch {i//batch_size + 1}: No results from Neo4j query")
                 else:
@@ -921,9 +949,26 @@ class RelTREvaluator:
                 import gc
                 gc.collect()
         
-        # Kiểm tra kết quả cuối cùng
+        # Tính toán và in kết quả cho từng danh mục
+        logger.info("\nKết quả đánh giá theo danh mục:")
+        for category, results in category_results.items():
+            precision = results['correct_predictions'] / results['total_predictions'] if results['total_predictions'] > 0 else 0
+            recall = results['correct_predictions'] / results['total_ground_truth'] if results['total_ground_truth'] > 0 else 0
+            f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+            
+            logger.info(f"\nDanh mục: {category}")
+            logger.info(f"Số lượng ảnh: {len(results['images'])}")
+            logger.info(f"Tổng số dự đoán: {results['total_predictions']}")
+            logger.info(f"Dự đoán đúng: {results['correct_predictions']}")
+            logger.info(f"Tổng số ground truth: {results['total_ground_truth']}")
+            logger.info(f"Precision: {precision:.4f}")
+            logger.info(f"Recall: {recall:.4f}")
+            logger.info(f"F1 Score: {f1_score:.4f}")
+        
+        # In kết quả ROC
+        logger.info("\nKết quả ROC curves:")
         for metric_type in ['pairs', 'triplets']:
-            for result in all_results[metric_type]:
+            for result in roc_results[metric_type]:
                 metrics = result['metrics']
                 logger.info(f"\nResults for {metric_type} with min_pairs={result['min_pairs']}:")
                 logger.info(f"Total images: {metrics['total_images']}")
@@ -932,65 +977,15 @@ class RelTREvaluator:
                     logger.info(f"FPR range: {min(metrics['fpr']):.4f} to {max(metrics['fpr']):.4f}")
                     logger.info(f"TPR range: {min(metrics['tpr']):.4f} to {max(metrics['tpr']):.4f}")
         
-        return all_results
-
-    def _update_results(self, all_results, pairs_result, triplets_result):
-        """
-        Cập nhật kết quả từ truy vấn Neo4j.
-        """
-        # Cập nhật kết quả cho cặp subject-object
-        for record in pairs_result:
-            matching_pairs = record['matching_pairs']
-            total_pairs = record['total_pairs']
-            matching_percentage = record['matching_percentage']
-            
-            # Cập nhật cho tất cả các ngưỡng từ 1 đến 5
-            for min_pairs in range(1, 6):
-                if matching_pairs >= min_pairs:
-                    metrics = all_results['pairs'][min_pairs - 1]['metrics']
-                    
-                    # Tính toán các metrics
-                    precision = matching_pairs / total_pairs if total_pairs > 0 else 0
-                    recall = matching_pairs / (total_pairs * (metrics['total_images'] + 1)) if total_pairs * (metrics['total_images'] + 1) > 0 else 0
-                    f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
-                    fpr = 1 - precision  # False Positive Rate
-                    tpr = recall        # True Positive Rate
-                    
-                    # Thêm điểm dữ liệu vào metrics
-                    metrics['precision'].append(precision)
-                    metrics['recall'].append(recall)
-                    metrics['f1_score'].append(f1_score)
-                    metrics['matching_percentage'].append(matching_percentage)
-                    metrics['fpr'].append(fpr)
-                    metrics['tpr'].append(tpr)
-                    metrics['total_images'] += 1
+        # Vẽ ROC curves
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_file = f"roc_curves_{timestamp}.png"
+        self.plot_roc_curves(roc_results, output_file)
         
-        # Cập nhật kết quả cho triplets
-        for record in triplets_result:
-            matching_triples = record['matching_triples']
-            total_triples = record['total_triples']
-            matching_percentage = record['matching_percentage']
-            
-            # Cập nhật cho tất cả các ngưỡng từ 1 đến 5
-            for min_pairs in range(1, 6):
-                if matching_triples >= min_pairs:
-                    metrics = all_results['triplets'][min_pairs - 1]['metrics']
-                    
-                    # Tính toán các metrics
-                    precision = matching_triples / total_triples if total_triples > 0 else 0
-                    recall = matching_triples / (total_triples * (metrics['total_images'] + 1)) if total_triples * (metrics['total_images'] + 1) > 0 else 0
-                    f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
-                    fpr = 1 - precision  # False Positive Rate
-                    tpr = recall        # True Positive Rate
-                    
-                    # Thêm điểm dữ liệu vào metrics
-                    metrics['precision'].append(precision)
-                    metrics['recall'].append(recall)
-                    metrics['f1_score'].append(f1_score)
-                    metrics['matching_percentage'].append(matching_percentage)
-                    metrics['fpr'].append(fpr)
-                    metrics['tpr'].append(tpr)
-                    metrics['total_images'] += 1
+        return {
+            'category_results': category_results,
+            'roc_results': roc_results
+        }
 
     def __del__(self):
         """
@@ -1016,7 +1011,7 @@ def main():
         evaluator = RelTREvaluator()
         
         # Đánh giá toàn bộ dữ liệu
-        results = evaluator.evaluate_all_images()
+        results = evaluator.evaluate_all_images(max_images = 100)
         
         # Vẽ ROC curves và Precision-Recall
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -1033,22 +1028,15 @@ def main():
         
         # In thống kê tổng quan
         logger.info("\nThống kê tổng quan:")
-        for metric_type in ['pairs', 'triplets']:
-            logger.info(f"\nKết quả cho {metric_type}:")
-            for result in results[metric_type]:
-                metrics = result['metrics']
-                logger.info(f"Min {result['min_pairs']} {metric_type}:")
-                if isinstance(metrics['tpr'], (list, np.ndarray)) and isinstance(metrics['fpr'], (list, np.ndarray)):
-                    if len(metrics['tpr']) > 0 and len(metrics['fpr']) > 0:
-                        auc = np.trapezoid(metrics['tpr'], metrics['fpr'])
-                        logger.info(f"  AUC: {auc:.4f}")
-                    else:
-                        logger.info("  AUC: N/A (No data points)")
-                else:
-                    logger.info("  AUC: N/A (Invalid data format)")
-                logger.info(f"  Average F1 Score: {np.mean(metrics['f1_score']) if isinstance(metrics['f1_score'], (list, np.ndarray)) else metrics['f1_score']:.4f}")
-                logger.info(f"  Average Precision: {np.mean(metrics['precision']) if isinstance(metrics['precision'], (list, np.ndarray)) else metrics['precision']:.4f}")
-                logger.info(f"  Average Recall: {np.mean(metrics['recall']) if isinstance(metrics['recall'], (list, np.ndarray)) else metrics['recall']:.4f}")
+        for category, results in results['category_results'].items():
+            logger.info(f"\nKết quả cho {category}:")
+            logger.info(f"Số lượng ảnh: {len(results['images'])}")
+            logger.info(f"Tổng số dự đoán: {results['total_predictions']}")
+            logger.info(f"Dự đoán đúng: {results['correct_predictions']}")
+            logger.info(f"Tổng số ground truth: {results['total_ground_truth']}")
+            logger.info(f"Precision: {results['correct_predictions'] / results['total_predictions'] if results['total_predictions'] > 0 else 0:.4f}")
+            logger.info(f"Recall: {results['correct_predictions'] / results['total_ground_truth'] if results['total_ground_truth'] > 0 else 0:.4f}")
+            logger.info(f"F1 Score: {2 * (results['correct_predictions'] / results['total_predictions'] * results['correct_predictions'] / results['total_ground_truth']) / (results['correct_predictions'] / results['total_predictions'] + results['correct_predictions'] / results['total_ground_truth']) if (results['correct_predictions'] / results['total_predictions'] + results['correct_predictions'] / results['total_ground_truth']) > 0 else 0:.4f}")
         
     except Exception as e:
         logger.error(f"Lỗi trong hàm main: {str(e)}")
