@@ -255,21 +255,20 @@ class RelTREvaluator:
             for i in range(len(max_scores)):
                 try:
                     confidence = max_scores[i].item()
-                    if confidence > 0.3:  # Only include predictions with confidence > 0.3
-                        subject_idx = pred_classes[i][0].item()
-                        relation_idx = pred_classes[i][1].item()
-                        object_idx = pred_classes[i][2].item()
-                        
-                        subject_class = CLASSES[subject_idx]
-                        relation_class = REL_CLASSES[relation_idx]
-                        object_class = CLASSES[object_idx]
-                        
-                        predictions.append({
-                            'subject': {'class': subject_class},
-                            'relation': {'class': relation_class},
-                            'object': {'class': object_class},
-                            'confidence': confidence
-                        })
+                    subject_idx = pred_classes[i][0].item()
+                    relation_idx = pred_classes[i][1].item()
+                    object_idx = pred_classes[i][2].item()
+                    
+                    subject_class = CLASSES[subject_idx]
+                    relation_class = REL_CLASSES[relation_idx]
+                    object_class = CLASSES[object_idx]
+                    
+                    predictions.append({
+                        'subject': {'class': subject_class},
+                        'relation': {'class': relation_class},
+                        'object': {'class': object_class},
+                        'confidence': confidence
+                    })
                 except Exception as e:
                     logger.error(f"Error processing prediction {i}: {str(e)}")
                     continue
@@ -1168,6 +1167,17 @@ class RelTREvaluator:
                 
                 # Áp dụng softmax cho logits
                 scores = F.softmax(pred_logits, dim=-1)
+                
+                # Lấy max scores và indices
+                max_scores, pred_classes = scores.max(dim=-1)
+                
+                # Lọc các dự đoán có confidence > 0.3
+                keep = max_scores > 0.3
+                
+                # Chuyển đổi kết quả
+                pred_logits = pred_logits[keep]
+                pred_boxes = pred_boxes[keep]
+                scores = scores[keep]
                 
                 return pred_logits, pred_boxes, scores
                 
