@@ -1092,22 +1092,43 @@ class RelTREvaluator:
                 # Lọc các dự đoán có confidence > 0.3
                 keep = max_scores > 0.3
                 
+                # Log thông tin về số lượng classes
+                logger.info(f"Number of classes: {len(CLASSES)}")
+                logger.info(f"Number of relation classes: {len(REL_CLASSES)}")
+                
                 # Chuyển đổi kết quả thành danh sách các mối quan hệ
                 predictions = []
                 for i in range(len(keep)):
                     if keep[i]:
-                        # Convert tensor indices to Python scalars
-                        subject_idx = pred_classes[i].item()  # Remove [0] indexing
-                        relation_idx = pred_classes[i].item()  # Remove [1] indexing
-                        object_idx = pred_classes[i].item()  # Remove [2] indexing
-                        
-                        subject_class = CLASSES[subject_idx]
-                        relation_class = REL_CLASSES[relation_idx]
-                        object_class = CLASSES[object_idx]
-                        
-                        predictions.append((subject_class, relation_class, object_class))
-            
-            return predictions
+                        try:
+                            # Convert tensor indices to Python scalars
+                            subject_idx = pred_classes[i].item()
+                            relation_idx = pred_classes[i].item()
+                            object_idx = pred_classes[i].item()
+                            
+                            # Kiểm tra giới hạn chỉ số
+                            if subject_idx >= len(CLASSES):
+                                logger.warning(f"Subject index {subject_idx} out of range (max: {len(CLASSES)-1})")
+                                continue
+                            if relation_idx >= len(REL_CLASSES):
+                                logger.warning(f"Relation index {relation_idx} out of range (max: {len(REL_CLASSES)-1})")
+                                continue
+                            if object_idx >= len(CLASSES):
+                                logger.warning(f"Object index {object_idx} out of range (max: {len(CLASSES)-1})")
+                                continue
+                            
+                            subject_class = CLASSES[subject_idx]
+                            relation_class = REL_CLASSES[relation_idx]
+                            object_class = CLASSES[object_idx]
+                            
+                            predictions.append((subject_class, relation_class, object_class))
+                            
+                        except Exception as e:
+                            logger.error(f"Error processing prediction {i}: {str(e)}")
+                            continue
+                
+                logger.info(f"Found {len(predictions)} valid predictions")
+                return predictions
                 
         except Exception as e:
             logger.error(f"Error in predict: {str(e)}")
