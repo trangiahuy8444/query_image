@@ -29,18 +29,37 @@ def calculate_metrics(predictions, ground_truth):
     f1 = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
     
     # Tính AUC-ROC và Average Precision
-    y_true = [1 if (s, r, o) in ground_truth_pairs else 0 for (s, r, o) in predicted_pairs]
-    y_scores = [pred['relation']['score'] for pred in predictions]
+    y_true = []
+    y_scores = []
     
-    auc_roc = auc(*roc_curve(y_true, y_scores)[:2])
-    avg_precision = average_precision_score(y_true, y_scores)
+    # Nếu không có ground truth, coi tất cả dự đoán là false positives
+    if not ground_truth:
+        y_true = [0] * len(predictions)
+        y_scores = [pred['relation']['score'] for pred in predictions]
+    else:
+        # Tạo y_true và y_scores với độ dài bằng nhau
+        for pred in predictions:
+            pred_tuple = (pred['subject']['class'], pred['relation']['class'], pred['object']['class'])
+            y_true.append(1 if pred_tuple in ground_truth_pairs else 0)
+            y_scores.append(pred['relation']['score'])
+    
+    # Chỉ tính AUC-ROC và Average Precision nếu có ít nhất 2 lớp
+    if len(set(y_true)) >= 2:
+        auc_roc = auc(*roc_curve(y_true, y_scores)[:2])
+        avg_precision = average_precision_score(y_true, y_scores)
+    else:
+        auc_roc = 0.0
+        avg_precision = 0.0
 
     return {
         'Precision': precision,
         'Recall': recall,
         'F1 Score': f1,
         'AUC-ROC': auc_roc,
-        'Average Precision': avg_precision
+        'Average Precision': avg_precision,
+        'True Positives': tp,
+        'False Positives': fp,
+        'False Negatives': fn
     }
 
 def plot_roc_curve(y_true, y_scores, output_path='roc_curve.png'):
