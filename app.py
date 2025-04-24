@@ -27,16 +27,19 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 # Kết nối Neo4j
-uri = "bolt://localhost:7687"
+uri = "bolt://localhost:7689"
 username = "neo4j"
 password = "12345678"
 driver = GraphDatabase.driver(uri, auth=(username, password))
 
 # Load mô hình RelTR
-model = load_model('./RelTR/ckpt/fine_tune1/checkpoint0049.pth')
-# model = load_model('./RelTR/ckpt/fine_tune2/checkpoint0049.pth') # tệ
-# model = load_model('./RelTR/ckpt/fine-tune-50k/checkpoint0049.pth') # tệ
-# model = load_model('./RelTR/ckpt/checkpoint0149.pth')
+try:
+    logger.info("Đang load mô hình RelTR...")
+    model = load_model('./RelTR/ckpt/fine_tune1/checkpoint0049.pth')
+    logger.info("Đã load mô hình RelTR thành công")
+except Exception as e:
+    logger.error(f"Lỗi khi load mô hình RelTR: {str(e)}")
+    raise
 
 def query_images_by_pairs_count(predictions, min_pairs):
     image_details = []
@@ -285,35 +288,66 @@ def upload_and_predict():
         filename = secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
+        logger.info(f"Đã lưu file {filename} vào {filepath}")
 
         prediction_start_time = time.time()
-        predictions = predict(filepath, model)
+        try:
+            logger.info("Bắt đầu dự đoán...")
+            predictions = predict(filepath, model)
+            logger.info(f"Dự đoán thành công: {len(predictions)} kết quả")
+            logger.info(f"Chi tiết dự đoán: {json.dumps(predictions, indent=2)}")
+        except Exception as e:
+            logger.error(f"Lỗi khi dự đoán: {str(e)}")
+            return jsonify({"error": f"Lỗi khi dự đoán: {str(e)}"}), 500
+
         prediction_time = time.time() - prediction_start_time
+        logger.info(f"Thời gian dự đoán: {prediction_time:.2f} giây")
 
         subjects = set(p['subject']['class'] for p in predictions)
         objects = set(p['object']['class'] for p in predictions)
+        logger.info(f"Subjects: {subjects}")
+        logger.info(f"Objects: {objects}")
 
-        matching_pairs_results = find_images_with_matching_pairs(predictions)
+        try:
+            logger.info("Bắt đầu truy vấn ảnh...")
+            matching_pairs_results = find_images_with_matching_pairs(predictions)
+            logger.info(f"Truy vấn thành công: {len(matching_pairs_results)} kết quả")
+        except Exception as e:
+            logger.error(f"Lỗi khi truy vấn ảnh: {str(e)}")
+            return jsonify({"error": f"Lỗi khi truy vấn ảnh: {str(e)}"}), 500
 
-        related_images = {
-            "1_or_more": query_images_by_pairs_count(predictions, 1),
-            "2_or_more": query_images_by_pairs_count(predictions, 2),
-            "3_or_more": query_images_by_pairs_count(predictions, 3),
-            "4_or_more": query_images_by_pairs_count(predictions, 4),
-            "5_or_more": query_images_by_pairs_count(predictions, 5),
-        }
-        
-        related_images_full = {
-            "1_or_more_full": query_images_by_full_pairs_count(predictions, 1),
-            "2_or_more_full": query_images_by_full_pairs_count(predictions, 2),
-            "3_or_more_full": query_images_by_full_pairs_count(predictions, 3),
-            "4_or_more_full": query_images_by_full_pairs_count(predictions, 4),
-            "5_or_more_full": query_images_by_full_pairs_count(predictions, 5),
-        }
+        try:
+            logger.info("Bắt đầu truy vấn ảnh theo cặp...")
+            related_images = {
+                "1_or_more": query_images_by_pairs_count(predictions, 1),
+                "2_or_more": query_images_by_pairs_count(predictions, 2),
+                "3_or_more": query_images_by_pairs_count(predictions, 3),
+                "4_or_more": query_images_by_pairs_count(predictions, 4),
+                "5_or_more": query_images_by_pairs_count(predictions, 5),
+            }
+            logger.info(f"Truy vấn theo cặp thành công: {json.dumps({k: len(v) for k, v in related_images.items()}, indent=2)}")
+        except Exception as e:
+            logger.error(f"Lỗi khi truy vấn ảnh theo cặp: {str(e)}")
+            return jsonify({"error": f"Lỗi khi truy vấn ảnh theo cặp: {str(e)}"}), 500
+
+        try:
+            logger.info("Bắt đầu truy vấn ảnh theo bộ ba...")
+            related_images_full = {
+                "1_or_more_full": query_images_by_full_pairs_count(predictions, 1),
+                "2_or_more_full": query_images_by_full_pairs_count(predictions, 2),
+                "3_or_more_full": query_images_by_full_pairs_count(predictions, 3),
+                "4_or_more_full": query_images_by_full_pairs_count(predictions, 4),
+                "5_or_more_full": query_images_by_full_pairs_count(predictions, 5),
+            }
+            logger.info(f"Truy vấn theo bộ ba thành công: {json.dumps({k: len(v) for k, v in related_images_full.items()}, indent=2)}")
+        except Exception as e:
+            logger.error(f"Lỗi khi truy vấn ảnh theo bộ ba: {str(e)}")
+            return jsonify({"error": f"Lỗi khi truy vấn ảnh theo bộ ba: {str(e)}"}), 500
 
         input_image_name = os.path.splitext(filename)[0]
         output_folder = os.path.join(app.config['OUTPUT_FOLDER'], input_image_name)
         os.makedirs(output_folder, exist_ok=True)
+        logger.info(f"Đã tạo thư mục output: {output_folder}")
 
         saved_images = set()
 
@@ -324,6 +358,7 @@ def upload_and_predict():
                     if os.path.exists(image_path):
                         shutil.copy2(image_path, os.path.join(output_folder, f"{image['image_id']}.jpg"))
                         saved_images.add(image['image_id'])
+                        logger.info(f"Đã lưu ảnh: {image['image_id']}")
 
         for category, images in related_images_full.items():
             for image in images:
@@ -332,6 +367,7 @@ def upload_and_predict():
                     if os.path.exists(image_path):
                         shutil.copy2(image_path, os.path.join(output_folder, f"{image['image_id']}.jpg"))
                         saved_images.add(image['image_id'])
+                        logger.info(f"Đã lưu ảnh: {image['image_id']}")
 
         # Đếm số lượng ảnh thực tế có thể hiển thị
         counted_images = set()
@@ -378,6 +414,7 @@ def upload_and_predict():
         })
 
     except Exception as e:
+        logger.error(f"Lỗi không xác định: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/data/vg_focused/images/<path:filename>')

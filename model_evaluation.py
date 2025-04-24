@@ -858,25 +858,25 @@ class RelTREvaluator:
             all_results['pairs'].append({
                 'min_pairs': min_pairs,
                 'metrics': {
-                    'precision': 0,
-                    'recall': 0,
-                    'f1_score': 0,
-                    'matching_percentage': 0,
+                    'precision': [],
+                    'recall': [],
+                    'f1_score': [],
+                    'matching_percentage': [],
                     'total_images': 0,
-                    'fpr': 0,  # Thêm FPR
-                    'tpr': 0   # Thêm TPR
+                    'fpr': [],
+                    'tpr': []
                 }
             })
             all_results['triplets'].append({
                 'min_pairs': min_pairs,
                 'metrics': {
-                    'precision': 0,
-                    'recall': 0,
-                    'f1_score': 0,
-                    'matching_percentage': 0,
+                    'precision': [],
+                    'recall': [],
+                    'f1_score': [],
+                    'matching_percentage': [],
                     'total_images': 0,
-                    'fpr': 0,  # Thêm FPR
-                    'tpr': 0   # Thêm TPR
+                    'fpr': [],
+                    'tpr': []
                 }
             })
         
@@ -942,13 +942,13 @@ class RelTREvaluator:
             results.append({
                 'min_pairs': len(results) + 1,
                 'metrics': {
-                    'precision': 0,
-                    'recall': 0,
-                    'f1_score': 0,
-                    'matching_percentage': 0,
+                    'precision': [],
+                    'recall': [],
+                    'f1_score': [],
+                    'matching_percentage': [],
                     'total_images': 0,
-                    'fpr': 0,  # Thêm FPR
-                    'tpr': 0   # Thêm TPR
+                    'fpr': [],
+                    'tpr': []
                 }
             })
         
@@ -960,19 +960,33 @@ class RelTREvaluator:
         total_images = current_metrics['total_images']
         new_total = total_images + 1
         
+        # Tính toán các metrics cho điểm hiện tại
         precision = matching / total if total > 0 else 0
         recall = matching / (total * new_total) if total * new_total > 0 else 0
         f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
         fpr = 1 - precision  # False Positive Rate
         tpr = recall        # True Positive Rate
         
-        current_metrics['precision'] = (current_metrics['precision'] * total_images + precision) / new_total
-        current_metrics['recall'] = (current_metrics['recall'] * total_images + recall) / new_total
-        current_metrics['f1_score'] = (current_metrics['f1_score'] * total_images + f1_score) / new_total
-        current_metrics['matching_percentage'] = (current_metrics['matching_percentage'] * total_images + record['matching_percentage']) / new_total
-        current_metrics['fpr'] = (current_metrics['fpr'] * total_images + fpr) / new_total  # Cập nhật FPR
-        current_metrics['tpr'] = (current_metrics['tpr'] * total_images + tpr) / new_total  # Cập nhật TPR
+        # Thêm điểm dữ liệu vào metrics
+        current_metrics['precision'].append(precision)
+        current_metrics['recall'].append(recall)
+        current_metrics['f1_score'].append(f1_score)
+        current_metrics['matching_percentage'].append(record['matching_percentage'])
+        current_metrics['fpr'].append(fpr)
+        current_metrics['tpr'].append(tpr)
         current_metrics['total_images'] = new_total
+        
+        # Sắp xếp các điểm theo FPR để vẽ đường cong ROC
+        if len(current_metrics['fpr']) > 1:
+            sorted_indices = np.argsort(current_metrics['fpr'])
+            current_metrics['fpr'] = np.array(current_metrics['fpr'])[sorted_indices].tolist()
+            current_metrics['tpr'] = np.array(current_metrics['tpr'])[sorted_indices].tolist()
+        
+        # Sắp xếp các điểm theo Recall để vẽ đường cong Precision-Recall
+        if len(current_metrics['recall']) > 1:
+            sorted_indices = np.argsort(current_metrics['recall'])
+            current_metrics['recall'] = np.array(current_metrics['recall'])[sorted_indices].tolist()
+            current_metrics['precision'] = np.array(current_metrics['precision'])[sorted_indices].tolist()
 
 def main():
     """Hàm chính để thực hiện đánh giá"""
