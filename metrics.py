@@ -245,12 +245,79 @@ def get_ground_truth_from_neo4j(image_id):
 
     return ground_truth
 
+def test_sample_images(image_ids, output_dir='./output'):
+    """
+    Test đánh giá trên một số ảnh mẫu.
+    
+    Args:
+        image_ids: Danh sách các ID ảnh cần test
+        output_dir: Thư mục lưu kết quả
+    """
+    # Tạo thư mục output nếu chưa tồn tại
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Load mô hình RelTR
+    model = load_model('./RelTR/ckpt/fine_tune1/checkpoint0049.pth')
+    
+    # Dự đoán và tính toán metrics cho các ảnh mẫu
+    predictions_all = []
+    ground_truth_all = []
+    
+    print(f"\nTesting on {len(image_ids)} sample images...")
+    
+    for image_id in image_ids:
+        print(f"\nProcessing image: {image_id}")
+        image_path = os.path.join('./data/vg_focused/images', image_id)
+        
+        # Dự đoán với mô hình
+        predictions = predict(image_path, model)
+        print(f"Number of predictions: {len(predictions)}")
+        
+        # Lấy ground truth từ Neo4j
+        ground_truth = get_ground_truth_from_neo4j(image_id)
+        print(f"Number of ground truth relationships: {len(ground_truth)}")
+        
+        # Tính toán metrics cho ảnh này
+        metrics = calculate_metrics(predictions, ground_truth)
+        print("\nMetrics for this image:")
+        print(json.dumps(metrics, indent=4))
+        
+        predictions_all.append(predictions)
+        ground_truth_all.append(ground_truth)
+    
+    # Tính toán và vẽ các biểu đồ cho toàn bộ dữ liệu mẫu
+    y_true = []
+    y_scores = []
+    
+    for predictions, ground_truth in zip(predictions_all, ground_truth_all):
+        y_true.extend([1 if (s, r, o) in ground_truth else 0 for (s, r, o) in predictions])
+        y_scores.extend([pred['relation']['score'] for pred in predictions])
+    
+    # Vẽ các biểu đồ ROC và Precision-Recall
+    plot_roc_curve(y_true, y_scores, output_path=os.path.join(output_dir, 'sample_roc_curve.png'))
+    plot_precision_recall_curve(y_true, y_scores, output_path=os.path.join(output_dir, 'sample_precision_recall_curve.png'))
+    
+    return {
+        'predictions': predictions_all,
+        'ground_truth': ground_truth_all,
+        'y_true': y_true,
+        'y_scores': y_scores
+    }
 
 if __name__ == "__main__":
-    # Chạy đánh giá trên toàn bộ dữ liệu
-    # metrics = evaluate_and_plot(output_dir='./output', image_folder='./data/vg_focused/images')
-    # print("Metrics for the entire dataset:")
+    # Test trên một số ảnh mẫu
+    sample_image_ids = [
+        "1159285.jpg",
+        "1159286.jpg",
+        "1159287.jpg"
+    ]
+    
+    test_results = test_sample_images(sample_image_ids)
+    
+    # Sau khi test xong, bạn có thể chạy đánh giá trên toàn bộ dữ liệu
+    # metrics = evaluate_and_plot(
+    #     output_dir='./output',
+    #     image_folder='./data/vg_focused/images'
+    # )
+    # print("\nMetrics for the entire dataset:")
     # print(json.dumps(metrics, indent=4))
-    image_id = "./data/vg_focused/images/1159285.jpg"
-    ground_truth = get_ground_truth_from_neo4j(image_id)
-    print(ground_truth)
