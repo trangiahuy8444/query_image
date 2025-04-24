@@ -242,8 +242,9 @@ def get_ground_truth_from_neo4j(image_id):
     
     try:
         with driver.session() as session:
-            # In ra thông tin debug
-            print(f"\nQuerying Neo4j for image_id: {image_id}")
+            print(f"\n{'='*50}")
+            print(f"Querying Neo4j for image_id: {image_id}")
+            print(f"{'='*50}")
             
             # Kiểm tra xem image_id có tồn tại trong database không
             check_query = """
@@ -251,6 +252,7 @@ def get_ground_truth_from_neo4j(image_id):
             WHERE n.image_id = $image_id
             RETURN count(n) as node_count
             """
+            print(f"Executing query: {check_query}")
             result = session.run(check_query, {"image_id": image_id})
             node_count = result.single()["node_count"]
             print(f"Number of nodes found for image_id: {node_count}")
@@ -265,6 +267,7 @@ def get_ground_truth_from_neo4j(image_id):
             WHERE s.image_id = $image_id AND o.image_id = $image_id
             RETURN s.category AS subject, r.type AS relation, o.category AS object
             """
+            print(f"Executing query: {query}")
             result = session.run(query, {"image_id": image_id})
             
             # In ra số lượng relationships tìm thấy
@@ -281,6 +284,8 @@ def get_ground_truth_from_neo4j(image_id):
 
     except Exception as e:
         print(f"Error retrieving ground truth for image {image_id}: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
         return []
 
     return ground_truth
@@ -322,6 +327,8 @@ def check_neo4j_connection():
                 return False
     except Exception as e:
         print(f"Error connecting to Neo4j: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
         return False
 
 def check_image_data(image_id):
@@ -744,6 +751,12 @@ def evaluate_all_categories(output_dir='./output'):
     return categories_metrics
 
 if __name__ == "__main__":
+    # Kiểm tra kết nối Neo4j trước
+    print("Checking Neo4j connection...")
+    if not check_neo4j_connection():
+        print("Cannot proceed with testing due to Neo4j connection issues")
+        exit(1)
+    
     # Load mô hình
     print("Loading model...")
     model = load_model('./RelTR/ckpt/fine_tune1/checkpoint0049.pth')
