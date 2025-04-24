@@ -576,10 +576,11 @@ class RelTREvaluator:
         for result in results['pairs']:
             min_pairs = result['min_pairs']
             metrics = result['metrics']
-            if len(metrics['fpr']) > 0 and len(metrics['tpr']) > 0:
-                auc = np.trapezoid(metrics['tpr'], metrics['fpr'])
-                plt.plot(metrics['fpr'], metrics['tpr'], 'o-', 
-                        label=f'Min {min_pairs} pairs (AUC={auc:.2f})')
+            if isinstance(metrics['fpr'], (list, np.ndarray)) and isinstance(metrics['tpr'], (list, np.ndarray)):
+                if len(metrics['fpr']) > 0 and len(metrics['tpr']) > 0:
+                    auc = np.trapezoid(metrics['tpr'], metrics['fpr'])
+                    plt.plot(metrics['fpr'], metrics['tpr'], 'o-', 
+                            label=f'Min {min_pairs} pairs (AUC={auc:.2f})')
         
         plt.xlabel('False Positive Rate')
         plt.ylabel('True Positive Rate')
@@ -597,10 +598,11 @@ class RelTREvaluator:
         for result in results['triplets']:
             min_pairs = result['min_pairs']
             metrics = result['metrics']
-            if len(metrics['fpr']) > 0 and len(metrics['tpr']) > 0:
-                auc = np.trapezoid(metrics['tpr'], metrics['fpr'])
-                plt.plot(metrics['fpr'], metrics['tpr'], 'o-', 
-                        label=f'Min {min_pairs} triplets (AUC={auc:.2f})')
+            if isinstance(metrics['fpr'], (list, np.ndarray)) and isinstance(metrics['tpr'], (list, np.ndarray)):
+                if len(metrics['fpr']) > 0 and len(metrics['tpr']) > 0:
+                    auc = np.trapezoid(metrics['tpr'], metrics['fpr'])
+                    plt.plot(metrics['fpr'], metrics['tpr'], 'o-', 
+                            label=f'Min {min_pairs} triplets (AUC={auc:.2f})')
         
         plt.xlabel('False Positive Rate')
         plt.ylabel('True Positive Rate')
@@ -614,10 +616,11 @@ class RelTREvaluator:
         for result in results['pairs']:
             min_pairs = result['min_pairs']
             metrics = result['metrics']
-            if len(metrics['recall']) > 0 and len(metrics['precision']) > 0:
-                f1 = np.mean(metrics['f1_score']) if len(metrics['f1_score']) > 0 else 0
-                plt.plot(metrics['recall'], metrics['precision'], 'o-',
-                        label=f'Min {min_pairs} pairs (F1={f1:.2f})')
+            if isinstance(metrics['recall'], (list, np.ndarray)) and isinstance(metrics['precision'], (list, np.ndarray)):
+                if len(metrics['recall']) > 0 and len(metrics['precision']) > 0:
+                    f1 = np.mean(metrics['f1_score']) if isinstance(metrics['f1_score'], (list, np.ndarray)) else metrics['f1_score']
+                    plt.plot(metrics['recall'], metrics['precision'], 'o-',
+                            label=f'Min {min_pairs} pairs (F1={f1:.2f})')
         
         plt.xlabel('Recall')
         plt.ylabel('Precision')
@@ -631,10 +634,11 @@ class RelTREvaluator:
         for result in results['triplets']:
             min_pairs = result['min_pairs']
             metrics = result['metrics']
-            if len(metrics['recall']) > 0 and len(metrics['precision']) > 0:
-                f1 = np.mean(metrics['f1_score']) if len(metrics['f1_score']) > 0 else 0
-                plt.plot(metrics['recall'], metrics['precision'], 'o-',
-                        label=f'Min {min_pairs} triplets (F1={f1:.2f})')
+            if isinstance(metrics['recall'], (list, np.ndarray)) and isinstance(metrics['precision'], (list, np.ndarray)):
+                if len(metrics['recall']) > 0 and len(metrics['precision']) > 0:
+                    f1 = np.mean(metrics['f1_score']) if isinstance(metrics['f1_score'], (list, np.ndarray)) else metrics['f1_score']
+                    plt.plot(metrics['recall'], metrics['precision'], 'o-',
+                            label=f'Min {min_pairs} triplets (F1={f1:.2f})')
         
         plt.xlabel('Recall')
         plt.ylabel('Precision')
