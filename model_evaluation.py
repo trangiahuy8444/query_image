@@ -238,31 +238,40 @@ class RelTREvaluator:
         Returns:
             list: List of tuples (subject, relation, object, confidence)
         """
-        image_path = os.path.join(self.image_folder, f"{image_id}.jpg")
-        if not os.path.exists(image_path):
-            raise FileNotFoundError(f"Image {image_id}.jpg not found in folder {self.image_folder}.")
-        
-        pred_logits, pred_boxes, scores = self.predict(image_path)
-        
-        # Get max confidence scores and corresponding indices
-        max_scores, pred_classes = scores.max(dim=-1)
-        
-        # Convert predictions to list of tuples with confidence
-        predictions = []
-        for i in range(len(max_scores)):
-            if max_scores[i] > 0:  # Only include non-zero confidence predictions
-                subject_class = self.id2label[pred_classes[i][0].item()]
-                relation_class = self.id2label[pred_classes[i][1].item()]
-                object_class = self.id2label[pred_classes[i][2].item()]
-                confidence = max_scores[i].item()
-                predictions.append({
-                    'subject': {'class': subject_class},
-                    'relation': {'class': relation_class},
-                    'object': {'class': object_class},
-                    'confidence': confidence
-                })
-        
-        return predictions
+        try:
+            image_path = os.path.join(self.image_folder, f"{image_id}.jpg")
+            if not os.path.exists(image_path):
+                logger.error(f"Image {image_id}.jpg not found in folder {self.image_folder}.")
+                return None
+            
+            # Get predictions using the model
+            pred_logits, pred_boxes, scores = self.predict(image_path)
+            
+            # Get max confidence scores and corresponding indices
+            max_scores, pred_classes = scores.max(dim=-1)
+            
+            # Convert predictions to list of dictionaries with confidence
+            predictions = []
+            for i in range(len(max_scores)):
+                if max_scores[i] > 0.3:  # Only include predictions with confidence > 0.3
+                    subject_class = CLASSES[pred_classes[i][0].item()]
+                    relation_class = REL_CLASSES[pred_classes[i][1].item()]
+                    object_class = CLASSES[pred_classes[i][2].item()]
+                    confidence = max_scores[i].item()
+                    
+                    predictions.append({
+                        'subject': {'class': subject_class},
+                        'relation': {'class': relation_class},
+                        'object': {'class': object_class},
+                        'confidence': confidence
+                    })
+            
+            logger.info(f"Found {len(predictions)} predictions for image {image_id}")
+            return predictions
+            
+        except Exception as e:
+            logger.error(f"Error getting predictions for image {image_id}: {str(e)}")
+            return None
 
     def _evaluate_relations(self, ground_truth, predictions):
         """
@@ -1220,10 +1229,16 @@ def main():
             logger.error("Cannot proceed without Neo4j connection")
             return
             
+        logger.info("Initializing RelTREvaluator...")
         evaluator = RelTREvaluator()
         
         # Lấy danh sách tất cả các ảnh
         all_images = evaluator.get_all_images()
+        if not all_images:
+            logger.error("No images found in the image folder")
+            return
+            
+        logger.info(f"Found {len(all_images)} images in total")
         max_images = 100  # Giới hạn số lượng ảnh để test
         test_images = all_images[:max_images]
         
@@ -1238,17 +1253,27 @@ def main():
                     logger.error(f"Image not found: {image_path}")
                     continue
                 
+                logger.info(f"\nProcessing image {image_id}...")
+                
                 # Dự đoán các mối quan hệ trong ảnh
                 predictions = evaluator._get_predictions(image_id)
                 if not predictions:
                     logger.error(f"No predictions for image: {image_id}")
                     continue
                 
+                logger.info(f"Found {len(predictions)} predictions")
+                for pred in predictions:
+                    logger.info(f"  {pred['subject']['class']} -[{pred['relation']['class']}]-> {pred['object']['class']} (conf: {pred['confidence']:.2f})")
+                
                 # Truy vấn ảnh theo cặp subject-object
+                logger.info("Querying for matching pairs...")
                 pairs_results = evaluator.query_images_by_pairs_count(predictions, min_pairs=1)
+                logger.info(f"Found {len(pairs_results)} matching pairs")
                 
                 # Truy vấn ảnh theo bộ ba đầy đủ
+                logger.info("Querying for matching triplets...")
                 triplets_results = evaluator.query_images_by_full_pairs_count(predictions, min_pairs=1)
+                logger.info(f"Found {len(triplets_results)} matching triplets")
                 
                 # Lưu kết quả
                 result = {
@@ -1259,15 +1284,14 @@ def main():
                 }
                 results.append(result)
                 
-                logger.info(f"Processed image {image_id}:")
-                logger.info(f"- Number of predictions: {len(predictions)}")
-                logger.info(f"- Number of matching pairs: {len(pairs_results)}")
-                logger.info(f"- Number of matching triplets: {len(triplets_results)}")
-                
             except Exception as e:
                 logger.error(f"Error processing image {image_id}: {str(e)}")
                 continue
         
+        if not results:
+            logger.error("No results were generated. Please check the logs for errors.")
+            return
+            
         # Lưu kết quả vào file
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         results_file = f"evaluation_results_{timestamp}.json"
@@ -1280,6 +1304,7 @@ def main():
         
     except Exception as e:
         logger.error(f"Error in main function: {str(e)}")
+        logger.error(f"Stack trace: {traceback.format_exc()}")
 
 if __name__ == "__main__":
     main()
