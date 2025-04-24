@@ -264,14 +264,97 @@ def get_ground_truth_from_neo4j(image_id):
 
     return ground_truth
 
+def check_neo4j_connection():
+    """
+    Kiểm tra kết nối đến Neo4j và in ra thông tin cơ bản.
+    """
+    try:
+        with driver.session() as session:
+            # Kiểm tra số lượng nodes và relationships
+            result = session.run("""
+                MATCH (n)
+                RETURN 
+                    count(n) as total_nodes,
+                    count(DISTINCT labels(n)) as label_count,
+                    labels(n) as labels
+                LIMIT 1
+            """)
+            
+            record = result.single()
+            if record:
+                print("\nNeo4j Connection Status:")
+                print(f"Total nodes: {record['total_nodes']}")
+                print(f"Label count: {record['label_count']}")
+                print(f"Labels: {record['labels']}")
+                
+                # Kiểm tra số lượng relationships
+                result = session.run("""
+                    MATCH ()-[r]->()
+                    RETURN count(r) as total_relationships
+                """)
+                rel_count = result.single()['total_relationships']
+                print(f"Total relationships: {rel_count}")
+                
+                return True
+            else:
+                print("No data found in Neo4j database")
+                return False
+    except Exception as e:
+        print(f"Error connecting to Neo4j: {str(e)}")
+        return False
+
+def check_image_data(image_id):
+    """
+    Kiểm tra dữ liệu của một ảnh cụ thể trong Neo4j.
+    """
+    try:
+        with driver.session() as session:
+            # Kiểm tra nodes của ảnh
+            result = session.run("""
+                MATCH (n:Object)
+                WHERE n.image_id = $image_id
+                RETURN count(n) as object_count
+            """, {"image_id": image_id})
+            
+            object_count = result.single()['object_count']
+            print(f"\nChecking data for image {image_id}:")
+            print(f"Number of objects: {object_count}")
+            
+            # Kiểm tra relationships của ảnh
+            result = session.run("""
+                MATCH (s:Object)-[r:RELATIONSHIP]->(o:Object)
+                WHERE s.image_id = $image_id AND o.image_id = $image_id
+                RETURN count(r) as relationship_count
+            """, {"image_id": image_id})
+            
+            relationship_count = result.single()['relationship_count']
+            print(f"Number of relationships: {relationship_count}")
+            
+            # Lấy danh sách các relationships
+            result = session.run("""
+                MATCH (s:Object)-[r:RELATIONSHIP]->(o:Object)
+                WHERE s.image_id = $image_id AND o.image_id = $image_id
+                RETURN s.category as subject, r.type as relation, o.category as object
+            """, {"image_id": image_id})
+            
+            print("\nRelationships found:")
+            for record in result:
+                print(f"{record['subject']} -[{record['relation']}]-> {record['object']}")
+            
+            return relationship_count > 0
+    except Exception as e:
+        print(f"Error checking image data: {str(e)}")
+        return False
+
 def test_sample_images(image_ids, output_dir='./output'):
     """
     Test đánh giá trên một số ảnh mẫu.
-    
-    Args:
-        image_ids: Danh sách các ID ảnh cần test
-        output_dir: Thư mục lưu kết quả
     """
+    # Kiểm tra kết nối Neo4j trước
+    if not check_neo4j_connection():
+        print("Cannot proceed with testing due to Neo4j connection issues")
+        return None
+    
     # Tạo thư mục output nếu chưa tồn tại
     os.makedirs(output_dir, exist_ok=True)
 
@@ -286,6 +369,13 @@ def test_sample_images(image_ids, output_dir='./output'):
     
     for image_id in image_ids:
         print(f"\nProcessing image: {image_id}")
+        
+        # Kiểm tra dữ liệu của ảnh trong Neo4j
+        has_data = check_image_data(image_id)
+        if not has_data:
+            print(f"Warning: No ground truth data found for image {image_id}")
+            continue
+            
         image_path = os.path.join('./data/vg_focused/images', image_id)
         
         # Dự đoán với mô hình
@@ -303,6 +393,10 @@ def test_sample_images(image_ids, output_dir='./output'):
         
         predictions_all.append(predictions)
         ground_truth_all.append(ground_truth)
+    
+    if not predictions_all:
+        print("No valid predictions to evaluate")
+        return None
     
     # Tính toán và vẽ các biểu đồ cho toàn bộ dữ liệu mẫu
     y_true = []
@@ -323,20 +417,156 @@ def test_sample_images(image_ids, output_dir='./output'):
         'y_scores': y_scores
     }
 
+def categorize_images_by_pairs(min_pairs=1, max_pairs=5):
+    """
+    Phân loại ảnh theo số lượng cặp subject-object.
+    """
+    categories = {}
+    for num_pairs in range(min_pairs, max_pairs + 1):
+        with driver.session() as session:
+            query = """
+            MATCH (s:Object)-[r:RELATIONSHIP]->(o:Object)
+            WITH s.image_id as image_id, count(DISTINCT [s.category, o.category]) as pair_count
+            WHERE pair_count >= $num_pairs
+            RETURN image_id, pair_count
+            ORDER BY pair_count DESC
+            """
+            result = session.run(query, {"num_pairs": num_pairs})
+            image_ids = [record["image_id"] for record in result]
+            categories[f"pairs_{num_pairs}"] = image_ids
+    return categories
+
+def categorize_images_by_triplets(min_triplets=1, max_triplets=5):
+    """
+    Phân loại ảnh theo số lượng triplets (subject-relation-object).
+    """
+    categories = {}
+    for num_triplets in range(min_triplets, max_triplets + 1):
+        with driver.session() as session:
+            query = """
+            MATCH (s:Object)-[r:RELATIONSHIP]->(o:Object)
+            WITH s.image_id as image_id, count(DISTINCT [s.category, r.type, o.category]) as triplet_count
+            WHERE triplet_count >= $num_triplets
+            RETURN image_id, triplet_count
+            ORDER BY triplet_count DESC
+            """
+            result = session.run(query, {"num_triplets": num_triplets})
+            image_ids = [record["image_id"] for record in result]
+            categories[f"triplets_{num_triplets}"] = image_ids
+    return categories
+
+def evaluate_category(category_name, image_ids, model):
+    """
+    Đánh giá một danh mục ảnh cụ thể.
+    """
+    metrics_list = []
+    y_true = []
+    y_scores = []
+    
+    for image_id in image_ids:
+        image_path = os.path.join('./data/vg_focused/images', image_id)
+        predictions = predict(image_path, model)
+        ground_truth = get_ground_truth_from_neo4j(image_id)
+        
+        metrics = calculate_metrics(predictions, ground_truth)
+        metrics_list.append(metrics)
+        
+        # Lưu các giá trị thực tế và dự đoán
+        y_true.extend([1 if (s, r, o) in ground_truth else 0 for (s, r, o) in predictions])
+        y_scores.extend([pred['relation']['score'] for pred in predictions])
+    
+    # Tính toán metrics trung bình
+    avg_metrics = {
+        'Precision': np.mean([m['Precision'] for m in metrics_list]),
+        'Recall': np.mean([m['Recall'] for m in metrics_list]),
+        'F1 Score': np.mean([m['F1 Score'] for m in metrics_list]),
+        'AUC-ROC': np.mean([m['AUC-ROC'] for m in metrics_list]),
+        'Average Precision': np.mean([m['Average Precision'] for m in metrics_list])
+    }
+    
+    return avg_metrics, y_true, y_scores
+
+def plot_category_metrics(categories_metrics, output_dir='./output'):
+    """
+    Vẽ biểu đồ so sánh metrics giữa các danh mục.
+    """
+    categories = list(categories_metrics.keys())
+    metrics = ['Precision', 'Recall', 'F1 Score', 'AUC-ROC', 'Average Precision']
+    
+    x = np.arange(len(categories))
+    width = 0.15
+    
+    fig, ax = plt.subplots(figsize=(15, 8))
+    
+    for i, metric in enumerate(metrics):
+        values = [categories_metrics[cat][metric] for cat in categories]
+        ax.bar(x + i*width, values, width, label=metric)
+    
+    ax.set_xlabel('Categories')
+    ax.set_ylabel('Score')
+    ax.set_title('Metrics Comparison Across Categories')
+    ax.set_xticks(x + width*2)
+    ax.set_xticklabels(categories, rotation=45)
+    ax.legend()
+    
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_dir, 'category_metrics_comparison.png'))
+    plt.close()
+
+def evaluate_all_categories(output_dir='./output'):
+    """
+    Đánh giá tất cả các danh mục và vẽ biểu đồ.
+    """
+    # Tạo thư mục output nếu chưa tồn tại
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Load mô hình
+    model = load_model('./RelTR/ckpt/fine_tune1/checkpoint0049.pth')
+    
+    # Phân loại ảnh
+    pair_categories = categorize_images_by_pairs()
+    triplet_categories = categorize_images_by_triplets()
+    
+    # Đánh giá từng danh mục
+    categories_metrics = {}
+    
+    # Đánh giá các danh mục pairs
+    for category, image_ids in pair_categories.items():
+        if image_ids:  # Chỉ đánh giá nếu có ảnh trong danh mục
+            metrics, y_true, y_scores = evaluate_category(category, image_ids, model)
+            categories_metrics[category] = metrics
+            
+            # Vẽ ROC và Precision-Recall cho từng danh mục
+            plot_roc_curve(y_true, y_scores, 
+                          output_path=os.path.join(output_dir, f'{category}_roc_curve.png'))
+            plot_precision_recall_curve(y_true, y_scores,
+                                      output_path=os.path.join(output_dir, f'{category}_precision_recall_curve.png'))
+    
+    # Đánh giá các danh mục triplets
+    for category, image_ids in triplet_categories.items():
+        if image_ids:  # Chỉ đánh giá nếu có ảnh trong danh mục
+            metrics, y_true, y_scores = evaluate_category(category, image_ids, model)
+            categories_metrics[category] = metrics
+            
+            # Vẽ ROC và Precision-Recall cho từng danh mục
+            plot_roc_curve(y_true, y_scores,
+                          output_path=os.path.join(output_dir, f'{category}_roc_curve.png'))
+            plot_precision_recall_curve(y_true, y_scores,
+                                      output_path=os.path.join(output_dir, f'{category}_precision_recall_curve.png'))
+    
+    # Vẽ biểu đồ so sánh metrics giữa các danh mục
+    plot_category_metrics(categories_metrics, output_dir)
+    
+    # Lưu kết quả vào file JSON
+    with open(os.path.join(output_dir, 'category_metrics.json'), 'w') as f:
+        json.dump(categories_metrics, f, indent=4)
+    
+    return categories_metrics
+
 if __name__ == "__main__":
-    # Test trên một số ảnh mẫu
-    sample_image_ids = [
-        "712998.jpg",
-        "713055.jpg",
-        "713179.jpg"
-    ]
+    # Đánh giá tất cả các danh mục
+    categories_metrics = evaluate_all_categories()
     
-    test_results = test_sample_images(sample_image_ids)
-    
-    # Sau khi test xong, bạn có thể chạy đánh giá trên toàn bộ dữ liệu
-    # metrics = evaluate_and_plot(
-    #     output_dir='./output',
-    #     image_folder='./data/vg_focused/images'
-    # )
-    # print("\nMetrics for the entire dataset:")
-    # print(json.dumps(metrics, indent=4))
+    # In kết quả
+    print("\nMetrics for all categories:")
+    print(json.dumps(categories_metrics, indent=4))
