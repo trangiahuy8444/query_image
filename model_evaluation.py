@@ -236,7 +236,7 @@ class RelTREvaluator:
             image_id (str): Image ID
         
         Returns:
-            list: List of tuples (subject, relation, object, confidence)
+            list: List of dictionaries containing predictions
         """
         try:
             image_path = os.path.join(self.image_folder, f"{image_id}.jpg")
@@ -253,24 +253,33 @@ class RelTREvaluator:
             # Convert predictions to list of dictionaries with confidence
             predictions = []
             for i in range(len(max_scores)):
-                if max_scores[i] > 0.3:  # Only include predictions with confidence > 0.3
-                    subject_class = CLASSES[pred_classes[i][0].item()]
-                    relation_class = REL_CLASSES[pred_classes[i][1].item()]
-                    object_class = CLASSES[pred_classes[i][2].item()]
+                try:
                     confidence = max_scores[i].item()
-                    
-                    predictions.append({
-                        'subject': {'class': subject_class},
-                        'relation': {'class': relation_class},
-                        'object': {'class': object_class},
-                        'confidence': confidence
-                    })
+                    if confidence > 0.3:  # Only include predictions with confidence > 0.3
+                        subject_idx = pred_classes[i][0].item()
+                        relation_idx = pred_classes[i][1].item()
+                        object_idx = pred_classes[i][2].item()
+                        
+                        subject_class = CLASSES[subject_idx]
+                        relation_class = REL_CLASSES[relation_idx]
+                        object_class = CLASSES[object_idx]
+                        
+                        predictions.append({
+                            'subject': {'class': subject_class},
+                            'relation': {'class': relation_class},
+                            'object': {'class': object_class},
+                            'confidence': confidence
+                        })
+                except Exception as e:
+                    logger.error(f"Error processing prediction {i}: {str(e)}")
+                    continue
             
             logger.info(f"Found {len(predictions)} predictions for image {image_id}")
             return predictions
             
         except Exception as e:
             logger.error(f"Error getting predictions for image {image_id}: {str(e)}")
+            logger.error(f"Stack trace: {traceback.format_exc()}")
             return None
 
     def _evaluate_relations(self, ground_truth, predictions):
