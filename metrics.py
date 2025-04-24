@@ -326,9 +326,9 @@ def test_sample_images(image_ids, output_dir='./output'):
 if __name__ == "__main__":
     # Test trên một số ảnh mẫu
     sample_image_ids = [
-        "1159285.jpg",
-        "1159286.jpg",
-        "1159287.jpg"
+        "712998.jpg",
+        "713055.jpg",
+        "713179.jpg"
     ]
     
     test_results = test_sample_images(sample_image_ids)
