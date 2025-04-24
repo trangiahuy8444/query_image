@@ -1224,6 +1224,163 @@ class RelTREvaluator:
         
         return metrics
 
+def calculate_precision_recall(predictions, ground_truth):
+    """
+    Tính toán precision và recall cho một tập dự đoán.
+    
+    Args:
+        predictions (list): Danh sách các dự đoán
+        ground_truth (list): Danh sách các ground truth
+    
+    Returns:
+        tuple: (precision, recall)
+    """
+    if not predictions or not ground_truth:
+        return 0.0, 0.0
+        
+    # Chuyển đổi thành set để dễ so sánh
+    pred_set = set((p['subject']['class'], p['relation']['class'], p['object']['class']) for p in predictions)
+    gt_set = set(ground_truth)
+    
+    # Tính true positives
+    true_positives = len(pred_set.intersection(gt_set))
+    
+    # Tính precision và recall
+    precision = true_positives / len(pred_set) if len(pred_set) > 0 else 0.0
+    recall = true_positives / len(gt_set) if len(gt_set) > 0 else 0.0
+    
+    return precision, recall
+
+def calculate_roc_metrics(predictions, ground_truth, thresholds):
+    """
+    Tính toán các metrics cho ROC curve.
+    
+    Args:
+        predictions (list): Danh sách các dự đoán
+        ground_truth (list): Danh sách các ground truth
+        thresholds (list): Danh sách các ngưỡng confidence
+    
+    Returns:
+        tuple: (fpr_list, tpr_list, thresholds)
+    """
+    fpr_list = []
+    tpr_list = []
+    
+    for threshold in thresholds:
+        # Lọc dự đoán theo ngưỡng confidence
+        filtered_preds = [
+            p for p in predictions 
+            if p['relation']['score'] >= threshold
+        ]
+        
+        # Tính precision và recall
+        precision, recall = calculate_precision_recall(filtered_preds, ground_truth)
+        
+        # Tính FPR (False Positive Rate)
+        fpr = 1 - precision
+        
+        fpr_list.append(fpr)
+        tpr_list.append(recall)
+    
+    return fpr_list, tpr_list, thresholds
+
+def plot_metrics(results, output_dir='./plots'):
+    """
+    Vẽ các biểu đồ precision-recall và ROC.
+    
+    Args:
+        results (list): Danh sách kết quả đánh giá
+        output_dir (str): Thư mục lưu biểu đồ
+    """
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Chuẩn bị dữ liệu
+    all_precisions = []
+    all_recalls = []
+    all_fprs = []
+    all_tprs = []
+    
+    # Tạo các ngưỡng confidence
+    thresholds = np.linspace(0, 1, 20)
+    
+    for result in results:
+        predictions = result['predictions']
+        ground_truth = result.get('ground_truth', [])
+        
+        if not ground_truth:
+            continue
+            
+        # Tính precision và recall
+        precision, recall = calculate_precision_recall(predictions, ground_truth)
+        all_precisions.append(precision)
+        all_recalls.append(recall)
+        
+        # Tính ROC metrics
+        fpr_list, tpr_list, _ = calculate_roc_metrics(predictions, ground_truth, thresholds)
+        all_fprs.append(fpr_list)
+        all_tprs.append(tpr_list)
+    
+    # Vẽ Precision-Recall curve
+    plt.figure(figsize=(10, 6))
+    plt.plot(all_recalls, all_precisions, 'b-', label='Precision-Recall')
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.title('Precision-Recall Curve')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(os.path.join(output_dir, 'precision_recall_curve.png'))
+    plt.close()
+    
+    # Vẽ ROC curve
+    plt.figure(figsize=(10, 6))
+    mean_fpr = np.mean(all_fprs, axis=0)
+    mean_tpr = np.mean(all_tprs, axis=0)
+    plt.plot(mean_fpr, mean_tpr, 'r-', label='ROC')
+    plt.plot([0, 1], [0, 1], 'k--', label='Random')
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curve')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(os.path.join(output_dir, 'roc_curve.png'))
+    plt.close()
+    
+    # Vẽ biểu đồ phân phối precision và recall
+    plt.figure(figsize=(12, 6))
+    plt.subplot(1, 2, 1)
+    plt.hist(all_precisions, bins=20, alpha=0.5, label='Precision')
+    plt.xlabel('Precision')
+    plt.ylabel('Frequency')
+    plt.title('Precision Distribution')
+    plt.grid(True)
+    
+    plt.subplot(1, 2, 2)
+    plt.hist(all_recalls, bins=20, alpha=0.5, label='Recall')
+    plt.xlabel('Recall')
+    plt.ylabel('Frequency')
+    plt.title('Recall Distribution')
+    plt.grid(True)
+    
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_dir, 'metrics_distribution.png'))
+    plt.close()
+    
+    # Tính và in các metrics tổng hợp
+    mean_precision = np.mean(all_precisions)
+    mean_recall = np.mean(all_recalls)
+    mean_f1 = 2 * (mean_precision * mean_recall) / (mean_precision + mean_recall) if (mean_precision + mean_recall) > 0 else 0
+    
+    logger.info("\nMetrics Summary:")
+    logger.info(f"Mean Precision: {mean_precision:.4f}")
+    logger.info(f"Mean Recall: {mean_recall:.4f}")
+    logger.info(f"Mean F1 Score: {mean_f1:.4f}")
+    
+    return {
+        'mean_precision': mean_precision,
+        'mean_recall': mean_recall,
+        'mean_f1': mean_f1
+    }
+
 def main():
     """Hàm chính để thực hiện đánh giá"""
     try:
@@ -1269,6 +1426,9 @@ def main():
                     logger.error(f"No predictions for image: {image_id}")
                     continue
                 
+                # Lấy ground truth
+                ground_truth = evaluator._get_ground_truth(image_id)
+                
                 logger.info(f"Found {len(predictions)} predictions")
                 for pred in predictions:
                     logger.info(f"  {pred['subject']['class']} -[{pred['relation']['class']}]-> {pred['object']['class']} (conf: {pred['relation']['score']:.2f})")
@@ -1308,6 +1468,7 @@ def main():
                 result = {
                     'image_id': image_id,
                     'predictions': predictions,
+                    'ground_truth': ground_truth,
                     'pairs_results': pairs_results,
                     'triplets_results': triplets_results,
                     'metrics': metrics
@@ -1350,6 +1511,10 @@ def main():
             }
         }
         
+        # Vẽ biểu đồ và tính toán metrics
+        metrics_summary = plot_metrics(results)
+        total_metrics.update(metrics_summary)
+        
         # Lưu kết quả vào file
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         results_file = f"evaluation_results_{timestamp}.json"
@@ -1366,6 +1531,9 @@ def main():
         logger.info(f"- Total unique matching images: {total_metrics['total_unique_matching_images']}")
         logger.info(f"- Pairs matches summary: {total_metrics['pairs_matches_summary']}")
         logger.info(f"- Triplets matches summary: {total_metrics['triplets_matches_summary']}")
+        logger.info(f"- Mean Precision: {total_metrics['mean_precision']:.4f}")
+        logger.info(f"- Mean Recall: {total_metrics['mean_recall']:.4f}")
+        logger.info(f"- Mean F1 Score: {total_metrics['mean_f1']:.4f}")
         logger.info(f"- Results saved to: {results_file}")
         
     except Exception as e:
