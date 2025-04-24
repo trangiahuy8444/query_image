@@ -217,16 +217,37 @@ class RelTREvaluator:
         Returns:
             list: Các mối quan hệ thực tế trong ảnh
         """
-        with self.driver.session() as session:
-            query = """
-            MATCH (s:Object)-[r:RELATIONSHIP]->(o:Object)
-            WHERE s.image_id = $image_id
-            RETURN s.category as subject, r.type as relation, o.category as object
-            """
-            result = session.run(query, {'image_id': image_id})
-            
-            ground_truth = [(record['subject'], record['relation'], record['object']) for record in result]
-            return ground_truth
+        try:
+            with self.driver.session() as session:
+                # Truy vấn tất cả các mối quan hệ trong ảnh
+                query = """
+                MATCH (s:Object)-[r:RELATIONSHIP]->(o:Object)
+                WHERE s.image_id = $image_id AND o.image_id = $image_id
+                RETURN s.category as subject, r.type as relation, o.category as object
+                """
+                result = session.run(query, {'image_id': image_id})
+                
+                ground_truth = []
+                for record in result:
+                    subject = record['subject']
+                    relation = record['relation']
+                    object_ = record['object']
+                    
+                    if subject and relation and object_:
+                        ground_truth.append((subject, relation, object_))
+                        logger.info(f"Ground truth: {subject} -[{relation}]-> {object_}")
+                
+                if not ground_truth:
+                    logger.warning(f"No ground truth found for image: {image_id}")
+                else:
+                    logger.info(f"Found {len(ground_truth)} ground truth relationships")
+                
+                return ground_truth
+                
+        except Exception as e:
+            logger.error(f"Error getting ground truth for image {image_id}: {str(e)}")
+            logger.error(f"Stack trace: {traceback.format_exc()}")
+            return []
 
     def _get_predictions(self, image_id):
         """
