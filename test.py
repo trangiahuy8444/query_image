@@ -682,67 +682,65 @@ def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=
     Returns:
         results: Dictionary chứa kết quả đánh giá
     """
-    # Tải mô hình và thực hiện dự đoán
-    predictions = load_model_and_predict(image_path, model_path)
-    model_predictions = get_predictions_from_model(predictions)
-    
-    # Khởi tạo danh sách trống cho ground truth
-    ground_truth_pairs = []
-    ground_truth_triplets = []
+    try:
+        # Tải mô hình và thực hiện dự đoán
+        predictions = load_model_and_predict(image_path, model_path)
+        if not predictions:
+            print(f"Không có dự đoán hợp lệ cho ảnh {image_path}")
+            return None
+            
+        model_predictions = get_predictions_from_model(predictions)
+        if not model_predictions:
+            print(f"Không thể chuyển đổi dự đoán thành định dạng chuẩn cho ảnh {image_path}")
+            return None
+        
+        # Khởi tạo danh sách trống cho ground truth
+        ground_truth_pairs = []
+        ground_truth_triplets = []
 
-    # Dùng vòng lặp để truy vấn các pairs và triplets
-    for min_pairs in range(min_pairs_range[0], min_pairs_range[1]):
-        pairs = query_images_by_pairs_parallel([predictions], min_pairs)
-        triplets = query_images_triplets_parallel([predictions], min_pairs)
-        ground_truth_pairs.extend(pairs)
-        ground_truth_triplets.extend(triplets)
+        # Dùng vòng lặp để truy vấn các pairs và triplets
+        for min_pairs in range(min_pairs_range[0], min_pairs_range[1]):
+            try:
+                pairs = query_images_by_pairs_parallel([predictions], min_pairs)
+                triplets = query_images_triplets_parallel([predictions], min_pairs)
+                if pairs:
+                    ground_truth_pairs.extend(pairs)
+                if triplets:
+                    ground_truth_triplets.extend(triplets)
+            except Exception as e:
+                print(f"Lỗi khi truy vấn với min_pairs={min_pairs}: {str(e)}")
+                continue
 
-    # Đánh giá mô hình với dữ liệu pairs
-    pairs_metrics = evaluate_model_with_data(model_predictions, ground_truth_pairs, save_plots=False)
-    
-    # Đánh giá mô hình với dữ liệu triplets
-    triplets_metrics = evaluate_model_with_data(model_predictions, ground_truth_triplets, save_plots=False)
-    
-    # Hàm helper để chuyển đổi dữ liệu thành định dạng JSON-safe
-    def convert_to_json_safe(data):
-        if isinstance(data, np.ndarray):
-            return data.tolist()
-        elif isinstance(data, (np.float32, np.float64)):
-            return float(data)
-        elif isinstance(data, (np.int32, np.int64)):
-            return int(data)
-        elif isinstance(data, list):
-            return [convert_to_json_safe(item) for item in data]
-        elif isinstance(data, dict):
-            return {key: convert_to_json_safe(value) for key, value in data.items()}
-        else:
-            return data
-    
-    # Chuẩn bị kết quả để lưu vào JSON
-    results = {
-        'image_path': image_path,
-        'pairs_metrics': {
-            'precision': convert_to_json_safe(pairs_metrics['precision']),
-            'recall': convert_to_json_safe(pairs_metrics['recall']),
-            'f1': convert_to_json_safe(pairs_metrics['f1']),
-            'y_true': convert_to_json_safe(pairs_metrics['y_true']),
-            'y_score': convert_to_json_safe(pairs_metrics['y_score'])
-        },
-        'triplets_metrics': {
-            'precision': convert_to_json_safe(triplets_metrics['precision']),
-            'recall': convert_to_json_safe(triplets_metrics['recall']),
-            'f1': convert_to_json_safe(triplets_metrics['f1']),
-            'y_true': convert_to_json_safe(triplets_metrics['y_true']),
-            'y_score': convert_to_json_safe(triplets_metrics['y_score'])
+        # Đánh giá mô hình với dữ liệu pairs
+        pairs_metrics = evaluate_model_with_data(model_predictions, ground_truth_pairs, save_plots=False)
+        
+        # Đánh giá mô hình với dữ liệu triplets
+        triplets_metrics = evaluate_model_with_data(model_predictions, ground_truth_triplets, save_plots=False)
+        
+        # Chuẩn bị kết quả
+        result = {
+            'image_path': image_path,
+            'pairs_metrics': {
+                'precision': pairs_metrics['precision'],
+                'recall': pairs_metrics['recall'],
+                'f1': pairs_metrics['f1'],
+                'y_true': pairs_metrics['y_true'],
+                'y_score': pairs_metrics['y_score']
+            },
+            'triplets_metrics': {
+                'precision': triplets_metrics['precision'],
+                'recall': triplets_metrics['recall'],
+                'f1': triplets_metrics['f1'],
+                'y_true': triplets_metrics['y_true'],
+                'y_score': triplets_metrics['y_score']
+            }
         }
-    }
-    
-    # Lưu kết quả vào file JSON nếu cần
-    if save_results:
-        with open("evaluation_metrics.json", "w") as f:
-            json.dump(results, f, indent=4)
-    
-    return results
+        
+        return result
+        
+    except Exception as e:
+        print(f"Lỗi khi đánh giá ảnh {image_path}: {str(e)}")
+        return None
 
 def evaluate_model_with_data(model_predictions, ground_truth_data, threshold=0.5, save_plots=False):
     """
