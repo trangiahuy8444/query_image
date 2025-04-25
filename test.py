@@ -699,21 +699,31 @@ def evaluate_model_batch(image_paths, model_path, batch_size=4):
                     probas_sub = outputs['sub_logits'].softmax(-1)[0, :, :-1]
                     probas_obj = outputs['obj_logits'].softmax(-1)[0, :, :-1]
                     
-                    # Lọc các dự đoán có confidence > 0.3
+                    # In ra thông tin về số lượng dự đoán trước khi lọc
+                    total_predictions = probas.shape[0]
+                    print(f"\nProcessing {os.path.basename(img_path)}:")
+                    print(f"Total possible predictions before filtering: {total_predictions}")
+                    
+                    # Giảm ngưỡng confidence xuống 0.1
+                    confidence_threshold = 0.1
                     keep = torch.logical_and(
-                        probas.max(-1).values > 0.3,
+                        probas.max(-1).values > confidence_threshold,
                         torch.logical_and(
-                            probas_sub.max(-1).values > 0.3,
-                            probas_obj.max(-1).values > 0.3
+                            probas_sub.max(-1).values > confidence_threshold,
+                            probas_obj.max(-1).values > confidence_threshold
                         )
                     )
+                    
+                    # In ra thông tin về các dự đoán bị loại bỏ
+                    filtered_count = total_predictions - keep.sum().item()
+                    print(f"Filtered out {filtered_count} predictions below confidence threshold {confidence_threshold}")
                     
                     # Chuyển đổi boxes
                     sub_bboxes_scaled = rescale_bboxes(outputs['sub_boxes'][0, keep], img_size)
                     obj_bboxes_scaled = rescale_bboxes(outputs['obj_boxes'][0, keep], img_size)
                     
                     # Lấy top-k predictions
-                    topk = 10
+                    topk = 20  # Tăng số lượng predictions tối đa
                     keep_queries = torch.nonzero(keep, as_tuple=True)[0]
                     scores = probas[keep_queries].max(-1)[0] * probas_sub[keep_queries].max(-1)[0] * probas_obj[keep_queries].max(-1)[0]
                     indices = torch.argsort(-scores)[:topk]
@@ -729,6 +739,12 @@ def evaluate_model_batch(image_paths, model_path, batch_size=4):
                         rel_idx = probas[idx].argmax().item()
                         obj_idx = probas_obj[idx].argmax().item()
                         
+                        # In ra thông tin chi tiết về mỗi dự đoán
+                        sub_score = probas_sub[idx].max().item()
+                        rel_score = probas[idx].max().item()
+                        obj_score = probas_obj[idx].max().item()
+                        print(f"Prediction scores - Subject: {sub_score:.3f}, Relation: {rel_score:.3f}, Object: {obj_score:.3f}")
+                        
                         # Kiểm tra index có hợp lệ không
                         if sub_idx < len(CLASSES) and rel_idx < len(REL_CLASSES) and obj_idx < len(CLASSES):
                             subject_class = CLASSES[sub_idx]
@@ -739,16 +755,16 @@ def evaluate_model_batch(image_paths, model_path, batch_size=4):
                                 "subject": {
                                     "class": subject_class,
                                     "bbox": [sxmin.item(), symin.item(), sxmax.item(), symax.item()],
-                                    "score": probas_sub[idx].max().item()
+                                    "score": sub_score
                                 },
                                 "relation": {
                                     "class": relation_class,
-                                    "score": probas[idx].max().item()
+                                    "score": rel_score
                                 },
                                 "object": {
                                     "class": object_class,
                                     "bbox": [oxmin.item(), oymin.item(), oxmax.item(), oymax.item()],
-                                    "score": probas_obj[idx].max().item()
+                                    "score": obj_score
                                 }
                             }
                             predictions.append(prediction)
@@ -757,7 +773,7 @@ def evaluate_model_batch(image_paths, model_path, batch_size=4):
                     result = evaluate_predictions(predictions, img_path)
                     all_results.append(result)
                     
-                    print(f"Processed {os.path.basename(img_path)}: {len(predictions)} predictions")
+                    print(f"Final predictions for {os.path.basename(img_path)}: {len(predictions)}")
                     
                 except Exception as e:
                     print(f"Error processing image {os.path.basename(img_path)}: {str(e)}")
