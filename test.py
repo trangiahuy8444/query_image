@@ -65,9 +65,33 @@ def load_model_and_predict(image_path, model_path):
     Returns:
         predictions: Kết quả dự đoán từ mô hình
     """
-    model = load_model(model_path)
-    predictions = predict(image_path, model)
-    return predictions
+    try:
+        model = load_model(model_path)
+        predictions = predict(image_path, model)
+        
+        # Kiểm tra và chuyển đổi predictions thành định dạng phù hợp
+        if predictions is None:
+            print(f"Cảnh báo: Không có dự đoán cho ảnh {image_path}")
+            return []
+            
+        # Nếu predictions là một số nguyên hoặc kiểu dữ liệu khác không phải list
+        if not isinstance(predictions, list):
+            print(f"Cảnh báo: Dự đoán không phải là list: {type(predictions)}")
+            return []
+            
+        # Lọc bỏ các phần tử không phải dictionary
+        valid_predictions = []
+        for pred in predictions:
+            if isinstance(pred, dict):
+                valid_predictions.append(pred)
+            else:
+                print(f"Cảnh báo: Bỏ qua dự đoán không hợp lệ: {pred}")
+                
+        return valid_predictions
+        
+    except Exception as e:
+        print(f"Lỗi khi tải mô hình hoặc dự đoán: {str(e)}")
+        return []
 
 def get_predictions_from_model(predictions):
     """
@@ -82,8 +106,12 @@ def get_predictions_from_model(predictions):
     predicted_triplets = []
     
     # Kiểm tra nếu predictions không phải là list hoặc rỗng
-    if not isinstance(predictions, list) or len(predictions) == 0:
-        print(f"Cảnh báo: Kết quả dự đoán không đúng định dạng: {type(predictions)}")
+    if not isinstance(predictions, list):
+        print(f"Cảnh báo: Kết quả dự đoán không phải là list: {type(predictions)}")
+        return predicted_triplets
+        
+    if len(predictions) == 0:
+        print("Cảnh báo: Không có dự đoán nào")
         return predicted_triplets
     
     for p in predictions:
