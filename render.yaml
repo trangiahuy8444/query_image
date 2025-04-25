@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: reltr-app
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: NEO4J_URI
+        sync: false
+      - key: NEO4J_USERNAME
+        sync: false
+      - key: NEO4J_PASSWORD
+        sync: false
+      - key: IMAGE_FOLDER
+        value: /opt/render/project/src/data/vg_focused/images
+      - key: UPLOAD_FOLDER
+        value: /opt/render/project/src/uploads
+      - key: OUTPUT_FOLDER
+        value: /opt/render/project/src/output_images 

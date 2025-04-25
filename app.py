@@ -8,6 +8,11 @@ from RelTR.inference import load_model, predict
 import time
 import shutil
 from datetime import datetime
+from dotenv import load_dotenv
+import tempfile
+
+# Load environment variables
+load_dotenv()
 
 # Cấu hình logging
 logging.basicConfig(level=logging.INFO)
@@ -17,19 +22,21 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # Cấu hình thư mục
-IMAGE_FOLDER = './data/vg_focused/images'  # Thư mục chứa hình ảnh
-UPLOAD_FOLDER = './uploads'  # Thư mục để lưu ảnh upload
-OUTPUT_FOLDER = './output_images'  # Thư mục để lưu ảnh output
+IMAGE_FOLDER = os.getenv('IMAGE_FOLDER', './data/vg_focused/images')
+UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', './uploads')
+OUTPUT_FOLDER = os.getenv('OUTPUT_FOLDER', './output_images')
 app.config['IMAGE_FOLDER'] = IMAGE_FOLDER
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
+
+# Tạo thư mục tạm thời nếu không tồn tại
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 # Kết nối Neo4j
-uri = "bolt://localhost:7689"
-username = "neo4j"
-password = "12345678"
+uri = os.getenv('NEO4J_URI', 'bolt://localhost:7689')
+username = os.getenv('NEO4J_USERNAME', 'neo4j')
+password = os.getenv('NEO4J_PASSWORD', '12345678')
 driver = GraphDatabase.driver(uri, auth=(username, password))
 
 # Load mô hình RelTR
@@ -285,10 +292,11 @@ def upload_and_predict():
         if file.filename == '':
             return jsonify({"error": "No selected file"}), 400
 
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(filepath)
-        logger.info(f"Đã lưu file {filename} vào {filepath}")
+        # Sử dụng thư mục tạm thời để lưu file
+        with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(file.filename)[1]) as temp_file:
+            file.save(temp_file.name)
+            filepath = temp_file.name
+            logger.info(f"Đã lưu file tạm thời: {filepath}")
 
         prediction_start_time = time.time()
         try:
@@ -298,6 +306,8 @@ def upload_and_predict():
             logger.info(f"Chi tiết dự đoán: {json.dumps(predictions, indent=2)}")
         except Exception as e:
             logger.error(f"Lỗi khi dự đoán: {str(e)}")
+            # Xóa file tạm thời
+            os.unlink(filepath)
             return jsonify({"error": f"Lỗi khi dự đoán: {str(e)}"}), 500
 
         prediction_time = time.time() - prediction_start_time
@@ -350,7 +360,7 @@ def upload_and_predict():
             logger.error(f"Lỗi khi truy vấn ảnh theo bộ ba: {str(e)}")
             return jsonify({"error": f"Lỗi khi truy vấn ảnh theo bộ ba: {str(e)}"}), 500
 
-        input_image_name = os.path.splitext(filename)[0]
+        input_image_name = os.path.splitext(file.filename)[0]
         output_folder = os.path.join(app.config['OUTPUT_FOLDER'], input_image_name)
         os.makedirs(output_folder, exist_ok=True)
         logger.info(f"Đã tạo thư mục output: {output_folder}")
@@ -406,7 +416,7 @@ def upload_and_predict():
         # In thông tin tổng số ảnh được truy vấn
         logger.info(f"Tổng số ảnh duy nhất được truy vấn: {total_images}")
 
-        input_image_id = os.path.splitext(filename)[0]
+        input_image_id = os.path.splitext(file.filename)[0]
 
         # Calculate metrics after getting query results
         total_images_in_db = 108077  # This should be replaced with actual count from database
@@ -415,6 +425,9 @@ def upload_and_predict():
             'related_images_full': related_images_full,
             'matching_pairs_results': matching_pairs_results
         }, total_images_in_db)
+        
+        # Xóa file tạm thời sau khi xử lý xong
+        os.unlink(filepath)
         
         return jsonify({
             "predictions": predictions,
@@ -427,7 +440,7 @@ def upload_and_predict():
                 "total_unique_images": total_images,
                 "input_image_id": input_image_id,
                 "output_folder": output_folder,
-                "roc_pr_metrics": metrics  # Add the new metrics to the response
+                "roc_pr_metrics": metrics
             }
         })
 
@@ -529,4 +542,5 @@ def calculate_metrics(predictions, query_results, total_images_in_db):
     return metrics
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5002)
+    port = int(os.getenv('PORT', 5002))
+    app.run(host='0.0.0.0', port=port)
