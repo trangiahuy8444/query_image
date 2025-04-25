@@ -757,7 +757,7 @@ def save_query_results_to_json(image_path, predictions, ground_truth_pairs, grou
         print(f"Số lượng pairs: {len(ground_truth_pairs)}")
         print(f"Số lượng triplets: {len(ground_truth_triplets)}")
         
-    except Exception as e:
+            except Exception as e:
         print(f"Lỗi khi lưu kết quả vào file JSON: {str(e)}")
         print(f"Dữ liệu gây lỗi:")
         print(f"- Image path: {image_path}")
@@ -766,75 +766,137 @@ def save_query_results_to_json(image_path, predictions, ground_truth_pairs, grou
         print(f"- Ground truth triplets: {ground_truth_triplets}")
         print(f"- Output file: {output_file}")
 
-def plot_query_results(ground_truth_pairs, ground_truth_triplets, save_path=None):
+def plot_matching_distribution(ground_truth_pairs, ground_truth_triplets, save_path=None):
     """
-    Vẽ biểu đồ kết quả truy vấn
+    Vẽ biểu đồ phân bố matching percentage cho pairs và triplets
     
     Args:
-        ground_truth_pairs: Kết quả truy vấn pairs từ Neo4j
-        ground_truth_triplets: Kết quả truy vấn triplets từ Neo4j
-        save_path: Đường dẫn để lưu biểu đồ (nếu None thì hiển thị biểu đồ)
+        ground_truth_pairs: Danh sách kết quả pairs
+        ground_truth_triplets: Danh sách kết quả triplets
+        save_path: Đường dẫn để lưu biểu đồ (nếu None thì hiển thị)
     """
-    try:
-        # Tạo figure với 2x2 subplots
-        fig = plt.figure(figsize=(20, 15))
-        
-        # 1. Biểu đồ phân bố matching percentage cho pairs
-        plt.subplot(2, 2, 1)
-        matching_percentages_pairs = [pair.get('matching_percentage', 0) for pair in ground_truth_pairs]
-        plt.hist(matching_percentages_pairs, bins=20, color='skyblue', edgecolor='black')
-        plt.title('Phân bố Matching Percentage cho Pairs')
-        plt.xlabel('Matching Percentage (%)')
-        plt.ylabel('Số lượng ảnh')
-        plt.grid(True, alpha=0.3)
-        
-        # 2. Biểu đồ phân bố matching percentage cho triplets
-        plt.subplot(2, 2, 2)
-        matching_percentages_triplets = [triplet.get('matching_percentage', 0) for triplet in ground_truth_triplets]
-        plt.hist(matching_percentages_triplets, bins=20, color='lightgreen', edgecolor='black')
-        plt.title('Phân bố Matching Percentage cho Triplets')
-        plt.xlabel('Matching Percentage (%)')
-        plt.ylabel('Số lượng ảnh')
-        plt.grid(True, alpha=0.3)
-        
-        # 3. Biểu đồ cột so sánh số lượng relationships
-        plt.subplot(2, 2, 3)
-        total_relationships_pairs = sum(len(pair.get('relationships', [])) for pair in ground_truth_pairs)
-        total_relationships_triplets = sum(len(triplet.get('relationships', [])) for triplet in ground_truth_triplets)
-        plt.bar(['Pairs', 'Triplets'], [total_relationships_pairs, total_relationships_triplets], 
-                color=['skyblue', 'lightgreen'])
-        plt.title('Tổng số Relationships tìm thấy')
-        plt.ylabel('Số lượng')
-        plt.grid(True, alpha=0.3)
-        
-        # 4. Biểu đồ scatter plot matching percentage vs số lượng relationships
-        plt.subplot(2, 2, 4)
-        plt.scatter([len(pair.get('relationships', [])) for pair in ground_truth_pairs],
-                   [pair.get('matching_percentage', 0) for pair in ground_truth_pairs],
-                   alpha=0.6, label='Pairs', color='skyblue')
-        plt.scatter([len(triplet.get('relationships', [])) for triplet in ground_truth_triplets],
-                   [triplet.get('matching_percentage', 0) for triplet in ground_truth_triplets],
-                   alpha=0.6, label='Triplets', color='lightgreen')
-        plt.title('Matching Percentage vs Số lượng Relationships')
-        plt.xlabel('Số lượng Relationships')
-        plt.ylabel('Matching Percentage (%)')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        
-        # Điều chỉnh layout
-        plt.tight_layout()
-        
-        # Lưu hoặc hiển thị biểu đồ
-        if save_path:
-            plt.savefig(save_path, dpi=300, bbox_inches='tight')
-            print(f"Đã lưu biểu đồ vào {save_path}")
-        else:
-            plt.show()
-            
-        plt.close()
-        
-    except Exception as e:
-        print(f"Lỗi khi vẽ biểu đồ: {str(e)}")
+    plt.figure(figsize=(12, 5))
+    
+    # Chuẩn bị dữ liệu
+    pairs_percentages = [p.get('matching_percentage', 0) for p in ground_truth_pairs]
+    triplets_percentages = [t.get('matching_percentage', 0) for t in ground_truth_triplets]
+    
+    # Vẽ histogram cho pairs
+    plt.subplot(1, 2, 1)
+    plt.hist(pairs_percentages, bins=20, alpha=0.7, color='blue', label='Pairs')
+    plt.axvline(np.mean(pairs_percentages), color='red', linestyle='dashed', linewidth=2, 
+                label=f'Trung bình: {np.mean(pairs_percentages):.2f}%')
+    plt.xlabel('Matching Percentage')
+    plt.ylabel('Số lượng ảnh')
+    plt.title('Phân bố Matching Percentage cho Pairs')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    
+    # Vẽ histogram cho triplets
+    plt.subplot(1, 2, 2)
+    plt.hist(triplets_percentages, bins=20, alpha=0.7, color='green', label='Triplets')
+    plt.axvline(np.mean(triplets_percentages), color='red', linestyle='dashed', linewidth=2,
+                label=f'Trung bình: {np.mean(triplets_percentages):.2f}%')
+    plt.xlabel('Matching Percentage')
+    plt.ylabel('Số lượng ảnh')
+    plt.title('Phân bố Matching Percentage cho Triplets')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    
+    if save_path:
+        plt.savefig(save_path)
+        print(f"Đã lưu biểu đồ phân bố vào {save_path}")
+    else:
+        plt.show()
+    plt.close()
+
+def plot_metrics_comparison(pairs_metrics, triplets_metrics, save_path=None):
+    """
+    Vẽ biểu đồ so sánh metrics giữa pairs và triplets
+    
+    Args:
+        pairs_metrics: Dictionary chứa metrics của pairs
+        triplets_metrics: Dictionary chứa metrics của triplets
+        save_path: Đường dẫn để lưu biểu đồ (nếu None thì hiển thị)
+    """
+    metrics = ['Precision', 'Recall', 'F1']
+    pairs_values = [pairs_metrics['precision'], pairs_metrics['recall'], pairs_metrics['f1']]
+    triplets_values = [triplets_metrics['precision'], triplets_metrics['recall'], triplets_metrics['f1']]
+    
+    x = np.arange(len(metrics))
+    width = 0.35
+    
+    plt.figure(figsize=(10, 6))
+    plt.bar(x - width/2, pairs_values, width, label='Pairs', color='blue', alpha=0.7)
+    plt.bar(x + width/2, triplets_values, width, label='Triplets', color='green', alpha=0.7)
+    
+    plt.ylabel('Giá trị')
+    plt.title('So sánh Metrics giữa Pairs và Triplets')
+    plt.xticks(x, metrics)
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    
+    # Thêm giá trị lên các cột
+    for i, v in enumerate(pairs_values):
+        plt.text(i - width/2, v + 0.01, f'{v:.3f}', ha='center')
+    for i, v in enumerate(triplets_values):
+        plt.text(i + width/2, v + 0.01, f'{v:.3f}', ha='center')
+    
+    plt.tight_layout()
+    
+    if save_path:
+        plt.savefig(save_path)
+        print(f"Đã lưu biểu đồ so sánh metrics vào {save_path}")
+    else:
+        plt.show()
+    plt.close()
+
+def plot_evaluation_curves(y_true, y_score, save_path=None):
+    """
+    Vẽ ROC curve và Precision-Recall curve
+    
+    Args:
+        y_true: Mảng nhãn thực
+        y_score: Mảng điểm số
+        save_path: Đường dẫn để lưu biểu đồ (nếu None thì hiển thị)
+    """
+    plt.figure(figsize=(12, 5))
+    
+    # Vẽ ROC curve
+    plt.subplot(1, 2, 1)
+    fpr, tpr, _ = roc_curve(y_true, y_score)
+    roc_auc = auc(fpr, tpr)
+    plt.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC curve (AUC = {roc_auc:.3f})')
+    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver Operating Characteristic (ROC) Curve')
+    plt.legend(loc="lower right")
+    plt.grid(True, alpha=0.3)
+    
+    # Vẽ Precision-Recall curve
+    plt.subplot(1, 2, 2)
+    precision, recall, _ = precision_recall_curve(y_true, y_score)
+    pr_auc = auc(recall, precision)
+    plt.plot(recall, precision, color='blue', lw=2, label=f'PR curve (AUC = {pr_auc:.3f})')
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.title('Precision-Recall Curve')
+    plt.legend(loc="lower left")
+    plt.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    
+    if save_path:
+        plt.savefig(save_path)
+        print(f"Đã lưu biểu đồ ROC và PR vào {save_path}")
+    else:
+        plt.show()
+    plt.close()
 
 def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=True):
     """
@@ -902,10 +964,9 @@ def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=
             print(f"- Cao nhất: {max_matching_triplets:.2f}%")
             print(f"- Số ảnh có matching > 50%: {sum(1 for t in matching_percentages_triplets if t > 50)}")
 
-        # Vẽ biểu đồ kết quả
-        if save_results:
-            plot_path = f"query_results_{os.path.basename(image_path)}.png"
-            plot_query_results(ground_truth_pairs, ground_truth_triplets, plot_path)
+        # Vẽ biểu đồ phân bố matching percentage
+        plot_matching_distribution(ground_truth_pairs, ground_truth_triplets, 
+                                 save_path="evaluation_results/matching_distribution.png")
 
         # Lưu kết quả truy vấn vào file JSON
         if save_results:
@@ -917,6 +978,16 @@ def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=
         
         # Đánh giá mô hình với dữ liệu triplets
         triplets_metrics = evaluate_model_with_data(model_predictions, ground_truth_triplets, save_plots=False)
+        
+        # Vẽ biểu đồ so sánh metrics
+        plot_metrics_comparison(pairs_metrics, triplets_metrics, 
+                              save_path="evaluation_results/metrics_comparison.png")
+        
+        # Vẽ ROC và PR curves
+        plot_evaluation_curves(pairs_metrics['y_true'], pairs_metrics['y_score'],
+                             save_path="evaluation_results/pairs_curves.png")
+        plot_evaluation_curves(triplets_metrics['y_true'], triplets_metrics['y_score'],
+                             save_path="evaluation_results/triplets_curves.png")
         
         # Chuẩn bị kết quả
         result = {
@@ -957,9 +1028,9 @@ def evaluate_model_with_data(model_predictions, ground_truth_data, threshold=0.5
         metrics: Dictionary chứa các metrics đánh giá
     """
     try:
-        # Tính toán metrics
-        y_true, y_score = calculate_roc_pr_metrics(model_predictions, ground_truth_data)
-        
+    # Tính toán metrics
+    y_true, y_score = calculate_roc_pr_metrics(model_predictions, ground_truth_data)
+    
         # Kiểm tra nếu không có dữ liệu hợp lệ
         if len(y_true) == 0 or len(y_score) == 0:
             print("Không có dữ liệu hợp lệ để đánh giá")
@@ -970,23 +1041,29 @@ def evaluate_model_with_data(model_predictions, ground_truth_data, threshold=0.5
                 'y_true': [],
                 'y_score': []
             }
-        
-        # Vẽ ROC và Precision-Recall curves chỉ khi save_plots=True
-        if save_plots:
-            plot_roc_and_pr_curve(y_true, y_score, save_path="roc_pr_curves.png")
-        
-        # Chuyển đổi y_true thành nhãn nhị phân (0 hoặc 1)
-        y_true_binary = (y_true > 0).astype(int)
-        
-        # Tính precision, recall, và F1 score
-        precision = precision_score(y_true_binary, y_score > threshold)
-        recall = recall_score(y_true_binary, y_score > threshold)
-        f1 = f1_score(y_true_binary, y_score > threshold)
-        
-        return {
-            'precision': float(precision),  # Chuyển đổi thành float để JSON serializable
-            'recall': float(recall),        # Chuyển đổi thành float để JSON serializable
-            'f1': float(f1),                # Chuyển đổi thành float để JSON serializable
+    
+    # Vẽ ROC và Precision-Recall curves chỉ khi save_plots=True
+    if save_plots:
+        plot_roc_and_pr_curve(y_true, y_score, save_path="roc_pr_curves.png")
+    
+    # Chuyển đổi y_true thành nhãn nhị phân (0 hoặc 1)
+    y_true_binary = (y_true > 0).astype(int)
+    
+    # Tính precision, recall, và F1 score
+        try:
+    precision = precision_score(y_true_binary, y_score > threshold)
+    recall = recall_score(y_true_binary, y_score > threshold)
+    f1 = f1_score(y_true_binary, y_score > threshold)
+        except Exception as e:
+            print(f"Lỗi khi tính toán metrics: {str(e)}")
+            precision = 0.0
+            recall = 0.0
+            f1 = 0.0
+    
+    return {
+        'precision': float(precision),  # Chuyển đổi thành float để JSON serializable
+        'recall': float(recall),        # Chuyển đổi thành float để JSON serializable
+        'f1': float(f1),                # Chuyển đổi thành float để JSON serializable
             'y_true': y_true.tolist() if isinstance(y_true, np.ndarray) else y_true,      # Chuyển đổi NumPy array thành list
             'y_score': y_score.tolist() if isinstance(y_score, np.ndarray) else y_score     # Chuyển đổi NumPy array thành list
         }
@@ -998,7 +1075,7 @@ def evaluate_model_with_data(model_predictions, ground_truth_data, threshold=0.5
             'f1': 0.0,
             'y_true': [],
             'y_score': []
-        }
+    }
 
 def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_workers=5, save_results=True):
     """
@@ -1054,15 +1131,15 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
             for min_pairs in range(min_pairs_range[0], min_pairs_range[1]):
                 try:
                     print(f"\nTruy vấn với min_pairs={min_pairs}")
-                    pairs = query_images_by_pairs_parallel([predictions], min_pairs, max_workers=1)
-                    triplets = query_images_triplets_parallel([predictions], min_pairs, max_workers=1)
+                pairs = query_images_by_pairs_parallel([predictions], min_pairs, max_workers=1)
+                triplets = query_images_triplets_parallel([predictions], min_pairs, max_workers=1)
                     
                     if pairs:
                         print(f"Tìm thấy {len(pairs)} pairs")
-                        ground_truth_pairs.extend(pairs)
+                ground_truth_pairs.extend(pairs)
                     if triplets:
                         print(f"Tìm thấy {len(triplets)} triplets")
-                        ground_truth_triplets.extend(triplets)
+                ground_truth_triplets.extend(triplets)
                         
                 except Exception as e:
                     print(f"Lỗi khi truy vấn với min_pairs={min_pairs}: {str(e)}")
@@ -1131,24 +1208,24 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
     
     # Tính toán metrics trung bình chỉ từ các kết quả hợp lệ
     if valid_results:
-        avg_metrics = {
-            'pairs': {
+    avg_metrics = {
+        'pairs': {
                 'precision': float(np.mean([r['pairs_metrics']['precision'] for r in valid_results])),
                 'recall': float(np.mean([r['pairs_metrics']['recall'] for r in valid_results])),
                 'f1': float(np.mean([r['pairs_metrics']['f1'] for r in valid_results]))
-            },
-            'triplets': {
+        },
+        'triplets': {
                 'precision': float(np.mean([r['triplets_metrics']['precision'] for r in valid_results])),
                 'recall': float(np.mean([r['triplets_metrics']['recall'] for r in valid_results])),
                 'f1': float(np.mean([r['triplets_metrics']['f1'] for r in valid_results]))
-            }
+        }
         }
     else:
         print("Không có kết quả hợp lệ nào được tìm thấy!")
         avg_metrics = {
             'pairs': {'precision': 0.0, 'recall': 0.0, 'f1': 0.0},
             'triplets': {'precision': 0.0, 'recall': 0.0, 'f1': 0.0}
-        }
+    }
     
     # Lưu kết quả chi tiết vào file JSON
     json_result = {
@@ -1158,7 +1235,7 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
             'total_images': len(image_paths),
             'valid_results': len(valid_results),
             'timestamp': time.strftime("%Y-%m-%d %H:%M:%S")
-        }
+            }
     }
     
     # Lưu kết quả vào file JSON
@@ -1371,14 +1448,14 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
         image_paths = [image_folder]
     else:
         # Nếu là thư mục, lấy danh sách tất cả các ảnh trong thư mục
-        image_files = [f for f in os.listdir(image_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
-        
-        # Giới hạn số lượng ảnh nếu cần
-        if max_images is not None and max_images < len(image_files):
-            image_files = image_files[:max_images]
-        
-        # Tạo danh sách đường dẫn đầy đủ
-        image_paths = [os.path.join(image_folder, image_file) for image_file in image_files]
+    image_files = [f for f in os.listdir(image_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
+    
+    # Giới hạn số lượng ảnh nếu cần
+    if max_images is not None and max_images < len(image_files):
+        image_files = image_files[:max_images]
+    
+    # Tạo danh sách đường dẫn đầy đủ
+    image_paths = [os.path.join(image_folder, image_file) for image_file in image_files]
     
     # Sử dụng hàm đánh giá hàng loạt
     return evaluate_model_batch(image_paths, model_path, min_pairs_range, max_workers, save_results)
@@ -1416,17 +1493,17 @@ if __name__ == "__main__":
               f"F1: {triplets_metrics['f1']:.4f}")
         
         # Lưu kết quả vào file JSON
-        json_result = {
+    json_result = {
             'image_path': image_path,
             'pairs_metrics': pairs_metrics,
             'triplets_metrics': triplets_metrics,
             'timestamp': time.strftime("%Y-%m-%d %H:%M:%S")
-        }
+            }
         
         output_file = os.path.join(results_dir, f"evaluation_metrics_{os.path.basename(image_path)}.json")
         with open(output_file, "w") as f:
-            json.dump(json_result, f, indent=4)
-        
+        json.dump(json_result, f, indent=4)
+    
         print(f"\nKết quả chi tiết đã được lưu vào file '{output_file}'")
     else:
         print(f"Không thể đánh giá ảnh {image_path}")
