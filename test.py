@@ -89,28 +89,35 @@ def get_predictions_from_model(predictions):
     for p in predictions:
         try:
             # Kiểm tra cấu trúc của p
-            if not isinstance(p, dict) or 'subject' not in p or 'relation' not in p or 'object' not in p:
-                print(f"Cảnh báo: Phần tử dự đoán không đúng định dạng: {p}")
+            if not isinstance(p, dict):
+                print(f"Cảnh báo: Phần tử dự đoán không phải là dictionary: {p}")
                 continue
                 
-            # Kiểm tra cấu trúc của subject, relation, object
-            if not isinstance(p['subject'], dict) or 'class' not in p['subject']:
-                print(f"Cảnh báo: Subject không đúng định dạng: {p['subject']}")
+            # Kiểm tra và lấy các trường cần thiết
+            subject = p.get('subject', {})
+            relation = p.get('relation', {})
+            obj = p.get('object', {})
+            
+            # Kiểm tra nếu các trường là dictionary
+            if not isinstance(subject, dict) or not isinstance(relation, dict) or not isinstance(obj, dict):
+                print(f"Cảnh báo: Cấu trúc dự đoán không đúng định dạng: {p}")
                 continue
                 
-            if not isinstance(p['relation'], dict) or 'class' not in p['relation']:
-                print(f"Cảnh báo: Relation không đúng định dạng: {p['relation']}")
-                continue
+            # Lấy class từ các trường
+            subject_class = subject.get('class')
+            relation_class = relation.get('class')
+            object_class = obj.get('class')
+            
+            # Kiểm tra nếu có đủ thông tin
+            if subject_class and relation_class and object_class:
+                predicted_triplets.append({
+                    'subject': subject_class,
+                    'relation': relation_class,
+                    'object': object_class
+                })
+            else:
+                print(f"Cảnh báo: Thiếu thông tin trong dự đoán: {p}")
                 
-            if not isinstance(p['object'], dict) or 'class' not in p['object']:
-                print(f"Cảnh báo: Object không đúng định dạng: {p['object']}")
-                continue
-                
-            predicted_triplets.append({
-                'subject': p['subject']['class'],
-                'relation': p['relation']['class'],
-                'object': p['object']['class']
-            })
         except Exception as e:
             print(f"Lỗi khi xử lý dự đoán: {e}, Dữ liệu: {p}")
             continue
