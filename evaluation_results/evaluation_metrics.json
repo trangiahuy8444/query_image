@@ -1,0 +1,172 @@
+{
+    "average_metrics": {
+        "pairs": {
+            "precision": 0.7650462962962963,
+            "recall": 1.0,
+            "f1": 0.8519536377508515
+        },
+        "triplets": {
+            "precision": 0.7650462962962963,
+            "recall": 1.0,
+            "f1": 0.8519536377508515
+        }
+    },
+    "individual_results": [
+        {
+            "image_file": "2361148.jpg",
+            "pairs_metrics": {
+                "precision": 0.625,
+                "recall": 1.0,
+                "f1": 0.7692307692307693
+            },
+            "triplets_metrics": {
+                "precision": 0.625,
+                "recall": 1.0,
+                "f1": 0.7692307692307693
+            }
+        },
+        {
+            "image_file": "1159909.jpg",
+            "pairs_metrics": {
+                "precision": 0.7,
+                "recall": 1.0,
+                "f1": 0.8235294117647058
+            },
+            "triplets_metrics": {
+                "precision": 0.7,
+                "recall": 1.0,
+                "f1": 0.8235294117647058
+            }
+        },
+        {
+            "image_file": "2347188.jpg",
+            "pairs_metrics": {
+                "precision": 0.6,
+                "recall": 1.0,
+                "f1": 0.75
+            },
+            "triplets_metrics": {
+                "precision": 0.6,
+                "recall": 1.0,
+                "f1": 0.75
+            }
+        },
+        {
+            "image_file": "2356640.jpg",
+            "pairs_metrics": {
+                "precision": 0.9,
+                "recall": 1.0,
+                "f1": 0.9473684210526315
+            },
+            "triplets_metrics": {
+                "precision": 0.9,
+                "recall": 1.0,
+                "f1": 0.9473684210526315
+            }
+        },
+        {
+            "image_file": "2403380.jpg",
+            "pairs_metrics": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0
+            },
+            "triplets_metrics": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0
+            }
+        },
+        {
+            "image_file": "498377.jpg",
+            "pairs_metrics": {
+                "precision": 0.8,
+                "recall": 1.0,
+                "f1": 0.8888888888888888
+            },
+            "triplets_metrics": {
+                "precision": 0.8,
+                "recall": 1.0,
+                "f1": 0.8888888888888888
+            }
+        },
+        {
+            "image_file": "2346222.jpg",
+            "pairs_metrics": {
+                "precision": 0.8333333333333334,
+                "recall": 1.0,
+                "f1": 0.9090909090909091
+            },
+            "triplets_metrics": {
+                "precision": 0.8333333333333334,
+                "recall": 1.0,
+                "f1": 0.9090909090909091
+            }
+        },
+        {
+            "image_file": "2362354.jpg",
+            "pairs_metrics": {
+                "precision": 0.8333333333333334,
+                "recall": 1.0,
+                "f1": 0.9090909090909091
+            },
+            "triplets_metrics": {
+                "precision": 0.8333333333333334,
+                "recall": 1.0,
+                "f1": 0.9090909090909091
+            }
+        },
+        {
+            "image_file": "286068.jpg",
+            "pairs_metrics": {
+                "precision": 0.3,
+                "recall": 1.0,
+                "f1": 0.46153846153846156
+            },
+            "triplets_metrics": {
+                "precision": 0.3,
+                "recall": 1.0,
+                "f1": 0.46153846153846156
+            }
+        },
+        {
+            "image_file": "2403739.jpg",
+            "pairs_metrics": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0
+            },
+            "triplets_metrics": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0
+            }
+        },
+        {
+            "image_file": "713037.jpg",
+            "pairs_metrics": {
+                "precision": 0.7,
+                "recall": 1.0,
+                "f1": 0.8235294117647058
+            },
+            "triplets_metrics": {
+                "precision": 0.7,
+                "recall": 1.0,
+                "f1": 0.8235294117647058
+            }
+        },
+        {
+            "image_file": "150542.jpg",
+            "pairs_metrics": {
+                "precision": 0.8888888888888888,
+                "recall": 1.0,
+                "f1": 0.9411764705882353
+            },
+            "triplets_metrics": {
+                "precision": 0.8888888888888888,
+                "recall": 1.0,
+                "f1": 0.9411764705882353
+            }
+        }
+    ]
+}

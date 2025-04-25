@@ -118,12 +118,12 @@ def query_images_by_pairs(predictions, min_pairs, image_folder='./data/vg_focuse
             image_path = os.path.join(image_folder, f"{image_id}.jpg")
             if not os.path.exists(image_path) or image_id in processed_image_ids:
                 continue
-                
+            
             processed_image_ids.add(image_id)
             relationships_str = []
             for rel in record['relationships']:
                 relationships_str.append(
-                    f"{rel['subject']} - {rel['relation']} - {rel['object']}"
+                f"{rel['subject']} - {rel['relation']} - {rel['object']}"
                 )
             
             image_details.append({
@@ -207,12 +207,12 @@ def query_images_triplets(predictions, min_pairs, image_folder='./data/vg_focuse
             
             if image_id in processed_image_ids:
                 continue
-                
+            
             processed_image_ids.add(image_id)
             relationships_str = []
             for rel in record['relationships']:
                 relationships_str.append(
-                    f"{rel['subject']} - {rel['relation']} - {rel['object']}"
+                f"{rel['subject']} - {rel['relation']} - {rel['object']}"
                 )
             
             image_details.append({
@@ -276,7 +276,7 @@ def calculate_roc_pr_metrics(model_predictions, ground_truth_data):
     # Tính toán true positives và false positives
     y_true = []
     y_score = []
-    
+
     # Đối với mỗi dự đoán, kiểm tra xem nó có khớp với ground truth không
     for pred in formatted_predictions:
         is_true_positive = False
@@ -286,7 +286,7 @@ def calculate_roc_pr_metrics(model_predictions, ground_truth_data):
                 pred['object'] == gt['object']):
                 is_true_positive = True
                 break
-        
+
         # Thêm vào danh sách kết quả
         y_true.append(1 if is_true_positive else 0)
         # Giả sử điểm số xác suất là 1.0 cho tất cả các dự đoán
@@ -301,11 +301,11 @@ def calculate_roc_pr_metrics(model_predictions, ground_truth_data):
                 pred['object'] == gt['object']):
                 is_predicted = True
                 break
-        
+
         if not is_predicted:
             y_true.append(0)  # False negative
             y_score.append(0.0)  # Điểm số thấp cho false negative
-    
+
     return np.array(y_true), np.array(y_score)
 
 def plot_roc_and_pr_curve(y_true, y_score, save_path=None, label=None):
@@ -384,14 +384,14 @@ def plot_all_curves(image_path, model_path, save_path=None):
         ground_truth_triplets_by_min[min_pairs] = triplets
 
     # Vẽ ROC và Precision-Recall curves
-    plt.figure(figsize=(15, 10))
+    plt.figure(figsize=(12, 5))
     
     # Vẽ ROC curves
-    plt.subplot(2, 2, 1)
+    plt.subplot(1, 2, 1)
     plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--', label='Random')
     
     # Vẽ Precision-Recall curves
-    plt.subplot(2, 2, 2)
+    plt.subplot(1, 2, 2)
     
     # Màu sắc cho các đường cong
     colors = ['red', 'blue', 'green', 'purple', 'orange', 
@@ -411,12 +411,12 @@ def plot_all_curves(image_path, model_path, save_path=None):
         average_precision = average_precision_score(y_true, y_score)
         
         # Vẽ ROC curve
-        plt.subplot(2, 2, 1)
+        plt.subplot(1, 2, 1)
         plt.plot(fpr, tpr, color=colors[min_pairs-1], lw=2, 
                  label=f'Pairs (min={min_pairs}, AUC={roc_auc:.2f})')
         
         # Vẽ Precision-Recall curve
-        plt.subplot(2, 2, 2)
+        plt.subplot(1, 2, 2)
         plt.plot(recall, precision, color=colors[min_pairs-1], lw=2, 
                  label=f'Pairs (min={min_pairs}, AP={average_precision:.2f})')
     
@@ -434,17 +434,17 @@ def plot_all_curves(image_path, model_path, save_path=None):
         average_precision = average_precision_score(y_true, y_score)
         
         # Vẽ ROC curve
-        plt.subplot(2, 2, 1)
+        plt.subplot(1, 2, 1)
         plt.plot(fpr, tpr, color=colors[min_triplets+4], lw=2, linestyle='--', 
                  label=f'Triplets (min={min_triplets}, AUC={roc_auc:.2f})')
         
         # Vẽ Precision-Recall curve
-        plt.subplot(2, 2, 2)
+        plt.subplot(1, 2, 2)
         plt.plot(recall, precision, color=colors[min_triplets+4], lw=2, linestyle='--', 
                  label=f'Triplets (min={min_triplets}, AP={average_precision:.2f})')
     
     # Hoàn thiện biểu đồ ROC
-    plt.subplot(2, 2, 1)
+    plt.subplot(1, 2, 1)
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
@@ -453,42 +453,11 @@ def plot_all_curves(image_path, model_path, save_path=None):
     plt.legend(loc="lower right", fontsize=8)
     
     # Hoàn thiện biểu đồ Precision-Recall
-    plt.subplot(2, 2, 2)
+    plt.subplot(1, 2, 2)
     plt.xlabel('Recall')
     plt.ylabel('Precision')
     plt.title('Precision-Recall')
     plt.legend(loc="lower left", fontsize=8)
-    
-    # Vẽ biểu đồ phân phối số lượng ảnh
-    plt.subplot(2, 2, 3)
-    pairs_counts = [len(ground_truth_pairs_by_min[i]) for i in range(1, 6)]
-    triplets_counts = [len(ground_truth_triplets_by_min[i]) for i in range(1, 6)]
-    
-    x = np.arange(1, 6)
-    width = 0.35
-    
-    plt.bar(x - width/2, pairs_counts, width, label='Pairs', color='blue')
-    plt.bar(x + width/2, triplets_counts, width, label='Triplets', color='red')
-    
-    plt.xlabel('Min Pairs/Triplets')
-    plt.ylabel('Number of Images')
-    plt.title('Distribution of Images by Min Pairs/Triplets')
-    plt.xticks(x)
-    plt.legend()
-    
-    # Vẽ biểu đồ phân phối matching percentage
-    plt.subplot(2, 2, 4)
-    pairs_percentages = [np.mean([img['matching_percentage'] for img in ground_truth_pairs_by_min[i]]) for i in range(1, 6)]
-    triplets_percentages = [np.mean([img['matching_percentage'] for img in ground_truth_triplets_by_min[i]]) for i in range(1, 6)]
-    
-    plt.bar(x - width/2, pairs_percentages, width, label='Pairs', color='blue')
-    plt.bar(x + width/2, triplets_percentages, width, label='Triplets', color='red')
-    
-    plt.xlabel('Min Pairs/Triplets')
-    plt.ylabel('Average Matching Percentage')
-    plt.title('Average Matching Percentage by Min Pairs/Triplets')
-    plt.xticks(x)
-    plt.legend()
     
     plt.tight_layout()
     
@@ -498,10 +467,8 @@ def plot_all_curves(image_path, model_path, save_path=None):
         plt.show()
     
     return {
-        'pairs_counts': pairs_counts,
-        'triplets_counts': triplets_counts,
-        'pairs_percentages': pairs_percentages,
-        'triplets_percentages': triplets_percentages
+        'pairs_metrics': {i: calculate_roc_pr_metrics(model_predictions, ground_truth_pairs_by_min[i]) for i in range(1, 6)},
+        'triplets_metrics': {i: calculate_roc_pr_metrics(model_predictions, ground_truth_triplets_by_min[i]) for i in range(1, 6)}
     }
 
 def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=True):
@@ -532,25 +499,52 @@ def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=
         ground_truth_pairs.extend(pairs)
         ground_truth_triplets.extend(triplets)
 
-    # Lưu kết quả vào file JSON nếu cần
-    if save_results:
-        with open("ground_truth_pairs.json", "w") as f:
-            json.dump(ground_truth_pairs, f, indent=4)
-        with open("ground_truth_triplets.json", "w") as f:
-            json.dump(ground_truth_triplets, f, indent=4)
-    
     # Đánh giá mô hình với dữ liệu pairs
     pairs_metrics = evaluate_model_with_data(model_predictions, ground_truth_pairs, save_plots=False)
     
     # Đánh giá mô hình với dữ liệu triplets
     triplets_metrics = evaluate_model_with_data(model_predictions, ground_truth_triplets, save_plots=False)
     
-    return {
-        'pairs_metrics': pairs_metrics,
-        'triplets_metrics': triplets_metrics,
-        'ground_truth_pairs': ground_truth_pairs,
-        'ground_truth_triplets': ground_truth_triplets
+    # Hàm helper để chuyển đổi dữ liệu thành định dạng JSON-safe
+    def convert_to_json_safe(data):
+        if isinstance(data, np.ndarray):
+            return data.tolist()
+        elif isinstance(data, (np.float32, np.float64)):
+            return float(data)
+        elif isinstance(data, (np.int32, np.int64)):
+            return int(data)
+        elif isinstance(data, list):
+            return [convert_to_json_safe(item) for item in data]
+        elif isinstance(data, dict):
+            return {key: convert_to_json_safe(value) for key, value in data.items()}
+        else:
+            return data
+    
+    # Chuẩn bị kết quả để lưu vào JSON
+    results = {
+        'image_path': image_path,
+        'pairs_metrics': {
+            'precision': convert_to_json_safe(pairs_metrics['precision']),
+            'recall': convert_to_json_safe(pairs_metrics['recall']),
+            'f1': convert_to_json_safe(pairs_metrics['f1']),
+            'y_true': convert_to_json_safe(pairs_metrics['y_true']),
+            'y_score': convert_to_json_safe(pairs_metrics['y_score'])
+        },
+        'triplets_metrics': {
+            'precision': convert_to_json_safe(triplets_metrics['precision']),
+            'recall': convert_to_json_safe(triplets_metrics['recall']),
+            'f1': convert_to_json_safe(triplets_metrics['f1']),
+            'y_true': convert_to_json_safe(triplets_metrics['y_true']),
+            'y_score': convert_to_json_safe(triplets_metrics['y_score'])
+        }
     }
+    
+    # Lưu kết quả vào file JSON nếu cần
+    if save_results:
+        with open("evaluation_metrics.json", "w") as f:
+            json.dump(results, f, indent=4)
+    
+    return results
 
 def evaluate_model_with_data(model_predictions, ground_truth_data, threshold=0.5, save_plots=False):
     """
@@ -623,12 +617,42 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
             # Đánh giá mô hình trên ảnh hiện tại
             result = evaluate_model(image_path, model_path, min_pairs_range, save_results=False)
             
+            # Vẽ biểu đồ ROC và Precision-Recall cho ảnh hiện tại
+            print(f"Vẽ biểu đồ ROC và Precision-Recall cho ảnh {image_file}...")
+            plot_roc_and_pr_curve(
+                result['pairs_metrics']['y_true'], 
+                result['pairs_metrics']['y_score'], 
+                save_path=os.path.join(results_dir, f"roc_pr_curves_{image_file}.png"),
+                label="Pairs"
+            )
+            
+            # Vẽ tất cả các đường cong cho ảnh hiện tại
+            print(f"Vẽ tất cả các đường cong cho ảnh {image_file}...")
+            plot_all_curves(
+                image_path, 
+                model_path, 
+                save_path=os.path.join(results_dir, f"all_curves_{image_file}.png")
+            )
+            
             # Thêm thông tin ảnh vào kết quả
             result['image_file'] = image_file
             all_results.append(result)
             
+            # In kết quả chi tiết cho ảnh hiện tại
+            print(f"\nKết quả đánh giá chi tiết cho ảnh {image_file}:")
+            print("\nMetrics cho pairs:")
+            print(f"Precision: {result['pairs_metrics']['precision']:.4f}, "
+                  f"Recall: {result['pairs_metrics']['recall']:.4f}, "
+                  f"F1: {result['pairs_metrics']['f1']:.4f}")
+            
+            print("\nMetrics cho triplets:")
+            print(f"Precision: {result['triplets_metrics']['precision']:.4f}, "
+                  f"Recall: {result['triplets_metrics']['recall']:.4f}, "
+                  f"F1: {result['triplets_metrics']['f1']:.4f}")
+            
         except Exception as e:
             print(f"Lỗi khi đánh giá ảnh {image_file}: {str(e)}")
+            continue
     
     # Tính toán metrics trung bình
     avg_metrics = {
@@ -644,141 +668,163 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
         }
     }
     
-    # In kết quả trung bình
-    print("\nKết quả trung bình trên toàn bộ bộ dữ liệu:")
-    print(f"Pairs - Precision: {avg_metrics['pairs']['precision']:.4f}, Recall: {avg_metrics['pairs']['recall']:.4f}, F1: {avg_metrics['pairs']['f1']:.4f}")
-    print(f"Triplets - Precision: {avg_metrics['triplets']['precision']:.4f}, Recall: {avg_metrics['triplets']['recall']:.4f}, F1: {avg_metrics['triplets']['f1']:.4f}")
-    
-    # Chuẩn bị dữ liệu để lưu vào JSON
-    json_safe_results = {
+    # Lưu kết quả chi tiết vào file JSON
+    json_result = {
         'average_metrics': avg_metrics,
         'individual_results': []
     }
     
-    # Chuyển đổi kết quả từng ảnh thành định dạng JSON-safe
+    # Thêm kết quả từng ảnh vào JSON
     for result in all_results:
-        json_safe_result = {
+        json_result['individual_results'].append({
             'image_file': result['image_file'],
             'pairs_metrics': {
-                'precision': float(result['pairs_metrics']['precision']),
-                'recall': float(result['pairs_metrics']['recall']),
-                'f1': float(result['pairs_metrics']['f1'])
+                'precision': result['pairs_metrics']['precision'],
+                'recall': result['pairs_metrics']['recall'],
+                'f1': result['pairs_metrics']['f1']
             },
             'triplets_metrics': {
-                'precision': float(result['triplets_metrics']['precision']),
-                'recall': float(result['triplets_metrics']['recall']),
-                'f1': float(result['triplets_metrics']['f1'])
+                'precision': result['triplets_metrics']['precision'],
+                'recall': result['triplets_metrics']['recall'],
+                'f1': result['triplets_metrics']['f1']
             }
-        }
-        json_safe_results['individual_results'].append(json_safe_result)
+        })
     
-    # Lưu kết quả vào file JSON nếu cần
-    if save_results:
-        with open("dataset_evaluation_results.json", "w") as f:
-            json.dump(json_safe_results, f, indent=4)
+    # Lưu kết quả vào file JSON
+    with open(os.path.join(results_dir, "evaluation_metrics.json"), "w") as f:
+        json.dump(json_result, f, indent=4)
     
-    return {
-        'average_metrics': avg_metrics,
-        'individual_results': all_results
-    }
-
-def plot_dataset_curves(dataset_results, save_path=None):
-    """
-    Vẽ biểu đồ ROC và Precision-Recall từ kết quả đánh giá trên bộ dữ liệu
+    # In kết quả trung bình
+    print("\nKết quả trung bình trên toàn bộ bộ dữ liệu:")
+    print("\nMetrics cho pairs:")
+    print(f"Precision: {avg_metrics['pairs']['precision']:.4f}, "
+          f"Recall: {avg_metrics['pairs']['recall']:.4f}, "
+          f"F1: {avg_metrics['pairs']['f1']:.4f}")
     
-    Args:
-        dataset_results: Kết quả đánh giá từ hàm evaluate_model_on_dataset
-        save_path: Đường dẫn để lưu đồ thị (nếu None thì hiển thị đồ thị)
-    """
-    # Trích xuất dữ liệu
-    individual_results = dataset_results['individual_results']
+    print("\nMetrics cho triplets:")
+    print(f"Precision: {avg_metrics['triplets']['precision']:.4f}, "
+          f"Recall: {avg_metrics['triplets']['recall']:.4f}, "
+          f"F1: {avg_metrics['triplets']['f1']:.4f}")
     
-    # Tạo biểu đồ
-    plt.figure(figsize=(12, 5))
-    
-    # Biểu đồ ROC
-    plt.subplot(1, 2, 1)
-    
-    # Vẽ đường ROC cho pairs
-    pairs_y_true = []
-    pairs_y_score = []
-    for result in individual_results:
-        pairs_y_true.extend(result['pairs_metrics']['y_true'])
-        pairs_y_score.extend(result['pairs_metrics']['y_score'])
-    
-    fpr, tpr, _ = roc_curve(pairs_y_true, pairs_y_score)
-    roc_auc = auc(fpr, tpr)
-    plt.plot(fpr, tpr, color='blue', lw=2, label=f'Pairs (AUC = {roc_auc:.2f})')
-    
-    # Vẽ đường ROC cho triplets
-    triplets_y_true = []
-    triplets_y_score = []
-    for result in individual_results:
-        triplets_y_true.extend(result['triplets_metrics']['y_true'])
-        triplets_y_score.extend(result['triplets_metrics']['y_score'])
-    
-    fpr, tpr, _ = roc_curve(triplets_y_true, triplets_y_score)
-    roc_auc = auc(fpr, tpr)
-    plt.plot(fpr, tpr, color='red', lw=2, label=f'Triplets (AUC = {roc_auc:.2f})')
-    
-    # Vẽ đường chéo ngẫu nhiên
-    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
-    plt.xlim([0.0, 1.0])
-    plt.ylim([0.0, 1.05])
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('Receiver Operating Characteristic')
-    plt.legend(loc="lower right")
-    
-    # Biểu đồ Precision-Recall
-    plt.subplot(1, 2, 2)
-    
-    # Vẽ đường Precision-Recall cho pairs
-    precision, recall, _ = precision_recall_curve(pairs_y_true, pairs_y_score)
-    average_precision = average_precision_score(pairs_y_true, pairs_y_score)
-    plt.plot(recall, precision, color='blue', lw=2, label=f'Pairs (AP = {average_precision:.2f})')
-    
-    # Vẽ đường Precision-Recall cho triplets
-    precision, recall, _ = precision_recall_curve(triplets_y_true, triplets_y_score)
-    average_precision = average_precision_score(triplets_y_true, triplets_y_score)
-    plt.plot(recall, precision, color='red', lw=2, label=f'Triplets (AP = {average_precision:.2f})')
-    
-    plt.xlabel('Recall')
-    plt.ylabel('Precision')
-    plt.title('Precision-Recall')
-    plt.legend(loc="lower left")
-    
-    plt.tight_layout()
-    
-    if save_path:
-        plt.savefig(save_path)
-    else:
-        plt.show()
+    print(f"\nKết quả chi tiết đã được lưu vào file '{os.path.join(results_dir, 'evaluation_metrics.json')}'")
+    print(f"Biểu đồ ROC và Precision-Recall cho từng ảnh đã được lưu trong thư mục '{results_dir}'")
 
 # Thực thi đánh giá mô hình
 if __name__ == "__main__":
     # Đường dẫn mặc định
     model_path = './RelTR/ckpt/fine_tune1/checkpoint0049.pth'
-    image_folder = "./image_test"  # Thư mục chứa nhiều ảnh
+    image_folder = "./image_test"  # Thư mục chứa các ảnh cần đánh giá
     
-    # Đánh giá mô hình trên toàn bộ bộ dữ liệu
-    print("Bắt đầu đánh giá mô hình trên nhiều ảnh...")
-    dataset_results = evaluate_model_on_dataset(image_folder, model_path, max_images=None)  # Đánh giá tất cả ảnh
+    # Tạo thư mục kết quả nếu chưa tồn tại
+    results_dir = "./evaluation_results"
+    if not os.path.exists(results_dir):
+        os.makedirs(results_dir)
+        print(f"Đã tạo thư mục kết quả: {results_dir}")
     
-    # Vẽ biểu đồ tổng hợp từ kết quả đánh giá
-    print("Vẽ biểu đồ tổng hợp...")
-    plot_dataset_curves(dataset_results, save_path="dataset_curves.png")
+    # Lấy danh sách tất cả các ảnh trong thư mục
+    image_files = [f for f in os.listdir(image_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
+    print(f"Tìm thấy {len(image_files)} ảnh trong thư mục {image_folder}")
     
-    # In kết quả chi tiết
-    print("\nKết quả đánh giá chi tiết:")
-    print(f"Số lượng ảnh đã đánh giá: {len(dataset_results['individual_results'])}")
-    print("\nMetrics trung bình:")
-    print(f"Pairs - Precision: {dataset_results['average_metrics']['pairs']['precision']:.4f}, "
-          f"Recall: {dataset_results['average_metrics']['pairs']['recall']:.4f}, "
-          f"F1: {dataset_results['average_metrics']['pairs']['f1']:.4f}")
-    print(f"Triplets - Precision: {dataset_results['average_metrics']['triplets']['precision']:.4f}, "
-          f"Recall: {dataset_results['average_metrics']['triplets']['recall']:.4f}, "
-          f"F1: {dataset_results['average_metrics']['triplets']['f1']:.4f}")
+    # Khởi tạo danh sách để lưu kết quả của từng ảnh
+    all_results = []
     
-    print("\nKết quả đã được lưu vào file 'dataset_evaluation_results.json'")
-    print("Biểu đồ tổng hợp đã được lưu vào file 'dataset_curves.png'")
+    # Đánh giá từng ảnh
+    for i, image_file in enumerate(image_files):
+        image_path = os.path.join(image_folder, image_file)
+        print(f"\nĐánh giá ảnh {i+1}/{len(image_files)}: {image_file}")
+        
+        try:
+            # Đánh giá mô hình trên ảnh hiện tại
+            result = evaluate_model(image_path, model_path, save_results=False)
+            
+            # Vẽ biểu đồ ROC và Precision-Recall cho ảnh hiện tại
+            print(f"Vẽ biểu đồ ROC và Precision-Recall cho ảnh {image_file}...")
+            plot_roc_and_pr_curve(
+                result['pairs_metrics']['y_true'], 
+                result['pairs_metrics']['y_score'], 
+                save_path=os.path.join(results_dir, f"roc_pr_curves_{image_file}.png"),
+                label="Pairs"
+            )
+            
+            # Vẽ tất cả các đường cong cho ảnh hiện tại
+            print(f"Vẽ tất cả các đường cong cho ảnh {image_file}...")
+            plot_all_curves(
+                image_path, 
+                model_path, 
+                save_path=os.path.join(results_dir, f"all_curves_{image_file}.png")
+            )
+            
+            # Thêm thông tin ảnh vào kết quả
+            result['image_file'] = image_file
+            all_results.append(result)
+            
+            # In kết quả chi tiết cho ảnh hiện tại
+            print(f"\nKết quả đánh giá chi tiết cho ảnh {image_file}:")
+            print("\nMetrics cho pairs:")
+            print(f"Precision: {result['pairs_metrics']['precision']:.4f}, "
+                  f"Recall: {result['pairs_metrics']['recall']:.4f}, "
+                  f"F1: {result['pairs_metrics']['f1']:.4f}")
+            
+            print("\nMetrics cho triplets:")
+            print(f"Precision: {result['triplets_metrics']['precision']:.4f}, "
+                  f"Recall: {result['triplets_metrics']['recall']:.4f}, "
+                  f"F1: {result['triplets_metrics']['f1']:.4f}")
+            
+        except Exception as e:
+            print(f"Lỗi khi đánh giá ảnh {image_file}: {str(e)}")
+            continue
+    
+    # Tính toán metrics trung bình
+    avg_metrics = {
+        'pairs': {
+            'precision': float(np.mean([r['pairs_metrics']['precision'] for r in all_results])),
+            'recall': float(np.mean([r['pairs_metrics']['recall'] for r in all_results])),
+            'f1': float(np.mean([r['pairs_metrics']['f1'] for r in all_results]))
+        },
+        'triplets': {
+            'precision': float(np.mean([r['triplets_metrics']['precision'] for r in all_results])),
+            'recall': float(np.mean([r['triplets_metrics']['recall'] for r in all_results])),
+            'f1': float(np.mean([r['triplets_metrics']['f1'] for r in all_results]))
+        }
+    }
+    
+    # Lưu kết quả chi tiết vào file JSON
+    json_result = {
+        'average_metrics': avg_metrics,
+        'individual_results': []
+    }
+    
+    # Thêm kết quả từng ảnh vào JSON
+    for result in all_results:
+        json_result['individual_results'].append({
+            'image_file': result['image_file'],
+            'pairs_metrics': {
+                'precision': result['pairs_metrics']['precision'],
+                'recall': result['pairs_metrics']['recall'],
+                'f1': result['pairs_metrics']['f1']
+            },
+            'triplets_metrics': {
+                'precision': result['triplets_metrics']['precision'],
+                'recall': result['triplets_metrics']['recall'],
+                'f1': result['triplets_metrics']['f1']
+            }
+        })
+    
+    # Lưu kết quả vào file JSON
+    with open(os.path.join(results_dir, "evaluation_metrics.json"), "w") as f:
+        json.dump(json_result, f, indent=4)
+    
+    # In kết quả trung bình
+    print("\nKết quả trung bình trên toàn bộ bộ dữ liệu:")
+    print("\nMetrics cho pairs:")
+    print(f"Precision: {avg_metrics['pairs']['precision']:.4f}, "
+          f"Recall: {avg_metrics['pairs']['recall']:.4f}, "
+          f"F1: {avg_metrics['pairs']['f1']:.4f}")
+    
+    print("\nMetrics cho triplets:")
+    print(f"Precision: {avg_metrics['triplets']['precision']:.4f}, "
+          f"Recall: {avg_metrics['triplets']['recall']:.4f}, "
+          f"F1: {avg_metrics['triplets']['f1']:.4f}")
+    
+    print(f"\nKết quả chi tiết đã được lưu vào file '{os.path.join(results_dir, 'evaluation_metrics.json')}'")
+    print(f"Biểu đồ ROC và Precision-Recall cho từng ảnh đã được lưu trong thư mục '{results_dir}'")
