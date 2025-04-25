@@ -10,6 +10,30 @@ import torch
 from PIL import Image
 from torchvision import transforms as T
 
+# Định nghĩa các lớp đối tượng và quan hệ
+CLASSES = [
+    'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat',
+    'traffic light', 'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird', 'cat',
+    'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack',
+    'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'sports ball',
+    'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket',
+    'bottle', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple',
+    'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair',
+    'couch', 'potted plant', 'bed', 'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote',
+    'keyboard', 'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book',
+    'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush'
+]
+
+REL_CLASSES = [
+    'above', 'across', 'against', 'along', 'and', 'at', 'attached to', 'behind', 'between',
+    'carrying', 'covered in', 'covering', 'eating', 'flying in', 'for', 'from', 'growing on',
+    'hanging from', 'has', 'holding', 'in', 'in front of', 'inside', 'into', 'is', 'jumping',
+    'laying on', 'leaning on', 'leaving', 'lying on', 'made of', 'mounted on', 'near', 'of',
+    'on', 'on back of', 'on top of', 'over', 'painted on', 'parked on', 'part of', 'playing',
+    'playing with', 'riding', 'says', 'sitting on', 'sleeping on', 'standing on', 'suspended from',
+    'to', 'under', 'using', 'walking in', 'walking on', 'watching', 'wearing', 'wears', 'with'
+]
+
 # Kết nối Neo4j
 # uri = "bolt://localhost:7689"
 uri = "neo4j+s://b40b4f2a.databases.neo4j.io"
