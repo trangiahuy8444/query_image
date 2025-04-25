@@ -790,7 +790,7 @@ def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=
         if not model_predictions:
             print(f"Không thể chuyển đổi dự đoán thành định dạng chuẩn cho ảnh {image_path}")
             return None
-        
+    
         # Khởi tạo danh sách trống cho ground truth
         ground_truth_pairs = []
         ground_truth_triplets = []
@@ -807,6 +807,30 @@ def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=
             except Exception as e:
                 print(f"Lỗi khi truy vấn với min_pairs={min_pairs}: {str(e)}")
                 continue
+
+        # In thông tin tổng quan về kết quả truy vấn
+        print("\nThông tin tổng quan về kết quả truy vấn:")
+        print(f"Tổng số ảnh pairs tìm thấy: {len(ground_truth_pairs)}")
+        print(f"Tổng số ảnh triplets tìm thấy: {len(ground_truth_triplets)}")
+        
+        # Tính và in thống kê về matching percentage
+        if ground_truth_pairs:
+            matching_percentages_pairs = [pair.get('matching_percentage', 0) for pair in ground_truth_pairs]
+            avg_matching_pairs = sum(matching_percentages_pairs) / len(matching_percentages_pairs)
+            max_matching_pairs = max(matching_percentages_pairs)
+            print(f"\nThống kê matching percentage cho pairs:")
+            print(f"- Trung bình: {avg_matching_pairs:.2f}%")
+            print(f"- Cao nhất: {max_matching_pairs:.2f}%")
+            print(f"- Số ảnh có matching > 50%: {sum(1 for p in matching_percentages_pairs if p > 50)}")
+            
+        if ground_truth_triplets:
+            matching_percentages_triplets = [triplet.get('matching_percentage', 0) for triplet in ground_truth_triplets]
+            avg_matching_triplets = sum(matching_percentages_triplets) / len(matching_percentages_triplets)
+            max_matching_triplets = max(matching_percentages_triplets)
+            print(f"\nThống kê matching percentage cho triplets:")
+            print(f"- Trung bình: {avg_matching_triplets:.2f}%")
+            print(f"- Cao nhất: {max_matching_triplets:.2f}%")
+            print(f"- Số ảnh có matching > 50%: {sum(1 for t in matching_percentages_triplets if t > 50)}")
 
         # Lưu kết quả truy vấn vào file JSON
         if save_results:
