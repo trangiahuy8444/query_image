@@ -1246,14 +1246,14 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
     # In kết quả trung bình
     print("\nKết quả trung bình trên toàn bộ bộ dữ liệu:")
     print("\nMetrics cho pairs:")
-    print(f"Precision: {avg_metrics['pairs']['precision']:.4f}, "
-          f"Recall: {avg_metrics['pairs']['recall']:.4f}, "
-          f"F1: {avg_metrics['pairs']['f1']:.4f}")
+    print(f"Precision: {avg_metrics['pairs']['precision']:.4f}")
+    print(f"Recall: {avg_metrics['pairs']['recall']:.4f}")
+    print(f"F1: {avg_metrics['pairs']['f1']:.4f}")
     
     print("\nMetrics cho triplets:")
-    print(f"Precision: {avg_metrics['triplets']['precision']:.4f}, "
-          f"Recall: {avg_metrics['triplets']['recall']:.4f}, "
-          f"F1: {avg_metrics['triplets']['f1']:.4f}")
+    print(f"Precision: {avg_metrics['triplets']['precision']:.4f}")
+    print(f"Recall: {avg_metrics['triplets']['recall']:.4f}")
+    print(f"F1: {avg_metrics['triplets']['f1']:.4f}")
     
     if save_results:
         print(f"\nKết quả chi tiết đã được lưu vào file '{output_file}'")
@@ -1297,7 +1297,7 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
 if __name__ == "__main__":
     # Đường dẫn mặc định
     model_path = './RelTR/ckpt/fine_tune1/checkpoint0049.pth'
-    image_path = "./image_test/1159909.jpg"  # Đường dẫn đến ảnh cần đánh giá
+    image_folder = "./image_test"  # Thư mục chứa các ảnh cần đánh giá
     
     # Tạo thư mục kết quả nếu chưa tồn tại
     results_dir = "./evaluation_results"
@@ -1305,38 +1305,72 @@ if __name__ == "__main__":
         os.makedirs(results_dir)
         print(f"Đã tạo thư mục kết quả: {results_dir}")
     
-    # Đánh giá mô hình trên một ảnh
-    result = evaluate_model(image_path, model_path)
+    print(f"\nBắt đầu đánh giá mô hình trên tất cả ảnh trong thư mục {image_folder}")
+    print(f"Sử dụng mô hình từ: {model_path}")
     
-    if result:
-        # Tính toán metrics
-        pairs_metrics = result['pairs_metrics']
-        triplets_metrics = result['triplets_metrics']
+    # Đánh giá mô hình trên tất cả ảnh trong thư mục
+    results = evaluate_model_on_dataset(
+        image_folder=image_folder,
+        model_path=model_path,
+        min_pairs_range=(1, 6),  # Đánh giá với min_pairs từ 1 đến 5
+        save_results=True,        # Lưu kết quả vào file JSON
+        max_workers=5             # Số lượng worker tối đa cho xử lý song song
+    )
+    
+    if results:
+        print("\nĐánh giá hoàn tất!")
+        print(f"Tổng số ảnh đã đánh giá: {len(results)}")
         
-        # In kết quả
-        print("\nKết quả đánh giá:")
-        print("\nMetrics cho pairs:")
-        print(f"Precision: {pairs_metrics['precision']:.4f}, "
-              f"Recall: {pairs_metrics['recall']:.4f}, "
-              f"F1: {pairs_metrics['f1']:.4f}")
-        
-        print("\nMetrics cho triplets:")
-        print(f"Precision: {triplets_metrics['precision']:.4f}, "
-              f"Recall: {triplets_metrics['recall']:.4f}, "
-              f"F1: {triplets_metrics['f1']:.4f}")
-        
-        # Lưu kết quả vào file JSON
-        json_result = {
-            'image_path': image_path,
-            'pairs_metrics': pairs_metrics,
-            'triplets_metrics': triplets_metrics,
-            'timestamp': time.strftime("%Y-%m-%d %H:%M:%S")
-        }
-        
-        output_file = os.path.join(results_dir, f"evaluation_metrics_{os.path.basename(image_path)}.json")
-        with open(output_file, "w") as f:
-            json.dump(json_result, f, indent=4)
-        
-        print(f"\nKết quả chi tiết đã được lưu vào file '{output_file}'")
+        # Tính toán metrics trung bình
+        valid_results = [r for r in results if r is not None]
+        if valid_results:
+            avg_pairs_precision = np.mean([r['pairs_metrics']['precision'] for r in valid_results])
+            avg_pairs_recall = np.mean([r['pairs_metrics']['recall'] for r in valid_results])
+            avg_pairs_f1 = np.mean([r['pairs_metrics']['f1'] for r in valid_results])
+            
+            avg_triplets_precision = np.mean([r['triplets_metrics']['precision'] for r in valid_results])
+            avg_triplets_recall = np.mean([r['triplets_metrics']['recall'] for r in valid_results])
+            avg_triplets_f1 = np.mean([r['triplets_metrics']['f1'] for r in valid_results])
+            
+            print("\nKết quả trung bình trên toàn bộ bộ dữ liệu:")
+            print("\nMetrics cho pairs:")
+            print(f"Precision: {avg_pairs_precision:.4f}")
+            print(f"Recall: {avg_pairs_recall:.4f}")
+            print(f"F1: {avg_pairs_f1:.4f}")
+            
+            print("\nMetrics cho triplets:")
+            print(f"Precision: {avg_triplets_precision:.4f}")
+            print(f"Recall: {avg_triplets_recall:.4f}")
+            print(f"F1: {avg_triplets_f1:.4f}")
+            
+            # Vẽ biểu đồ phân bố matching percentage
+            plot_matching_distribution(
+                [r.get('ground_truth_pairs', []) for r in valid_results],
+                [r.get('ground_truth_triplets', []) for r in valid_results],
+                save_path="evaluation_results/matching_distribution.png"
+            )
+            
+            # Vẽ biểu đồ so sánh metrics
+            plot_metrics_comparison(
+                {'precision': avg_pairs_precision, 'recall': avg_pairs_recall, 'f1': avg_pairs_f1},
+                {'precision': avg_triplets_precision, 'recall': avg_triplets_recall, 'f1': avg_triplets_f1},
+                save_path="evaluation_results/metrics_comparison.png"
+            )
+            
+            # Vẽ ROC và PR curves
+            plot_evaluation_curves(
+                np.concatenate([r['pairs_metrics']['y_true'] for r in valid_results]),
+                np.concatenate([r['pairs_metrics']['y_score'] for r in valid_results]),
+                save_path="evaluation_results/pairs_curves.png"
+            )
+            plot_evaluation_curves(
+                np.concatenate([r['triplets_metrics']['y_true'] for r in valid_results]),
+                np.concatenate([r['triplets_metrics']['y_score'] for r in valid_results]),
+                save_path="evaluation_results/triplets_curves.png"
+            )
+            
+            print("\nCác biểu đồ đã được lưu vào thư mục evaluation_results/")
+        else:
+            print("Không có kết quả hợp lệ nào được tìm thấy!")
     else:
-        print(f"Không thể đánh giá ảnh {image_path}")
+        print("Không thể đánh giá các ảnh trong thư mục!")
