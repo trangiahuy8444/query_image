@@ -8,6 +8,7 @@ import time
 import json
 import torch
 from PIL import Image
+from torchvision import transforms as T
 
 # Kết nối Neo4j
 # uri = "bolt://localhost:7689"
@@ -600,6 +601,13 @@ def evaluate_model_batch(image_paths, model_path, batch_size=4):
     model = load_model(model_path)
     model.eval()
     
+    # Khởi tạo transform
+    transform = T.Compose([
+        T.Resize(800),
+        T.ToTensor(),
+        T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])
+    
     # Khởi tạo danh sách kết quả
     all_results = []
     
@@ -752,6 +760,10 @@ def plot_all_data_curves(all_results, save_path=None):
         all_results: Danh sách kết quả đánh giá của tất cả ảnh
         save_path: Đường dẫn để lưu đồ thị (nếu None thì hiển thị đồ thị)
     """
+    if not all_results:
+        print("No results to plot")
+        return
+        
     # Màu sắc cho các đường cong
     colors = ['red', 'blue', 'green', 'purple', 'orange', 
               'brown', 'pink', 'gray', 'olive', 'cyan']
@@ -765,25 +777,39 @@ def plot_all_data_curves(all_results, save_path=None):
         pairs_y_true = []
         pairs_y_score = []
         for result in all_results:
-            pairs_y_true.extend(result['pairs_metrics']['y_true'])
-            pairs_y_score.extend(result['pairs_metrics']['y_score'])
+            if result['pairs_metrics']['y_true'] and result['pairs_metrics']['y_score']:
+                pairs_y_true.extend(result['pairs_metrics']['y_true'])
+                pairs_y_score.extend(result['pairs_metrics']['y_score'])
         
-        fpr, tpr, _ = roc_curve(pairs_y_true, pairs_y_score)
-        roc_auc = auc(fpr, tpr)
-        plt.plot(fpr, tpr, color=colors[min_pairs-1], lw=2, 
-                label=f'Images Pairs (min={min_pairs}, AUC={roc_auc:.2f})')
+        if pairs_y_true and pairs_y_score:
+            pairs_y_true = np.array(pairs_y_true)
+            pairs_y_score = np.array(pairs_y_score)
+            
+            # Đảm bảo dữ liệu có giá trị 0 và 1
+            if len(np.unique(pairs_y_true)) >= 2:
+                fpr, tpr, _ = roc_curve(pairs_y_true, pairs_y_score, pos_label=1)
+                roc_auc = auc(fpr, tpr)
+                plt.plot(fpr, tpr, color=colors[min_pairs-1], lw=2, 
+                        label=f'Images Pairs (min={min_pairs}, AUC={roc_auc:.2f})')
         
         # Tính toán metrics cho triplets
         triplets_y_true = []
         triplets_y_score = []
         for result in all_results:
-            triplets_y_true.extend(result['triplets_metrics']['y_true'])
-            triplets_y_score.extend(result['triplets_metrics']['y_score'])
+            if result['triplets_metrics']['y_true'] and result['triplets_metrics']['y_score']:
+                triplets_y_true.extend(result['triplets_metrics']['y_true'])
+                triplets_y_score.extend(result['triplets_metrics']['y_score'])
         
-        fpr, tpr, _ = roc_curve(triplets_y_true, triplets_y_score)
-        roc_auc = auc(fpr, tpr)
-        plt.plot(fpr, tpr, color=colors[min_pairs+4], lw=2, linestyle='--',
-                label=f'Images Triplets (min={min_pairs}, AUC={roc_auc:.2f})')
+        if triplets_y_true and triplets_y_score:
+            triplets_y_true = np.array(triplets_y_true)
+            triplets_y_score = np.array(triplets_y_score)
+            
+            # Đảm bảo dữ liệu có giá trị 0 và 1
+            if len(np.unique(triplets_y_true)) >= 2:
+                fpr, tpr, _ = roc_curve(triplets_y_true, triplets_y_score, pos_label=1)
+                roc_auc = auc(fpr, tpr)
+                plt.plot(fpr, tpr, color=colors[min_pairs+4], lw=2, linestyle='--',
+                        label=f'Images Triplets (min={min_pairs}, AUC={roc_auc:.2f})')
     
     # Vẽ đường chéo ngẫu nhiên
     plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle=':')
@@ -813,25 +839,39 @@ def plot_all_data_curves(all_results, save_path=None):
         pairs_y_true = []
         pairs_y_score = []
         for result in all_results:
-            pairs_y_true.extend(result['pairs_metrics']['y_true'])
-            pairs_y_score.extend(result['pairs_metrics']['y_score'])
+            if result['pairs_metrics']['y_true'] and result['pairs_metrics']['y_score']:
+                pairs_y_true.extend(result['pairs_metrics']['y_true'])
+                pairs_y_score.extend(result['pairs_metrics']['y_score'])
         
-        precision, recall, _ = precision_recall_curve(pairs_y_true, pairs_y_score)
-        average_precision = average_precision_score(pairs_y_true, pairs_y_score)
-        plt.plot(recall, precision, color=colors[min_pairs-1], lw=2,
-                label=f'Images Pairs (min={min_pairs}, AP={average_precision:.2f})')
+        if pairs_y_true and pairs_y_score:
+            pairs_y_true = np.array(pairs_y_true)
+            pairs_y_score = np.array(pairs_y_score)
+            
+            # Đảm bảo dữ liệu có giá trị 0 và 1
+            if len(np.unique(pairs_y_true)) >= 2:
+                precision, recall, _ = precision_recall_curve(pairs_y_true, pairs_y_score, pos_label=1)
+                average_precision = average_precision_score(pairs_y_true, pairs_y_score)
+                plt.plot(recall, precision, color=colors[min_pairs-1], lw=2,
+                        label=f'Images Pairs (min={min_pairs}, AP={average_precision:.2f})')
         
         # Tính toán metrics cho triplets
         triplets_y_true = []
         triplets_y_score = []
         for result in all_results:
-            triplets_y_true.extend(result['triplets_metrics']['y_true'])
-            triplets_y_score.extend(result['triplets_metrics']['y_score'])
+            if result['triplets_metrics']['y_true'] and result['triplets_metrics']['y_score']:
+                triplets_y_true.extend(result['triplets_metrics']['y_true'])
+                triplets_y_score.extend(result['triplets_metrics']['y_score'])
         
-        precision, recall, _ = precision_recall_curve(triplets_y_true, triplets_y_score)
-        average_precision = average_precision_score(triplets_y_true, triplets_y_score)
-        plt.plot(recall, precision, color=colors[min_pairs+4], lw=2, linestyle='--',
-                label=f'Images Triplets (min={min_pairs}, AP={average_precision:.2f})')
+        if triplets_y_true and triplets_y_score:
+            triplets_y_true = np.array(triplets_y_true)
+            triplets_y_score = np.array(triplets_y_score)
+            
+            # Đảm bảo dữ liệu có giá trị 0 và 1
+            if len(np.unique(triplets_y_true)) >= 2:
+                precision, recall, _ = precision_recall_curve(triplets_y_true, triplets_y_score, pos_label=1)
+                average_precision = average_precision_score(triplets_y_true, triplets_y_score)
+                plt.plot(recall, precision, color=colors[min_pairs+4], lw=2, linestyle='--',
+                        label=f'Images Triplets (min={min_pairs}, AP={average_precision:.2f})')
     
     plt.xlabel('Recall')
     plt.ylabel('Precision')
