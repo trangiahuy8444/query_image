@@ -1311,7 +1311,7 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
 if __name__ == "__main__":
     # Đường dẫn mặc định
     model_path = './RelTR/ckpt/fine_tune1/checkpoint0049.pth'
-    image_folder = "./image_test"  # Thư mục chứa các ảnh cần đánh giá
+    image_folder = "./image_test/"  # Thư mục chứa các ảnh cần đánh giá
     
     # Tạo thư mục kết quả nếu chưa tồn tại
     results_dir = "./evaluation_results"
