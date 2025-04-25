@@ -533,7 +533,7 @@ def plot_roc_and_pr_curve(y_true, y_score, save_path=None, label=None):
     Args:
         y_true: Mảng nhãn thực
         y_score: Mảng điểm số
-        save_path: Đường dẫn để lưu đồ thị (nếu None thì hiển thị đồ thị)
+        save_path: Đường dẫn để lưu đồ thị (nếu None thì hiển thị)
         label: Nhãn cho đường cong (nếu None thì không hiển thị nhãn)
     """
     # Tính toán ROC curve và AUC
@@ -584,7 +584,7 @@ def plot_all_curves(image_path, model_path, save_path=None):
     Args:
         image_path: Đường dẫn đến ảnh cần đánh giá
         model_path: Đường dẫn đến file checkpoint của mô hình
-        save_path: Đường dẫn để lưu đồ thị (nếu None thì hiển thị đồ thị)
+        save_path: Đường dẫn để lưu đồ thị (nếu None thì hiển thị)
     """
     # Tải mô hình và thực hiện dự đoán
     predictions = load_model_and_predict(image_path, model_path)
@@ -778,14 +778,26 @@ def plot_matching_distribution(ground_truth_pairs, ground_truth_triplets, save_p
     plt.figure(figsize=(12, 5))
     
     # Chuẩn bị dữ liệu
-    pairs_percentages = [p.get('matching_percentage', 0) for p in ground_truth_pairs]
-    triplets_percentages = [t.get('matching_percentage', 0) for t in ground_truth_triplets]
+    pairs_percentages = []
+    for image_pairs in ground_truth_pairs:
+        if isinstance(image_pairs, list):
+            for pair in image_pairs:
+                if isinstance(pair, dict) and 'matching_percentage' in pair:
+                    pairs_percentages.append(pair['matching_percentage'])
+    
+    triplets_percentages = []
+    for image_triplets in ground_truth_triplets:
+        if isinstance(image_triplets, list):
+            for triplet in image_triplets:
+                if isinstance(triplet, dict) and 'matching_percentage' in triplet:
+                    triplets_percentages.append(triplet['matching_percentage'])
     
     # Vẽ histogram cho pairs
     plt.subplot(1, 2, 1)
-    plt.hist(pairs_percentages, bins=20, alpha=0.7, color='blue', label='Pairs')
-    plt.axvline(np.mean(pairs_percentages), color='red', linestyle='dashed', linewidth=2, 
-                label=f'Trung bình: {np.mean(pairs_percentages):.2f}%')
+    if pairs_percentages:
+        plt.hist(pairs_percentages, bins=20, alpha=0.7, color='blue', label='Pairs')
+        plt.axvline(np.mean(pairs_percentages), color='red', linestyle='dashed', linewidth=2, 
+                    label=f'Trung bình: {np.mean(pairs_percentages):.2f}%')
     plt.xlabel('Matching Percentage')
     plt.ylabel('Số lượng ảnh')
     plt.title('Phân bố Matching Percentage cho Pairs')
@@ -794,9 +806,10 @@ def plot_matching_distribution(ground_truth_pairs, ground_truth_triplets, save_p
     
     # Vẽ histogram cho triplets
     plt.subplot(1, 2, 2)
-    plt.hist(triplets_percentages, bins=20, alpha=0.7, color='green', label='Triplets')
-    plt.axvline(np.mean(triplets_percentages), color='red', linestyle='dashed', linewidth=2,
-                label=f'Trung bình: {np.mean(triplets_percentages):.2f}%')
+    if triplets_percentages:
+        plt.hist(triplets_percentages, bins=20, alpha=0.7, color='green', label='Triplets')
+        plt.axvline(np.mean(triplets_percentages), color='red', linestyle='dashed', linewidth=2,
+                    label=f'Trung bình: {np.mean(triplets_percentages):.2f}%')
     plt.xlabel('Matching Percentage')
     plt.ylabel('Số lượng ảnh')
     plt.title('Phân bố Matching Percentage cho Triplets')
@@ -1313,7 +1326,7 @@ if __name__ == "__main__":
         image_folder=image_folder,
         model_path=model_path,
         min_pairs_range=(1, 6),  # Đánh giá với min_pairs từ 1 đến 5
-        save_results=True,        # Lưu kết quả vào file JSON
+        save_results=False,       # Không lưu kết quả vào file JSON
         max_workers=5             # Số lượng worker tối đa cho xử lý song song
     )
     
@@ -1324,52 +1337,96 @@ if __name__ == "__main__":
         # Tính toán metrics trung bình
         valid_results = [r for r in results if r is not None]
         if valid_results:
-            avg_pairs_precision = np.mean([r['pairs_metrics']['precision'] for r in valid_results])
-            avg_pairs_recall = np.mean([r['pairs_metrics']['recall'] for r in valid_results])
-            avg_pairs_f1 = np.mean([r['pairs_metrics']['f1'] for r in valid_results])
+            # Vẽ ROC và PR curves cho pairs (1-5)
+            plt.figure(figsize=(12, 5))
+            colors = ['red', 'blue', 'green', 'purple', 'orange']
             
-            avg_triplets_precision = np.mean([r['triplets_metrics']['precision'] for r in valid_results])
-            avg_triplets_recall = np.mean([r['triplets_metrics']['recall'] for r in valid_results])
-            avg_triplets_f1 = np.mean([r['triplets_metrics']['f1'] for r in valid_results])
+            # Vẽ ROC curves cho pairs
+            plt.subplot(1, 2, 1)
+            plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--', label='Random')
+            for i in range(1, 6):
+                pairs_data = [r for r in valid_results if f'pairs_{i}' in r]
+                if pairs_data:
+                    y_true = np.concatenate([r[f'pairs_{i}_metrics']['y_true'] for r in pairs_data])
+                    y_score = np.concatenate([r[f'pairs_{i}_metrics']['y_score'] for r in pairs_data])
+                    fpr, tpr, _ = roc_curve(y_true, y_score)
+                    roc_auc = auc(fpr, tpr)
+                    plt.plot(fpr, tpr, color=colors[i-1], lw=2, 
+                            label=f'Pairs (min={i}, AUC={roc_auc:.2f})')
             
-            print("\nKết quả trung bình trên toàn bộ bộ dữ liệu:")
-            print("\nMetrics cho pairs:")
-            print(f"Precision: {avg_pairs_precision:.4f}")
-            print(f"Recall: {avg_pairs_recall:.4f}")
-            print(f"F1: {avg_pairs_f1:.4f}")
+            plt.xlim([0.0, 1.0])
+            plt.ylim([0.0, 1.05])
+            plt.xlabel('False Positive Rate')
+            plt.ylabel('True Positive Rate')
+            plt.title('ROC Curves for Pairs')
+            plt.legend(loc="lower right")
             
-            print("\nMetrics cho triplets:")
-            print(f"Precision: {avg_triplets_precision:.4f}")
-            print(f"Recall: {avg_triplets_recall:.4f}")
-            print(f"F1: {avg_triplets_f1:.4f}")
+            # Vẽ Precision-Recall curves cho pairs
+            plt.subplot(1, 2, 2)
+            for i in range(1, 6):
+                pairs_data = [r for r in valid_results if f'pairs_{i}' in r]
+                if pairs_data:
+                    y_true = np.concatenate([r[f'pairs_{i}_metrics']['y_true'] for r in pairs_data])
+                    y_score = np.concatenate([r[f'pairs_{i}_metrics']['y_score'] for r in pairs_data])
+                    precision, recall, _ = precision_recall_curve(y_true, y_score)
+                    pr_auc = auc(recall, precision)
+                    plt.plot(recall, precision, color=colors[i-1], lw=2,
+                            label=f'Pairs (min={i}, AP={pr_auc:.2f})')
             
-            # Vẽ biểu đồ phân bố matching percentage
-            plot_matching_distribution(
-                [r.get('ground_truth_pairs', []) for r in valid_results],
-                [r.get('ground_truth_triplets', []) for r in valid_results],
-                save_path="evaluation_results/matching_distribution.png"
-            )
+            plt.xlabel('Recall')
+            plt.ylabel('Precision')
+            plt.title('Precision-Recall Curves for Pairs')
+            plt.legend(loc="lower left")
             
-            # Vẽ biểu đồ so sánh metrics
-            plot_metrics_comparison(
-                {'precision': avg_pairs_precision, 'recall': avg_pairs_recall, 'f1': avg_pairs_f1},
-                {'precision': avg_triplets_precision, 'recall': avg_triplets_recall, 'f1': avg_triplets_f1},
-                save_path="evaluation_results/metrics_comparison.png"
-            )
+            plt.tight_layout()
+            plt.savefig("evaluation_results/pairs_curves.png")
+            plt.close()
             
-            # Vẽ ROC và PR curves
-            plot_evaluation_curves(
-                np.concatenate([r['pairs_metrics']['y_true'] for r in valid_results]),
-                np.concatenate([r['pairs_metrics']['y_score'] for r in valid_results]),
-                save_path="evaluation_results/pairs_curves.png"
-            )
-            plot_evaluation_curves(
-                np.concatenate([r['triplets_metrics']['y_true'] for r in valid_results]),
-                np.concatenate([r['triplets_metrics']['y_score'] for r in valid_results]),
-                save_path="evaluation_results/triplets_curves.png"
-            )
+            # Vẽ ROC và PR curves cho triplets (1-5)
+            plt.figure(figsize=(12, 5))
             
-            print("\nCác biểu đồ đã được lưu vào thư mục evaluation_results/")
+            # Vẽ ROC curves cho triplets
+            plt.subplot(1, 2, 1)
+            plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--', label='Random')
+            for i in range(1, 6):
+                triplets_data = [r for r in valid_results if f'triplets_{i}' in r]
+                if triplets_data:
+                    y_true = np.concatenate([r[f'triplets_{i}_metrics']['y_true'] for r in triplets_data])
+                    y_score = np.concatenate([r[f'triplets_{i}_metrics']['y_score'] for r in triplets_data])
+                    fpr, tpr, _ = roc_curve(y_true, y_score)
+                    roc_auc = auc(fpr, tpr)
+                    plt.plot(fpr, tpr, color=colors[i-1], lw=2, linestyle='--',
+                            label=f'Triplets (min={i}, AUC={roc_auc:.2f})')
+            
+            plt.xlim([0.0, 1.0])
+            plt.ylim([0.0, 1.05])
+            plt.xlabel('False Positive Rate')
+            plt.ylabel('True Positive Rate')
+            plt.title('ROC Curves for Triplets')
+            plt.legend(loc="lower right")
+            
+            # Vẽ Precision-Recall curves cho triplets
+            plt.subplot(1, 2, 2)
+            for i in range(1, 6):
+                triplets_data = [r for r in valid_results if f'triplets_{i}' in r]
+                if triplets_data:
+                    y_true = np.concatenate([r[f'triplets_{i}_metrics']['y_true'] for r in triplets_data])
+                    y_score = np.concatenate([r[f'triplets_{i}_metrics']['y_score'] for r in triplets_data])
+                    precision, recall, _ = precision_recall_curve(y_true, y_score)
+                    pr_auc = auc(recall, precision)
+                    plt.plot(recall, precision, color=colors[i-1], lw=2, linestyle='--',
+                            label=f'Triplets (min={i}, AP={pr_auc:.2f})')
+            
+            plt.xlabel('Recall')
+            plt.ylabel('Precision')
+            plt.title('Precision-Recall Curves for Triplets')
+            plt.legend(loc="lower left")
+            
+            plt.tight_layout()
+            plt.savefig("evaluation_results/triplets_curves.png")
+            plt.close()
+            
+            print("\nCác biểu đồ ROC và Precision-Recall đã được lưu vào thư mục evaluation_results/")
         else:
             print("Không có kết quả hợp lệ nào được tìm thấy!")
     else:
