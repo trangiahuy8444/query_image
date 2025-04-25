@@ -1,0 +1,69 @@
+Xử lý ảnh: ./data/vg_focused/images/2403422.jpg
+Thời gian dự đoán: 12.81 giây
+Số lượng dự đoán: 10
+Tổng số ảnh duy nhất được truy vấn: 22
+Kết quả truy vấn theo cặp: {
+  "1_or_more": 22,
+  "2_or_more": 4,
+  "3_or_more": 0,
+  "4_or_more": 0,
+  "5_or_more": 0
+}
+Kết quả truy vấn theo bộ ba: {
+  "1_or_more_full": 16,
+  "2_or_more_full": 4,
+  "3_or_more_full": 0,
+  "4_or_more_full": 0,
+  "5_or_more_full": 0
+}
+Kết quả matching pairs: {
+  "helmet-on-head": 4,
+  "number-on-shirt": 2,
+  "player-wearing-shirt": 3,
+  "man-wearing-shirt": 20,
+  "player-wearing-helmet": 3,
+  "player-wearing-pant": 2,
+  "pole-of-fence": 7,
+  "man-wearing-pant": 15
+}
+Kết quả đánh giá mô hình:
+  pairs_1_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_2_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_3_or_more:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  pairs_4_or_more:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  pairs_5_or_more:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  full_triples_1_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_2_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_3_or_more_full:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  full_triples_4_or_more_full:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  full_triples_5_or_more_full:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000

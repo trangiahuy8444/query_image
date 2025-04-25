@@ -1,0 +1,69 @@
+Xử lý ảnh: ./data/vg_focused/images/2347363.jpg
+Thời gian dự đoán: 11.15 giây
+Số lượng dự đoán: 9
+Tổng số ảnh duy nhất được truy vấn: 42
+Kết quả truy vấn theo cặp: {
+  "1_or_more": 42,
+  "2_or_more": 30,
+  "3_or_more": 11,
+  "4_or_more": 6,
+  "5_or_more": 0
+}
+Kết quả truy vấn theo bộ ba: {
+  "1_or_more_full": 37,
+  "2_or_more_full": 21,
+  "3_or_more_full": 9,
+  "4_or_more_full": 4,
+  "5_or_more_full": 0
+}
+Kết quả matching pairs: {
+  "giraffe-has-tail": 20,
+  "giraffe-has-neck": 27,
+  "neck-of-giraffe": 27,
+  "giraffe-has-head": 28,
+  "giraffe-has-leg": 27,
+  "head-of-giraffe": 28,
+  "tail-on-giraffe": 20,
+  "tree-behind-giraffe": 24
+}
+Kết quả đánh giá mô hình:
+  pairs_1_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_2_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_3_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_4_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_5_or_more:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  full_triples_1_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_2_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_3_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_4_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_5_or_more_full:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000

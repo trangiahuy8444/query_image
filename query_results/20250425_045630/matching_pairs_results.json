@@ -1,0 +1,2336 @@
+{
+  "giraffe-has-tail": [
+    {
+      "image_id": 2351667,
+      "url": "data/vg_focused/images/2351667.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "mountain -[behind]-> tree"
+      ]
+    },
+    {
+      "image_id": 2354521,
+      "url": "data/vg_focused/images/2354521.jpg",
+      "relationships": [
+        "face -[of]-> giraffe",
+        "giraffe -[of]-> leg",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2355993,
+      "url": "data/vg_focused/images/2355993.jpg",
+      "relationships": [
+        "giraffe -[with]-> head",
+        "giraffe -[in front of]-> fence",
+        "giraffe -[and]-> child",
+        "leg -[on]-> giraffe",
+        "tail -[on]-> giraffe",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2358050,
+      "url": "data/vg_focused/images/2358050.jpg",
+      "relationships": [
+        "giraffe -[behind]-> fence",
+        "giraffe -[has]-> neck",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> branch",
+        "leg -[of]-> giraffe",
+        "rock -[in front of]-> tree",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2360848,
+      "url": "data/vg_focused/images/2360848.jpg",
+      "relationships": [
+        "branch -[above]-> giraffe",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2361215,
+      "url": "data/vg_focused/images/2361215.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[has]-> branch",
+        "giraffe -[in front of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2369461,
+      "url": "data/vg_focused/images/2369461.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "giraffe -[near]-> giraffe",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "leg -[on]-> giraffe",
+        "pole -[behind]-> giraffe",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2370534,
+      "url": "data/vg_focused/images/2370534.jpg",
+      "relationships": [
+        "tail -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2371617,
+      "url": "data/vg_focused/images/2371617.jpg",
+      "relationships": [
+        "giraffe -[has]-> leg",
+        "head -[on]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2372450,
+      "url": "data/vg_focused/images/2372450.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2382947,
+      "url": "data/vg_focused/images/2382947.jpg",
+      "relationships": [
+        "branch -[in]-> tree",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[in front of]-> tree",
+        "tail -[has]-> hair",
+        "tree -[has]-> trunk",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2383325,
+      "url": "data/vg_focused/images/2383325.jpg",
+      "relationships": [
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[behind]-> fence",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2385393,
+      "url": "data/vg_focused/images/2385393.jpg",
+      "relationships": [
+        "hair -[on]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2386498,
+      "url": "data/vg_focused/images/2386498.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2391052,
+      "url": "data/vg_focused/images/2391052.jpg",
+      "relationships": [
+        "building -[behind]-> fence",
+        "building -[has]-> roof",
+        "building -[behind]-> tree",
+        "giraffe -[in front of]-> fence",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> ear",
+        "tail -[has]-> hair"
+      ]
+    },
+    {
+      "image_id": 2393335,
+      "url": "data/vg_focused/images/2393335.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "giraffe -[has]-> neck",
+        "mountain -[behind]-> giraffe",
+        "tail -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2399553,
+      "url": "data/vg_focused/images/2399553.jpg",
+      "relationships": [
+        "giraffe -[near]-> man",
+        "giraffe -[has]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2399790,
+      "url": "data/vg_focused/images/2399790.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2407242,
+      "url": "data/vg_focused/images/2407242.jpg",
+      "relationships": [
+        "face -[on]-> giraffe",
+        "fence -[and]-> giraffe",
+        "giraffe -[watching]-> child",
+        "head -[of]-> giraffe",
+        "people -[at]-> giraffe",
+        "person -[watching]-> giraffe",
+        "tail -[on]-> giraffe",
+        "tree -[for]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2410528,
+      "url": "data/vg_focused/images/2410528.jpg",
+      "relationships": [
+        "eye -[on]-> giraffe",
+        "giraffe -[has]-> ear",
+        "giraffe -[near]-> tree",
+        "hair -[on]-> tail"
+      ]
+    }
+  ],
+  "giraffe-has-neck": [
+    {
+      "image_id": 2345406,
+      "url": "data/vg_focused/images/2345406.jpg",
+      "relationships": [
+        "giraffe -[near]-> tree",
+        "branch -[on]-> tree",
+        "fence -[in front of]-> giraffe",
+        "flower -[behind]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2347363,
+      "url": "data/vg_focused/images/2347363.jpg",
+      "relationships": [
+        "tree -[on]-> bench",
+        "tree -[behind]-> giraffe",
+        "face -[of]-> leg",
+        "giraffe -[has]-> face",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[near]-> neck",
+        "giraffe -[has]-> neck",
+        "head -[of]-> leg",
+        "trunk -[near]-> giraffe",
+        "trunk -[on]-> leg"
+      ]
+    },
+    {
+      "image_id": 2351667,
+      "url": "data/vg_focused/images/2351667.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "mountain -[behind]-> tree"
+      ]
+    },
+    {
+      "image_id": 2354053,
+      "url": "data/vg_focused/images/2354053.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> eye",
+        "giraffe -[has]-> hair",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> mouth",
+        "giraffe -[has]-> neck"
+      ]
+    },
+    {
+      "image_id": 2358050,
+      "url": "data/vg_focused/images/2358050.jpg",
+      "relationships": [
+        "giraffe -[behind]-> fence",
+        "giraffe -[has]-> neck",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> branch",
+        "leg -[of]-> giraffe",
+        "rock -[in front of]-> tree",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2360848,
+      "url": "data/vg_focused/images/2360848.jpg",
+      "relationships": [
+        "branch -[above]-> giraffe",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2361215,
+      "url": "data/vg_focused/images/2361215.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[has]-> branch",
+        "giraffe -[in front of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2361835,
+      "url": "data/vg_focused/images/2361835.jpg",
+      "relationships": [
+        "leaf -[of]-> tree",
+        "leg -[on]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tree -[above]-> animal",
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2365919,
+      "url": "data/vg_focused/images/2365919.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "head -[belonging to]-> giraffe",
+        "leg -[belonging to]-> giraffe",
+        "neck -[belonging to]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2369461,
+      "url": "data/vg_focused/images/2369461.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "giraffe -[near]-> giraffe",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "leg -[on]-> giraffe",
+        "pole -[behind]-> giraffe",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2370190,
+      "url": "data/vg_focused/images/2370190.jpg",
+      "relationships": [
+        "giraffe -[on]-> beach",
+        "giraffe -[has]-> neck",
+        "leg -[on]-> beach",
+        "leg -[of]-> giraffe",
+        "post -[of]-> beach",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2371617,
+      "url": "data/vg_focused/images/2371617.jpg",
+      "relationships": [
+        "giraffe -[has]-> leg",
+        "head -[on]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2374418,
+      "url": "data/vg_focused/images/2374418.jpg",
+      "relationships": [
+        "giraffe -[has]-> neck",
+        "giraffe -[looking at]-> vehicle",
+        "leg -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2379114,
+      "url": "data/vg_focused/images/2379114.jpg",
+      "relationships": [
+        "building -[with]-> roof",
+        "giraffe -[has]-> neck",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "pole -[near]-> building",
+        "window -[on]-> building"
+      ]
+    },
+    {
+      "image_id": 2382159,
+      "url": "data/vg_focused/images/2382159.jpg",
+      "relationships": [
+        "bird -[near]-> giraffe",
+        "giraffe -[with]-> neck",
+        "head -[of]-> giraffe",
+        "leg -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2382947,
+      "url": "data/vg_focused/images/2382947.jpg",
+      "relationships": [
+        "branch -[in]-> tree",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[in front of]-> tree",
+        "tail -[has]-> hair",
+        "tree -[has]-> trunk",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2383325,
+      "url": "data/vg_focused/images/2383325.jpg",
+      "relationships": [
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[behind]-> fence",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2386498,
+      "url": "data/vg_focused/images/2386498.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2388729,
+      "url": "data/vg_focused/images/2388729.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck"
+      ]
+    },
+    {
+      "image_id": 2390950,
+      "url": "data/vg_focused/images/2390950.jpg",
+      "relationships": [
+        "ear -[on]-> giraffe",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> mouth"
+      ]
+    },
+    {
+      "image_id": 2391052,
+      "url": "data/vg_focused/images/2391052.jpg",
+      "relationships": [
+        "building -[behind]-> fence",
+        "building -[has]-> roof",
+        "building -[behind]-> tree",
+        "giraffe -[in front of]-> fence",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> ear",
+        "tail -[has]-> hair"
+      ]
+    },
+    {
+      "image_id": 2393335,
+      "url": "data/vg_focused/images/2393335.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "giraffe -[has]-> neck",
+        "mountain -[behind]-> giraffe",
+        "tail -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2397597,
+      "url": "data/vg_focused/images/2397597.jpg",
+      "relationships": [
+        "building -[behind]-> giraffe",
+        "door -[on]-> building",
+        "giraffe -[has]-> neck",
+        "pole -[near]-> building",
+        "roof -[above]-> building",
+        "tree -[behind]-> building",
+        "tree -[has]-> leaf"
+      ]
+    },
+    {
+      "image_id": 2400538,
+      "url": "data/vg_focused/images/2400538.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> nose",
+        "hair -[on]-> head",
+        "pole -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2400659,
+      "url": "data/vg_focused/images/2400659.jpg",
+      "relationships": [
+        "ear -[of]-> giraffe",
+        "face -[of]-> giraffe",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "mouth -[of]-> giraffe",
+        "neck -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2402489,
+      "url": "data/vg_focused/images/2402489.jpg",
+      "relationships": [
+        "giraffe -[has]-> neck",
+        "head -[of]-> giraffe",
+        "leg -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2405642,
+      "url": "data/vg_focused/images/2405642.jpg",
+      "relationships": [
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe"
+      ]
+    }
+  ],
+  "neck-of-giraffe": [
+    {
+      "image_id": 2345406,
+      "url": "data/vg_focused/images/2345406.jpg",
+      "relationships": [
+        "giraffe -[near]-> tree",
+        "branch -[on]-> tree",
+        "fence -[in front of]-> giraffe",
+        "flower -[behind]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2347363,
+      "url": "data/vg_focused/images/2347363.jpg",
+      "relationships": [
+        "tree -[on]-> bench",
+        "tree -[behind]-> giraffe",
+        "face -[of]-> leg",
+        "giraffe -[has]-> face",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[near]-> neck",
+        "giraffe -[has]-> neck",
+        "head -[of]-> leg",
+        "trunk -[near]-> giraffe",
+        "trunk -[on]-> leg"
+      ]
+    },
+    {
+      "image_id": 2351667,
+      "url": "data/vg_focused/images/2351667.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "mountain -[behind]-> tree"
+      ]
+    },
+    {
+      "image_id": 2354053,
+      "url": "data/vg_focused/images/2354053.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> eye",
+        "giraffe -[has]-> hair",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> mouth",
+        "giraffe -[has]-> neck"
+      ]
+    },
+    {
+      "image_id": 2358050,
+      "url": "data/vg_focused/images/2358050.jpg",
+      "relationships": [
+        "giraffe -[behind]-> fence",
+        "giraffe -[has]-> neck",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> branch",
+        "leg -[of]-> giraffe",
+        "rock -[in front of]-> tree",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2360848,
+      "url": "data/vg_focused/images/2360848.jpg",
+      "relationships": [
+        "branch -[above]-> giraffe",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2361215,
+      "url": "data/vg_focused/images/2361215.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[has]-> branch",
+        "giraffe -[in front of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2361835,
+      "url": "data/vg_focused/images/2361835.jpg",
+      "relationships": [
+        "leaf -[of]-> tree",
+        "leg -[on]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tree -[above]-> animal",
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2365919,
+      "url": "data/vg_focused/images/2365919.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "head -[belonging to]-> giraffe",
+        "leg -[belonging to]-> giraffe",
+        "neck -[belonging to]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2369461,
+      "url": "data/vg_focused/images/2369461.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "giraffe -[near]-> giraffe",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "leg -[on]-> giraffe",
+        "pole -[behind]-> giraffe",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2370190,
+      "url": "data/vg_focused/images/2370190.jpg",
+      "relationships": [
+        "giraffe -[on]-> beach",
+        "giraffe -[has]-> neck",
+        "leg -[on]-> beach",
+        "leg -[of]-> giraffe",
+        "post -[of]-> beach",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2371617,
+      "url": "data/vg_focused/images/2371617.jpg",
+      "relationships": [
+        "giraffe -[has]-> leg",
+        "head -[on]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2374418,
+      "url": "data/vg_focused/images/2374418.jpg",
+      "relationships": [
+        "giraffe -[has]-> neck",
+        "giraffe -[looking at]-> vehicle",
+        "leg -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2379114,
+      "url": "data/vg_focused/images/2379114.jpg",
+      "relationships": [
+        "building -[with]-> roof",
+        "giraffe -[has]-> neck",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "pole -[near]-> building",
+        "window -[on]-> building"
+      ]
+    },
+    {
+      "image_id": 2382159,
+      "url": "data/vg_focused/images/2382159.jpg",
+      "relationships": [
+        "bird -[near]-> giraffe",
+        "giraffe -[with]-> neck",
+        "head -[of]-> giraffe",
+        "leg -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2382947,
+      "url": "data/vg_focused/images/2382947.jpg",
+      "relationships": [
+        "branch -[in]-> tree",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[in front of]-> tree",
+        "tail -[has]-> hair",
+        "tree -[has]-> trunk",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2383325,
+      "url": "data/vg_focused/images/2383325.jpg",
+      "relationships": [
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[behind]-> fence",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2386498,
+      "url": "data/vg_focused/images/2386498.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2388729,
+      "url": "data/vg_focused/images/2388729.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck"
+      ]
+    },
+    {
+      "image_id": 2390950,
+      "url": "data/vg_focused/images/2390950.jpg",
+      "relationships": [
+        "ear -[on]-> giraffe",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> mouth"
+      ]
+    },
+    {
+      "image_id": 2391052,
+      "url": "data/vg_focused/images/2391052.jpg",
+      "relationships": [
+        "building -[behind]-> fence",
+        "building -[has]-> roof",
+        "building -[behind]-> tree",
+        "giraffe -[in front of]-> fence",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> ear",
+        "tail -[has]-> hair"
+      ]
+    },
+    {
+      "image_id": 2393335,
+      "url": "data/vg_focused/images/2393335.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "giraffe -[has]-> neck",
+        "mountain -[behind]-> giraffe",
+        "tail -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2397597,
+      "url": "data/vg_focused/images/2397597.jpg",
+      "relationships": [
+        "building -[behind]-> giraffe",
+        "door -[on]-> building",
+        "giraffe -[has]-> neck",
+        "pole -[near]-> building",
+        "roof -[above]-> building",
+        "tree -[behind]-> building",
+        "tree -[has]-> leaf"
+      ]
+    },
+    {
+      "image_id": 2400538,
+      "url": "data/vg_focused/images/2400538.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> nose",
+        "hair -[on]-> head",
+        "pole -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2400659,
+      "url": "data/vg_focused/images/2400659.jpg",
+      "relationships": [
+        "ear -[of]-> giraffe",
+        "face -[of]-> giraffe",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "mouth -[of]-> giraffe",
+        "neck -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2402489,
+      "url": "data/vg_focused/images/2402489.jpg",
+      "relationships": [
+        "giraffe -[has]-> neck",
+        "head -[of]-> giraffe",
+        "leg -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2405642,
+      "url": "data/vg_focused/images/2405642.jpg",
+      "relationships": [
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe"
+      ]
+    }
+  ],
+  "giraffe-has-head": [
+    {
+      "image_id": 2345406,
+      "url": "data/vg_focused/images/2345406.jpg",
+      "relationships": [
+        "giraffe -[near]-> tree",
+        "branch -[on]-> tree",
+        "fence -[in front of]-> giraffe",
+        "flower -[behind]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2345638,
+      "url": "data/vg_focused/images/2345638.jpg",
+      "relationships": [
+        "giraffe -[has]-> head"
+      ]
+    },
+    {
+      "image_id": 2347363,
+      "url": "data/vg_focused/images/2347363.jpg",
+      "relationships": [
+        "tree -[on]-> bench",
+        "tree -[behind]-> giraffe",
+        "face -[of]-> leg",
+        "giraffe -[has]-> face",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[near]-> neck",
+        "giraffe -[has]-> neck",
+        "head -[of]-> leg",
+        "trunk -[near]-> giraffe",
+        "trunk -[on]-> leg"
+      ]
+    },
+    {
+      "image_id": 2351667,
+      "url": "data/vg_focused/images/2351667.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "mountain -[behind]-> tree"
+      ]
+    },
+    {
+      "image_id": 2354040,
+      "url": "data/vg_focused/images/2354040.jpg",
+      "relationships": [
+        "fence -[with]-> head",
+        "face -[on]-> man",
+        "face -[on]-> fence",
+        "giraffe -[behind]-> fence",
+        "giraffe -[on]-> fence",
+        "giraffe -[has]-> face",
+        "giraffe -[has]-> leg",
+        "head -[wearing]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[holding]-> leg",
+        "leaf -[wearing]-> tree",
+        "leaf -[in]-> tree",
+        "leaf -[wearing]-> trunk",
+        "leaf -[wearing]-> roof",
+        "trunk -[behind]-> giraffe",
+        "roof -[behind]-> giraffe",
+        "roof -[has]-> tree",
+        "roof -[has]-> trunk"
+      ]
+    },
+    {
+      "image_id": 2354053,
+      "url": "data/vg_focused/images/2354053.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> eye",
+        "giraffe -[has]-> hair",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> mouth",
+        "giraffe -[has]-> neck"
+      ]
+    },
+    {
+      "image_id": 2354521,
+      "url": "data/vg_focused/images/2354521.jpg",
+      "relationships": [
+        "face -[of]-> giraffe",
+        "giraffe -[of]-> leg",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2355993,
+      "url": "data/vg_focused/images/2355993.jpg",
+      "relationships": [
+        "giraffe -[with]-> head",
+        "giraffe -[in front of]-> fence",
+        "giraffe -[and]-> child",
+        "leg -[on]-> giraffe",
+        "tail -[on]-> giraffe",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2356733,
+      "url": "data/vg_focused/images/2356733.jpg",
+      "relationships": [
+        "eye -[of]-> giraffe",
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> nose",
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2358050,
+      "url": "data/vg_focused/images/2358050.jpg",
+      "relationships": [
+        "giraffe -[behind]-> fence",
+        "giraffe -[has]-> neck",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> branch",
+        "leg -[of]-> giraffe",
+        "rock -[in front of]-> tree",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2360914,
+      "url": "data/vg_focused/images/2360914.jpg",
+      "relationships": [
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2361215,
+      "url": "data/vg_focused/images/2361215.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[has]-> branch",
+        "giraffe -[in front of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2361835,
+      "url": "data/vg_focused/images/2361835.jpg",
+      "relationships": [
+        "leaf -[of]-> tree",
+        "leg -[on]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tree -[above]-> animal",
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2365919,
+      "url": "data/vg_focused/images/2365919.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "head -[belonging to]-> giraffe",
+        "leg -[belonging to]-> giraffe",
+        "neck -[belonging to]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2365931,
+      "url": "data/vg_focused/images/2365931.jpg",
+      "relationships": [
+        "fence -[has]-> railing",
+        "giraffe -[has]-> head",
+        "woman -[has]-> hair",
+        "woman -[has]-> hand",
+        "head -[has]-> ear"
+      ]
+    },
+    {
+      "image_id": 2371617,
+      "url": "data/vg_focused/images/2371617.jpg",
+      "relationships": [
+        "giraffe -[has]-> leg",
+        "head -[on]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2372450,
+      "url": "data/vg_focused/images/2372450.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2379114,
+      "url": "data/vg_focused/images/2379114.jpg",
+      "relationships": [
+        "building -[with]-> roof",
+        "giraffe -[has]-> neck",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "pole -[near]-> building",
+        "window -[on]-> building"
+      ]
+    },
+    {
+      "image_id": 2382159,
+      "url": "data/vg_focused/images/2382159.jpg",
+      "relationships": [
+        "bird -[near]-> giraffe",
+        "giraffe -[with]-> neck",
+        "head -[of]-> giraffe",
+        "leg -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2382947,
+      "url": "data/vg_focused/images/2382947.jpg",
+      "relationships": [
+        "branch -[in]-> tree",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[in front of]-> tree",
+        "tail -[has]-> hair",
+        "tree -[has]-> trunk",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2386498,
+      "url": "data/vg_focused/images/2386498.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2388729,
+      "url": "data/vg_focused/images/2388729.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck"
+      ]
+    },
+    {
+      "image_id": 2391052,
+      "url": "data/vg_focused/images/2391052.jpg",
+      "relationships": [
+        "building -[behind]-> fence",
+        "building -[has]-> roof",
+        "building -[behind]-> tree",
+        "giraffe -[in front of]-> fence",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> ear",
+        "tail -[has]-> hair"
+      ]
+    },
+    {
+      "image_id": 2399790,
+      "url": "data/vg_focused/images/2399790.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2400538,
+      "url": "data/vg_focused/images/2400538.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> nose",
+        "hair -[on]-> head",
+        "pole -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2400659,
+      "url": "data/vg_focused/images/2400659.jpg",
+      "relationships": [
+        "ear -[of]-> giraffe",
+        "face -[of]-> giraffe",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "mouth -[of]-> giraffe",
+        "neck -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2402489,
+      "url": "data/vg_focused/images/2402489.jpg",
+      "relationships": [
+        "giraffe -[has]-> neck",
+        "head -[of]-> giraffe",
+        "leg -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2407242,
+      "url": "data/vg_focused/images/2407242.jpg",
+      "relationships": [
+        "face -[on]-> giraffe",
+        "fence -[and]-> giraffe",
+        "giraffe -[watching]-> child",
+        "head -[of]-> giraffe",
+        "people -[at]-> giraffe",
+        "person -[watching]-> giraffe",
+        "tail -[on]-> giraffe",
+        "tree -[for]-> giraffe"
+      ]
+    }
+  ],
+  "giraffe-has-leg": [
+    {
+      "image_id": 2345406,
+      "url": "data/vg_focused/images/2345406.jpg",
+      "relationships": [
+        "giraffe -[near]-> tree",
+        "branch -[on]-> tree",
+        "fence -[in front of]-> giraffe",
+        "flower -[behind]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2347363,
+      "url": "data/vg_focused/images/2347363.jpg",
+      "relationships": [
+        "tree -[on]-> bench",
+        "tree -[behind]-> giraffe",
+        "face -[of]-> leg",
+        "giraffe -[has]-> face",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[near]-> neck",
+        "giraffe -[has]-> neck",
+        "head -[of]-> leg",
+        "trunk -[near]-> giraffe",
+        "trunk -[on]-> leg"
+      ]
+    },
+    {
+      "image_id": 2351667,
+      "url": "data/vg_focused/images/2351667.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "mountain -[behind]-> tree"
+      ]
+    },
+    {
+      "image_id": 2354040,
+      "url": "data/vg_focused/images/2354040.jpg",
+      "relationships": [
+        "fence -[with]-> head",
+        "face -[on]-> man",
+        "face -[on]-> fence",
+        "giraffe -[behind]-> fence",
+        "giraffe -[on]-> fence",
+        "giraffe -[has]-> face",
+        "giraffe -[has]-> leg",
+        "head -[wearing]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[holding]-> leg",
+        "leaf -[wearing]-> tree",
+        "leaf -[in]-> tree",
+        "leaf -[wearing]-> trunk",
+        "leaf -[wearing]-> roof",
+        "trunk -[behind]-> giraffe",
+        "roof -[behind]-> giraffe",
+        "roof -[has]-> tree",
+        "roof -[has]-> trunk"
+      ]
+    },
+    {
+      "image_id": 2354521,
+      "url": "data/vg_focused/images/2354521.jpg",
+      "relationships": [
+        "face -[of]-> giraffe",
+        "giraffe -[of]-> leg",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2355993,
+      "url": "data/vg_focused/images/2355993.jpg",
+      "relationships": [
+        "giraffe -[with]-> head",
+        "giraffe -[in front of]-> fence",
+        "giraffe -[and]-> child",
+        "leg -[on]-> giraffe",
+        "tail -[on]-> giraffe",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2358050,
+      "url": "data/vg_focused/images/2358050.jpg",
+      "relationships": [
+        "giraffe -[behind]-> fence",
+        "giraffe -[has]-> neck",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> branch",
+        "leg -[of]-> giraffe",
+        "rock -[in front of]-> tree",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2358589,
+      "url": "data/vg_focused/images/2358589.jpg",
+      "relationships": [
+        "giraffe -[above]-> table",
+        "giraffe -[on]-> table",
+        "giraffe -[has]-> leg",
+        "leaf -[above]-> building",
+        "leg -[on]-> giraffe",
+        "people -[looking at]-> giraffe",
+        "people -[of]-> kite",
+        "people -[has]-> kite",
+        "rock -[in front of]-> people"
+      ]
+    },
+    {
+      "image_id": 2360848,
+      "url": "data/vg_focused/images/2360848.jpg",
+      "relationships": [
+        "branch -[above]-> giraffe",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2361215,
+      "url": "data/vg_focused/images/2361215.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[has]-> branch",
+        "giraffe -[in front of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2361835,
+      "url": "data/vg_focused/images/2361835.jpg",
+      "relationships": [
+        "leaf -[of]-> tree",
+        "leg -[on]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tree -[above]-> animal",
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2362905,
+      "url": "data/vg_focused/images/2362905.jpg",
+      "relationships": [
+        "leg -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2365919,
+      "url": "data/vg_focused/images/2365919.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "head -[belonging to]-> giraffe",
+        "leg -[belonging to]-> giraffe",
+        "neck -[belonging to]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2369461,
+      "url": "data/vg_focused/images/2369461.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "giraffe -[near]-> giraffe",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "leg -[on]-> giraffe",
+        "pole -[behind]-> giraffe",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2370190,
+      "url": "data/vg_focused/images/2370190.jpg",
+      "relationships": [
+        "giraffe -[on]-> beach",
+        "giraffe -[has]-> neck",
+        "leg -[on]-> beach",
+        "leg -[of]-> giraffe",
+        "post -[of]-> beach",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2371617,
+      "url": "data/vg_focused/images/2371617.jpg",
+      "relationships": [
+        "giraffe -[has]-> leg",
+        "head -[on]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2374418,
+      "url": "data/vg_focused/images/2374418.jpg",
+      "relationships": [
+        "giraffe -[has]-> neck",
+        "giraffe -[looking at]-> vehicle",
+        "leg -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2382159,
+      "url": "data/vg_focused/images/2382159.jpg",
+      "relationships": [
+        "bird -[near]-> giraffe",
+        "giraffe -[with]-> neck",
+        "head -[of]-> giraffe",
+        "leg -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2382947,
+      "url": "data/vg_focused/images/2382947.jpg",
+      "relationships": [
+        "branch -[in]-> tree",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[in front of]-> tree",
+        "tail -[has]-> hair",
+        "tree -[has]-> trunk",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2383325,
+      "url": "data/vg_focused/images/2383325.jpg",
+      "relationships": [
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[behind]-> fence",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2386498,
+      "url": "data/vg_focused/images/2386498.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2388729,
+      "url": "data/vg_focused/images/2388729.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck"
+      ]
+    },
+    {
+      "image_id": 2400538,
+      "url": "data/vg_focused/images/2400538.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> nose",
+        "hair -[on]-> head",
+        "pole -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2400659,
+      "url": "data/vg_focused/images/2400659.jpg",
+      "relationships": [
+        "ear -[of]-> giraffe",
+        "face -[of]-> giraffe",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "mouth -[of]-> giraffe",
+        "neck -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2402474,
+      "url": "data/vg_focused/images/2402474.jpg",
+      "relationships": [
+        "giraffe -[near]-> rock",
+        "leg -[on]-> giraffe",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2402489,
+      "url": "data/vg_focused/images/2402489.jpg",
+      "relationships": [
+        "giraffe -[has]-> neck",
+        "head -[of]-> giraffe",
+        "leg -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2405642,
+      "url": "data/vg_focused/images/2405642.jpg",
+      "relationships": [
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe"
+      ]
+    }
+  ],
+  "head-of-giraffe": [
+    {
+      "image_id": 2345406,
+      "url": "data/vg_focused/images/2345406.jpg",
+      "relationships": [
+        "giraffe -[near]-> tree",
+        "branch -[on]-> tree",
+        "fence -[in front of]-> giraffe",
+        "flower -[behind]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2345638,
+      "url": "data/vg_focused/images/2345638.jpg",
+      "relationships": [
+        "giraffe -[has]-> head"
+      ]
+    },
+    {
+      "image_id": 2347363,
+      "url": "data/vg_focused/images/2347363.jpg",
+      "relationships": [
+        "tree -[on]-> bench",
+        "tree -[behind]-> giraffe",
+        "face -[of]-> leg",
+        "giraffe -[has]-> face",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[near]-> neck",
+        "giraffe -[has]-> neck",
+        "head -[of]-> leg",
+        "trunk -[near]-> giraffe",
+        "trunk -[on]-> leg"
+      ]
+    },
+    {
+      "image_id": 2351667,
+      "url": "data/vg_focused/images/2351667.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "mountain -[behind]-> tree"
+      ]
+    },
+    {
+      "image_id": 2354040,
+      "url": "data/vg_focused/images/2354040.jpg",
+      "relationships": [
+        "fence -[with]-> head",
+        "face -[on]-> man",
+        "face -[on]-> fence",
+        "giraffe -[behind]-> fence",
+        "giraffe -[on]-> fence",
+        "giraffe -[has]-> face",
+        "giraffe -[has]-> leg",
+        "head -[wearing]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[holding]-> leg",
+        "leaf -[wearing]-> tree",
+        "leaf -[in]-> tree",
+        "leaf -[wearing]-> trunk",
+        "leaf -[wearing]-> roof",
+        "trunk -[behind]-> giraffe",
+        "roof -[behind]-> giraffe",
+        "roof -[has]-> tree",
+        "roof -[has]-> trunk"
+      ]
+    },
+    {
+      "image_id": 2354053,
+      "url": "data/vg_focused/images/2354053.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> eye",
+        "giraffe -[has]-> hair",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> mouth",
+        "giraffe -[has]-> neck"
+      ]
+    },
+    {
+      "image_id": 2354521,
+      "url": "data/vg_focused/images/2354521.jpg",
+      "relationships": [
+        "face -[of]-> giraffe",
+        "giraffe -[of]-> leg",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2355993,
+      "url": "data/vg_focused/images/2355993.jpg",
+      "relationships": [
+        "giraffe -[with]-> head",
+        "giraffe -[in front of]-> fence",
+        "giraffe -[and]-> child",
+        "leg -[on]-> giraffe",
+        "tail -[on]-> giraffe",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2356733,
+      "url": "data/vg_focused/images/2356733.jpg",
+      "relationships": [
+        "eye -[of]-> giraffe",
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> nose",
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2358050,
+      "url": "data/vg_focused/images/2358050.jpg",
+      "relationships": [
+        "giraffe -[behind]-> fence",
+        "giraffe -[has]-> neck",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> branch",
+        "leg -[of]-> giraffe",
+        "rock -[in front of]-> tree",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2360914,
+      "url": "data/vg_focused/images/2360914.jpg",
+      "relationships": [
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2361215,
+      "url": "data/vg_focused/images/2361215.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[has]-> branch",
+        "giraffe -[in front of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2361835,
+      "url": "data/vg_focused/images/2361835.jpg",
+      "relationships": [
+        "leaf -[of]-> tree",
+        "leg -[on]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tree -[above]-> animal",
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2365919,
+      "url": "data/vg_focused/images/2365919.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "head -[belonging to]-> giraffe",
+        "leg -[belonging to]-> giraffe",
+        "neck -[belonging to]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2365931,
+      "url": "data/vg_focused/images/2365931.jpg",
+      "relationships": [
+        "fence -[has]-> railing",
+        "giraffe -[has]-> head",
+        "woman -[has]-> hair",
+        "woman -[has]-> hand",
+        "head -[has]-> ear"
+      ]
+    },
+    {
+      "image_id": 2371617,
+      "url": "data/vg_focused/images/2371617.jpg",
+      "relationships": [
+        "giraffe -[has]-> leg",
+        "head -[on]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2372450,
+      "url": "data/vg_focused/images/2372450.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2379114,
+      "url": "data/vg_focused/images/2379114.jpg",
+      "relationships": [
+        "building -[with]-> roof",
+        "giraffe -[has]-> neck",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "pole -[near]-> building",
+        "window -[on]-> building"
+      ]
+    },
+    {
+      "image_id": 2382159,
+      "url": "data/vg_focused/images/2382159.jpg",
+      "relationships": [
+        "bird -[near]-> giraffe",
+        "giraffe -[with]-> neck",
+        "head -[of]-> giraffe",
+        "leg -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2382947,
+      "url": "data/vg_focused/images/2382947.jpg",
+      "relationships": [
+        "branch -[in]-> tree",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[in front of]-> tree",
+        "tail -[has]-> hair",
+        "tree -[has]-> trunk",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2386498,
+      "url": "data/vg_focused/images/2386498.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2388729,
+      "url": "data/vg_focused/images/2388729.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck"
+      ]
+    },
+    {
+      "image_id": 2391052,
+      "url": "data/vg_focused/images/2391052.jpg",
+      "relationships": [
+        "building -[behind]-> fence",
+        "building -[has]-> roof",
+        "building -[behind]-> tree",
+        "giraffe -[in front of]-> fence",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> ear",
+        "tail -[has]-> hair"
+      ]
+    },
+    {
+      "image_id": 2399790,
+      "url": "data/vg_focused/images/2399790.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2400538,
+      "url": "data/vg_focused/images/2400538.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> nose",
+        "hair -[on]-> head",
+        "pole -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2400659,
+      "url": "data/vg_focused/images/2400659.jpg",
+      "relationships": [
+        "ear -[of]-> giraffe",
+        "face -[of]-> giraffe",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "mouth -[of]-> giraffe",
+        "neck -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2402489,
+      "url": "data/vg_focused/images/2402489.jpg",
+      "relationships": [
+        "giraffe -[has]-> neck",
+        "head -[of]-> giraffe",
+        "leg -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2407242,
+      "url": "data/vg_focused/images/2407242.jpg",
+      "relationships": [
+        "face -[on]-> giraffe",
+        "fence -[and]-> giraffe",
+        "giraffe -[watching]-> child",
+        "head -[of]-> giraffe",
+        "people -[at]-> giraffe",
+        "person -[watching]-> giraffe",
+        "tail -[on]-> giraffe",
+        "tree -[for]-> giraffe"
+      ]
+    }
+  ],
+  "tail-on-giraffe": [
+    {
+      "image_id": 2351667,
+      "url": "data/vg_focused/images/2351667.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "mountain -[behind]-> tree"
+      ]
+    },
+    {
+      "image_id": 2354521,
+      "url": "data/vg_focused/images/2354521.jpg",
+      "relationships": [
+        "face -[of]-> giraffe",
+        "giraffe -[of]-> leg",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2355993,
+      "url": "data/vg_focused/images/2355993.jpg",
+      "relationships": [
+        "giraffe -[with]-> head",
+        "giraffe -[in front of]-> fence",
+        "giraffe -[and]-> child",
+        "leg -[on]-> giraffe",
+        "tail -[on]-> giraffe",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2358050,
+      "url": "data/vg_focused/images/2358050.jpg",
+      "relationships": [
+        "giraffe -[behind]-> fence",
+        "giraffe -[has]-> neck",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> branch",
+        "leg -[of]-> giraffe",
+        "rock -[in front of]-> tree",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2360848,
+      "url": "data/vg_focused/images/2360848.jpg",
+      "relationships": [
+        "branch -[above]-> giraffe",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2361215,
+      "url": "data/vg_focused/images/2361215.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[has]-> branch",
+        "giraffe -[in front of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2369461,
+      "url": "data/vg_focused/images/2369461.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "giraffe -[near]-> giraffe",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "leg -[on]-> giraffe",
+        "pole -[behind]-> giraffe",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2370534,
+      "url": "data/vg_focused/images/2370534.jpg",
+      "relationships": [
+        "tail -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2371617,
+      "url": "data/vg_focused/images/2371617.jpg",
+      "relationships": [
+        "giraffe -[has]-> leg",
+        "head -[on]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2372450,
+      "url": "data/vg_focused/images/2372450.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2382947,
+      "url": "data/vg_focused/images/2382947.jpg",
+      "relationships": [
+        "branch -[in]-> tree",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[in front of]-> tree",
+        "tail -[has]-> hair",
+        "tree -[has]-> trunk",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2383325,
+      "url": "data/vg_focused/images/2383325.jpg",
+      "relationships": [
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[behind]-> fence",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2385393,
+      "url": "data/vg_focused/images/2385393.jpg",
+      "relationships": [
+        "hair -[on]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2386498,
+      "url": "data/vg_focused/images/2386498.jpg",
+      "relationships": [
+        "giraffe -[has]-> ear",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2391052,
+      "url": "data/vg_focused/images/2391052.jpg",
+      "relationships": [
+        "building -[behind]-> fence",
+        "building -[has]-> roof",
+        "building -[behind]-> tree",
+        "giraffe -[in front of]-> fence",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> ear",
+        "tail -[has]-> hair"
+      ]
+    },
+    {
+      "image_id": 2393335,
+      "url": "data/vg_focused/images/2393335.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "giraffe -[has]-> neck",
+        "mountain -[behind]-> giraffe",
+        "tail -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2399553,
+      "url": "data/vg_focused/images/2399553.jpg",
+      "relationships": [
+        "giraffe -[near]-> man",
+        "giraffe -[has]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2399790,
+      "url": "data/vg_focused/images/2399790.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2407242,
+      "url": "data/vg_focused/images/2407242.jpg",
+      "relationships": [
+        "face -[on]-> giraffe",
+        "fence -[and]-> giraffe",
+        "giraffe -[watching]-> child",
+        "head -[of]-> giraffe",
+        "people -[at]-> giraffe",
+        "person -[watching]-> giraffe",
+        "tail -[on]-> giraffe",
+        "tree -[for]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2410528,
+      "url": "data/vg_focused/images/2410528.jpg",
+      "relationships": [
+        "eye -[on]-> giraffe",
+        "giraffe -[has]-> ear",
+        "giraffe -[near]-> tree",
+        "hair -[on]-> tail"
+      ]
+    }
+  ],
+  "tree-behind-giraffe": [
+    {
+      "image_id": 2345406,
+      "url": "data/vg_focused/images/2345406.jpg",
+      "relationships": [
+        "giraffe -[near]-> tree",
+        "branch -[on]-> tree",
+        "fence -[in front of]-> giraffe",
+        "flower -[behind]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2347363,
+      "url": "data/vg_focused/images/2347363.jpg",
+      "relationships": [
+        "tree -[on]-> bench",
+        "tree -[behind]-> giraffe",
+        "face -[of]-> leg",
+        "giraffe -[has]-> face",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[near]-> neck",
+        "giraffe -[has]-> neck",
+        "head -[of]-> leg",
+        "trunk -[near]-> giraffe",
+        "trunk -[on]-> leg"
+      ]
+    },
+    {
+      "image_id": 2351667,
+      "url": "data/vg_focused/images/2351667.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "mountain -[behind]-> tree"
+      ]
+    },
+    {
+      "image_id": 2354040,
+      "url": "data/vg_focused/images/2354040.jpg",
+      "relationships": [
+        "fence -[with]-> head",
+        "face -[on]-> man",
+        "face -[on]-> fence",
+        "giraffe -[behind]-> fence",
+        "giraffe -[on]-> fence",
+        "giraffe -[has]-> face",
+        "giraffe -[has]-> leg",
+        "head -[wearing]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[holding]-> leg",
+        "leaf -[wearing]-> tree",
+        "leaf -[in]-> tree",
+        "leaf -[wearing]-> trunk",
+        "leaf -[wearing]-> roof",
+        "trunk -[behind]-> giraffe",
+        "roof -[behind]-> giraffe",
+        "roof -[has]-> tree",
+        "roof -[has]-> trunk"
+      ]
+    },
+    {
+      "image_id": 2355993,
+      "url": "data/vg_focused/images/2355993.jpg",
+      "relationships": [
+        "giraffe -[with]-> head",
+        "giraffe -[in front of]-> fence",
+        "giraffe -[and]-> child",
+        "leg -[on]-> giraffe",
+        "tail -[on]-> giraffe",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2358050,
+      "url": "data/vg_focused/images/2358050.jpg",
+      "relationships": [
+        "giraffe -[behind]-> fence",
+        "giraffe -[has]-> neck",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> branch",
+        "leg -[of]-> giraffe",
+        "rock -[in front of]-> tree",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2360848,
+      "url": "data/vg_focused/images/2360848.jpg",
+      "relationships": [
+        "branch -[above]-> giraffe",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2361215,
+      "url": "data/vg_focused/images/2361215.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[has]-> branch",
+        "giraffe -[in front of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2361835,
+      "url": "data/vg_focused/images/2361835.jpg",
+      "relationships": [
+        "leaf -[of]-> tree",
+        "leg -[on]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tree -[above]-> animal",
+        "head -[of]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2362735,
+      "url": "data/vg_focused/images/2362735.jpg",
+      "relationships": [
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2369461,
+      "url": "data/vg_focused/images/2369461.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "giraffe -[near]-> giraffe",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "leg -[on]-> giraffe",
+        "pole -[behind]-> giraffe",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2370190,
+      "url": "data/vg_focused/images/2370190.jpg",
+      "relationships": [
+        "giraffe -[on]-> beach",
+        "giraffe -[has]-> neck",
+        "leg -[on]-> beach",
+        "leg -[of]-> giraffe",
+        "post -[of]-> beach",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2370656,
+      "url": "data/vg_focused/images/2370656.jpg",
+      "relationships": [
+        "giraffe -[near]-> rock",
+        "giraffe -[in front of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2376621,
+      "url": "data/vg_focused/images/2376621.jpg",
+      "relationships": [
+        "fence -[behind]-> giraffe",
+        "food -[on]-> tree",
+        "rock -[near]-> tree"
+      ]
+    },
+    {
+      "image_id": 2379114,
+      "url": "data/vg_focused/images/2379114.jpg",
+      "relationships": [
+        "building -[with]-> roof",
+        "giraffe -[has]-> neck",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "pole -[near]-> building",
+        "window -[on]-> building"
+      ]
+    },
+    {
+      "image_id": 2382947,
+      "url": "data/vg_focused/images/2382947.jpg",
+      "relationships": [
+        "branch -[in]-> tree",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[in front of]-> tree",
+        "tail -[has]-> hair",
+        "tree -[has]-> trunk",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2383325,
+      "url": "data/vg_focused/images/2383325.jpg",
+      "relationships": [
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[behind]-> fence",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2385393,
+      "url": "data/vg_focused/images/2385393.jpg",
+      "relationships": [
+        "hair -[on]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2391052,
+      "url": "data/vg_focused/images/2391052.jpg",
+      "relationships": [
+        "building -[behind]-> fence",
+        "building -[has]-> roof",
+        "building -[behind]-> tree",
+        "giraffe -[in front of]-> fence",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> ear",
+        "tail -[has]-> hair"
+      ]
+    },
+    {
+      "image_id": 2397597,
+      "url": "data/vg_focused/images/2397597.jpg",
+      "relationships": [
+        "building -[behind]-> giraffe",
+        "door -[on]-> building",
+        "giraffe -[has]-> neck",
+        "pole -[near]-> building",
+        "roof -[above]-> building",
+        "tree -[behind]-> building",
+        "tree -[has]-> leaf"
+      ]
+    },
+    {
+      "image_id": 2399553,
+      "url": "data/vg_focused/images/2399553.jpg",
+      "relationships": [
+        "giraffe -[near]-> man",
+        "giraffe -[has]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2402474,
+      "url": "data/vg_focused/images/2402474.jpg",
+      "relationships": [
+        "giraffe -[near]-> rock",
+        "leg -[on]-> giraffe",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2407242,
+      "url": "data/vg_focused/images/2407242.jpg",
+      "relationships": [
+        "face -[on]-> giraffe",
+        "fence -[and]-> giraffe",
+        "giraffe -[watching]-> child",
+        "head -[of]-> giraffe",
+        "people -[at]-> giraffe",
+        "person -[watching]-> giraffe",
+        "tail -[on]-> giraffe",
+        "tree -[for]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2410528,
+      "url": "data/vg_focused/images/2410528.jpg",
+      "relationships": [
+        "eye -[on]-> giraffe",
+        "giraffe -[has]-> ear",
+        "giraffe -[near]-> tree",
+        "hair -[on]-> tail"
+      ]
+    }
+  ]
+}

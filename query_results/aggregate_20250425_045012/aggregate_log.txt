@@ -1,0 +1,61 @@
+Tổng hợp kết quả từ 12 ảnh
+Thời gian: 20250425_045012
+
+Kết quả đánh giá mô hình (trung bình):
+  Truy vấn theo cặp:
+    1_or_more:
+      Precision: 1.0000
+      Recall: 1.0000
+      F1-score: 1.0000
+      Số ảnh truy xuất trung bình: 24.42
+    2_or_more:
+      Precision: 1.0000
+      Recall: 1.0000
+      F1-score: 1.0000
+      Số ảnh truy xuất trung bình: 10.75
+    3_or_more:
+      Precision: 1.0000
+      Recall: 1.0000
+      F1-score: 1.0000
+      Số ảnh truy xuất trung bình: 3.25
+    4_or_more:
+      Precision: 1.0000
+      Recall: 1.0000
+      F1-score: 1.0000
+      Số ảnh truy xuất trung bình: 0.92
+    5_or_more:
+      Precision: 0.0000
+      Recall: 0.0000
+      F1-score: 0.0000
+      Số ảnh truy xuất trung bình: 0.00
+
+  Truy vấn theo bộ ba:
+    1_or_more_full:
+      Precision: 1.0000
+      Recall: 1.0000
+      F1-score: 1.0000
+      Số ảnh truy xuất trung bình: 18.58
+    2_or_more_full:
+      Precision: 1.0000
+      Recall: 1.0000
+      F1-score: 1.0000
+      Số ảnh truy xuất trung bình: 6.42
+    3_or_more_full:
+      Precision: 1.0000
+      Recall: 1.0000
+      F1-score: 1.0000
+      Số ảnh truy xuất trung bình: 1.75
+    4_or_more_full:
+      Precision: 1.0000
+      Recall: 1.0000
+      F1-score: 1.0000
+      Số ảnh truy xuất trung bình: 0.58
+    5_or_more_full:
+      Precision: 0.0000
+      Recall: 0.0000
+      F1-score: 0.0000
+      Số ảnh truy xuất trung bình: 0.00
+
+  Matching pairs:
+    Tổng số ảnh truy xuất: 1068
+    Số ảnh duy nhất: 404

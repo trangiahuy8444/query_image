@@ -1,0 +1,798 @@
+{
+  "paper-on-table": [
+    {
+      "image_id": 2376574,
+      "url": "data/vg_focused/images/2376574.jpg",
+      "relationships": [
+        "box -[on]-> table",
+        "laptop -[on]-> desk",
+        "laptop -[in front of]-> man",
+        "man -[in]-> chair",
+        "paper -[in]-> hand"
+      ]
+    }
+  ],
+  "laptop-on-table": [
+    {
+      "image_id": 2347993,
+      "url": "data/vg_focused/images/2347993.jpg",
+      "relationships": [
+        "book -[above]-> table",
+        "laptop -[on]-> table",
+        "phone -[on]-> table",
+        "phone -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2350591,
+      "url": "data/vg_focused/images/2350591.jpg",
+      "relationships": [
+        "book -[on]-> table",
+        "chair -[of]-> jacket",
+        "table -[of]-> book",
+        "lamp -[behind]-> flower",
+        "lamp -[with]-> light",
+        "jacket -[on back of]-> chair",
+        "laptop -[on]-> table",
+        "light -[has]-> vase",
+        "light -[has]-> table",
+        "light -[has]-> orange",
+        "vase -[with]-> flower",
+        "table -[has]-> laptop",
+        "orange -[on]-> table"
+      ]
+    },
+    {
+      "image_id": 2352352,
+      "url": "data/vg_focused/images/2352352.jpg",
+      "relationships": [
+        "cup -[in]-> handle",
+        "cup -[on]-> table",
+        "laptop -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2353879,
+      "url": "data/vg_focused/images/2353879.jpg",
+      "relationships": [
+        "laptop -[has]-> book",
+        "laptop -[sitting on]-> table",
+        "book -[on]-> table",
+        "book -[wears]-> door",
+        "table -[wearing]-> laptop"
+      ]
+    },
+    {
+      "image_id": 2355987,
+      "url": "data/vg_focused/images/2355987.jpg",
+      "relationships": [
+        "laptop -[on]-> desk",
+        "laptop -[on]-> table"
+      ]
+    },
+    {
+      "image_id": 2361132,
+      "url": "data/vg_focused/images/2361132.jpg",
+      "relationships": [
+        "box -[on]-> table",
+        "chair -[near]-> desk",
+        "laptop -[on]-> desk",
+        "lamp -[sitting on]-> desk",
+        "lamp -[near]-> bed",
+        "pillow -[on]-> bed",
+        "shelf -[near]-> bed",
+        "light -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2362922,
+      "url": "data/vg_focused/images/2362922.jpg",
+      "relationships": [
+        "cup -[on]-> table",
+        "laptop -[above]-> book",
+        "laptop -[sitting on]-> desk",
+        "phone -[on]-> desk",
+        "screen -[on]-> laptop"
+      ]
+    },
+    {
+      "image_id": 2369093,
+      "url": "data/vg_focused/images/2369093.jpg",
+      "relationships": [
+        "coat -[hanging from]-> chair",
+        "laptop -[on]-> desk",
+        "table -[behind]-> woman",
+        "woman -[wearing]-> jacket",
+        "woman -[looking at]-> laptop"
+      ]
+    },
+    {
+      "image_id": 2376574,
+      "url": "data/vg_focused/images/2376574.jpg",
+      "relationships": [
+        "box -[on]-> table",
+        "laptop -[on]-> desk",
+        "laptop -[in front of]-> man",
+        "man -[in]-> chair",
+        "paper -[in]-> hand"
+      ]
+    },
+    {
+      "image_id": 2382225,
+      "url": "data/vg_focused/images/2382225.jpg",
+      "relationships": [
+        "cabinet -[with]-> drawer",
+        "cup -[on]-> plate",
+        "laptop -[on]-> table",
+        "wire -[under]-> desk"
+      ]
+    },
+    {
+      "image_id": 2388645,
+      "url": "data/vg_focused/images/2388645.jpg",
+      "relationships": [
+        "book -[on]-> table",
+        "laptop -[on]-> desk",
+        "pillow -[on]-> bed"
+      ]
+    },
+    {
+      "image_id": 2402500,
+      "url": "data/vg_focused/images/2402500.jpg",
+      "relationships": [
+        "chair -[under]-> table",
+        "laptop -[above]-> desk",
+        "people -[using]-> laptop",
+        "person -[on]-> laptop"
+      ]
+    }
+  ],
+  "laptop-on-desk": [
+    {
+      "image_id": 1159285,
+      "url": "data/vg_focused/images/1159285.jpg",
+      "relationships": [
+        "bag -[attached to]-> board",
+        "laptop -[above]-> desk"
+      ]
+    },
+    {
+      "image_id": 1159805,
+      "url": "data/vg_focused/images/1159805.jpg",
+      "relationships": [
+        "glass -[on]-> desk",
+        "laptop -[sitting on]-> desk",
+        "wire -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 1159857,
+      "url": "data/vg_focused/images/1159857.jpg",
+      "relationships": [
+        "chair -[against]-> desk",
+        "laptop -[on]-> desk",
+        "man -[in]-> chair"
+      ]
+    },
+    {
+      "image_id": 2346670,
+      "url": "data/vg_focused/images/2346670.jpg",
+      "relationships": [
+        "cabinet -[of]-> desk",
+        "drawer -[of]-> desk",
+        "glass -[on]-> desk",
+        "handle -[to]-> window",
+        "laptop -[on]-> desk",
+        "paper -[and]-> book"
+      ]
+    },
+    {
+      "image_id": 2347557,
+      "url": "data/vg_focused/images/2347557.jpg",
+      "relationships": [
+        "laptop -[on]-> stand",
+        "lamp -[on]-> desk",
+        "laptop -[sitting on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2347993,
+      "url": "data/vg_focused/images/2347993.jpg",
+      "relationships": [
+        "book -[above]-> table",
+        "laptop -[on]-> table",
+        "phone -[on]-> table",
+        "phone -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2352352,
+      "url": "data/vg_focused/images/2352352.jpg",
+      "relationships": [
+        "cup -[in]-> handle",
+        "cup -[on]-> table",
+        "laptop -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2352548,
+      "url": "data/vg_focused/images/2352548.jpg",
+      "relationships": [
+        "laptop -[on]-> desk",
+        "screen -[on]-> laptop"
+      ]
+    },
+    {
+      "image_id": 2355861,
+      "url": "data/vg_focused/images/2355861.jpg",
+      "relationships": [
+        "desk -[from]-> hand",
+        "finger -[on]-> hand",
+        "finger -[in]-> laptop",
+        "hand -[on]-> desk",
+        "laptop -[on]-> desk",
+        "laptop -[on]-> boy"
+      ]
+    },
+    {
+      "image_id": 2355987,
+      "url": "data/vg_focused/images/2355987.jpg",
+      "relationships": [
+        "laptop -[on]-> desk",
+        "laptop -[on]-> table"
+      ]
+    },
+    {
+      "image_id": 2356099,
+      "url": "data/vg_focused/images/2356099.jpg",
+      "relationships": [
+        "laptop -[sitting on]-> desk",
+        "book -[sitting on]-> shelf",
+        "chair -[at]-> desk",
+        "drawer -[on]-> desk",
+        "window -[in]-> room"
+      ]
+    },
+    {
+      "image_id": 2357016,
+      "url": "data/vg_focused/images/2357016.jpg",
+      "relationships": [
+        "laptop -[on]-> desk",
+        "phone -[on]-> desk",
+        "shelf -[on]-> desk",
+        "window -[near]-> room"
+      ]
+    },
+    {
+      "image_id": 2361132,
+      "url": "data/vg_focused/images/2361132.jpg",
+      "relationships": [
+        "box -[on]-> table",
+        "chair -[near]-> desk",
+        "laptop -[on]-> desk",
+        "lamp -[sitting on]-> desk",
+        "lamp -[near]-> bed",
+        "pillow -[on]-> bed",
+        "shelf -[near]-> bed",
+        "light -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2362878,
+      "url": "data/vg_focused/images/2362878.jpg",
+      "relationships": [
+        "box -[on]-> desk",
+        "paper -[behind]-> laptop",
+        "people -[wearing]-> jacket",
+        "window -[near]-> desk"
+      ]
+    },
+    {
+      "image_id": 2362922,
+      "url": "data/vg_focused/images/2362922.jpg",
+      "relationships": [
+        "cup -[on]-> table",
+        "laptop -[above]-> book",
+        "laptop -[sitting on]-> desk",
+        "phone -[on]-> desk",
+        "screen -[on]-> laptop"
+      ]
+    },
+    {
+      "image_id": 2369093,
+      "url": "data/vg_focused/images/2369093.jpg",
+      "relationships": [
+        "coat -[hanging from]-> chair",
+        "laptop -[on]-> desk",
+        "table -[behind]-> woman",
+        "woman -[wearing]-> jacket",
+        "woman -[looking at]-> laptop"
+      ]
+    },
+    {
+      "image_id": 2369484,
+      "url": "data/vg_focused/images/2369484.jpg",
+      "relationships": [
+        "laptop -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2371792,
+      "url": "data/vg_focused/images/2371792.jpg",
+      "relationships": [
+        "basket -[wearing]-> tree",
+        "basket -[has]-> curtain",
+        "basket -[wearing]-> window",
+        "basket -[wearing]-> curtain",
+        "basket -[wearing]-> pot",
+        "basket -[on]-> desk",
+        "book -[on]-> hill",
+        "curtain -[on]-> street",
+        "pot -[sitting on]-> tree",
+        "laptop -[on]-> desk",
+        "flower -[in]-> basket"
+      ]
+    },
+    {
+      "image_id": 2372868,
+      "url": "data/vg_focused/images/2372868.jpg",
+      "relationships": [
+        "book -[on]-> desk",
+        "logo -[on]-> screen",
+        "screen -[on]-> laptop",
+        "paper -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2376421,
+      "url": "data/vg_focused/images/2376421.jpg",
+      "relationships": [
+        "book -[on]-> desk",
+        "cat -[lying on]-> laptop",
+        "desk -[under]-> laptop",
+        "phone -[near]-> paper"
+      ]
+    },
+    {
+      "image_id": 2376574,
+      "url": "data/vg_focused/images/2376574.jpg",
+      "relationships": [
+        "box -[on]-> table",
+        "laptop -[on]-> desk",
+        "laptop -[in front of]-> man",
+        "man -[in]-> chair",
+        "paper -[in]-> hand"
+      ]
+    },
+    {
+      "image_id": 2382225,
+      "url": "data/vg_focused/images/2382225.jpg",
+      "relationships": [
+        "cabinet -[with]-> drawer",
+        "cup -[on]-> plate",
+        "laptop -[on]-> table",
+        "wire -[under]-> desk"
+      ]
+    },
+    {
+      "image_id": 2384633,
+      "url": "data/vg_focused/images/2384633.jpg",
+      "relationships": [
+        "lamp -[on]-> desk",
+        "laptop -[on]-> desk",
+        "pillow -[on]-> chair"
+      ]
+    },
+    {
+      "image_id": 2387021,
+      "url": "data/vg_focused/images/2387021.jpg",
+      "relationships": [
+        "drawer -[on]-> desk",
+        "lamp -[above]-> desk",
+        "phone -[above]-> desk",
+        "screen -[of]-> laptop"
+      ]
+    },
+    {
+      "image_id": 2388645,
+      "url": "data/vg_focused/images/2388645.jpg",
+      "relationships": [
+        "book -[on]-> table",
+        "laptop -[on]-> desk",
+        "pillow -[on]-> bed"
+      ]
+    },
+    {
+      "image_id": 2397589,
+      "url": "data/vg_focused/images/2397589.jpg",
+      "relationships": [
+        "book -[on]-> desk",
+        "lamp -[on]-> desk",
+        "laptop -[on]-> desk",
+        "paper -[on]-> board",
+        "phone -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2401576,
+      "url": "data/vg_focused/images/2401576.jpg",
+      "relationships": [
+        "laptop -[sitting on]-> desk",
+        "screen -[of]-> laptop"
+      ]
+    },
+    {
+      "image_id": 2402500,
+      "url": "data/vg_focused/images/2402500.jpg",
+      "relationships": [
+        "chair -[under]-> table",
+        "laptop -[above]-> desk",
+        "people -[using]-> laptop",
+        "person -[on]-> laptop"
+      ]
+    },
+    {
+      "image_id": 2402928,
+      "url": "data/vg_focused/images/2402928.jpg",
+      "relationships": [
+        "lamp -[over]-> desk",
+        "lamp -[has]-> head",
+        "laptop -[sitting on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2405480,
+      "url": "data/vg_focused/images/2405480.jpg",
+      "relationships": [
+        "glass -[on]-> face",
+        "lamp -[on]-> desk",
+        "man -[sitting on]-> chair",
+        "man -[with]-> glass",
+        "man -[using]-> laptop"
+      ]
+    }
+  ],
+  "chair-near-table": [
+    {
+      "image_id": 2346904,
+      "url": "data/vg_focused/images/2346904.jpg",
+      "relationships": [
+        "book -[above]-> shelf",
+        "chair -[in front of]-> desk",
+        "lamp -[near]-> bed",
+        "window -[in]-> room",
+        "screen -[on]-> desk",
+        "light -[near]-> table"
+      ]
+    },
+    {
+      "image_id": 2350591,
+      "url": "data/vg_focused/images/2350591.jpg",
+      "relationships": [
+        "book -[on]-> table",
+        "chair -[of]-> jacket",
+        "table -[of]-> book",
+        "lamp -[behind]-> flower",
+        "lamp -[with]-> light",
+        "jacket -[on back of]-> chair",
+        "laptop -[on]-> table",
+        "light -[has]-> vase",
+        "light -[has]-> table",
+        "light -[has]-> orange",
+        "vase -[with]-> flower",
+        "table -[has]-> laptop",
+        "orange -[on]-> table"
+      ]
+    },
+    {
+      "image_id": 2356084,
+      "url": "data/vg_focused/images/2356084.jpg",
+      "relationships": [
+        "bottle -[near]-> sign",
+        "bottle -[on]-> table",
+        "desk -[wearing]-> street",
+        "dog -[on]-> window",
+        "dog -[for]-> person",
+        "head -[has]-> truck",
+        "head -[of]-> dog",
+        "head -[standing on]-> leg",
+        "leg -[on]-> window",
+        "leg -[on]-> chair",
+        "leg -[on]-> sign",
+        "leg -[under]-> table",
+        "leg -[wears]-> table",
+        "man -[holding]-> umbrella",
+        "sign -[behind]-> desk",
+        "sign -[on]-> man",
+        "sign -[over]-> man",
+        "umbrella -[has]-> chair",
+        "table -[of]-> umbrella",
+        "table -[on]-> eye",
+        "chair -[of]-> man"
+      ]
+    },
+    {
+      "image_id": 2361132,
+      "url": "data/vg_focused/images/2361132.jpg",
+      "relationships": [
+        "box -[on]-> table",
+        "chair -[near]-> desk",
+        "laptop -[on]-> desk",
+        "lamp -[sitting on]-> desk",
+        "lamp -[near]-> bed",
+        "pillow -[on]-> bed",
+        "shelf -[near]-> bed",
+        "light -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2369093,
+      "url": "data/vg_focused/images/2369093.jpg",
+      "relationships": [
+        "coat -[hanging from]-> chair",
+        "laptop -[on]-> desk",
+        "table -[behind]-> woman",
+        "woman -[wearing]-> jacket",
+        "woman -[looking at]-> laptop"
+      ]
+    },
+    {
+      "image_id": 2376574,
+      "url": "data/vg_focused/images/2376574.jpg",
+      "relationships": [
+        "box -[on]-> table",
+        "laptop -[on]-> desk",
+        "laptop -[in front of]-> man",
+        "man -[in]-> chair",
+        "paper -[in]-> hand"
+      ]
+    },
+    {
+      "image_id": 2388933,
+      "url": "data/vg_focused/images/2388933.jpg",
+      "relationships": [
+        "glass -[on]-> table",
+        "leaf -[on]-> pizza",
+        "pizza -[on]-> plate",
+        "table -[and]-> chair"
+      ]
+    },
+    {
+      "image_id": 2402500,
+      "url": "data/vg_focused/images/2402500.jpg",
+      "relationships": [
+        "chair -[under]-> table",
+        "laptop -[above]-> desk",
+        "people -[using]-> laptop",
+        "person -[on]-> laptop"
+      ]
+    }
+  ],
+  "chair-near-desk": [
+    {
+      "image_id": 1159857,
+      "url": "data/vg_focused/images/1159857.jpg",
+      "relationships": [
+        "chair -[against]-> desk",
+        "laptop -[on]-> desk",
+        "man -[in]-> chair"
+      ]
+    },
+    {
+      "image_id": 2346904,
+      "url": "data/vg_focused/images/2346904.jpg",
+      "relationships": [
+        "book -[above]-> shelf",
+        "chair -[in front of]-> desk",
+        "lamp -[near]-> bed",
+        "window -[in]-> room",
+        "screen -[on]-> desk",
+        "light -[near]-> table"
+      ]
+    },
+    {
+      "image_id": 2356084,
+      "url": "data/vg_focused/images/2356084.jpg",
+      "relationships": [
+        "bottle -[near]-> sign",
+        "bottle -[on]-> table",
+        "desk -[wearing]-> street",
+        "dog -[on]-> window",
+        "dog -[for]-> person",
+        "head -[has]-> truck",
+        "head -[of]-> dog",
+        "head -[standing on]-> leg",
+        "leg -[on]-> window",
+        "leg -[on]-> chair",
+        "leg -[on]-> sign",
+        "leg -[under]-> table",
+        "leg -[wears]-> table",
+        "man -[holding]-> umbrella",
+        "sign -[behind]-> desk",
+        "sign -[on]-> man",
+        "sign -[over]-> man",
+        "umbrella -[has]-> chair",
+        "table -[of]-> umbrella",
+        "table -[on]-> eye",
+        "chair -[of]-> man"
+      ]
+    },
+    {
+      "image_id": 2356099,
+      "url": "data/vg_focused/images/2356099.jpg",
+      "relationships": [
+        "laptop -[sitting on]-> desk",
+        "book -[sitting on]-> shelf",
+        "chair -[at]-> desk",
+        "drawer -[on]-> desk",
+        "window -[in]-> room"
+      ]
+    },
+    {
+      "image_id": 2361132,
+      "url": "data/vg_focused/images/2361132.jpg",
+      "relationships": [
+        "box -[on]-> table",
+        "chair -[near]-> desk",
+        "laptop -[on]-> desk",
+        "lamp -[sitting on]-> desk",
+        "lamp -[near]-> bed",
+        "pillow -[on]-> bed",
+        "shelf -[near]-> bed",
+        "light -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2369093,
+      "url": "data/vg_focused/images/2369093.jpg",
+      "relationships": [
+        "coat -[hanging from]-> chair",
+        "laptop -[on]-> desk",
+        "table -[behind]-> woman",
+        "woman -[wearing]-> jacket",
+        "woman -[looking at]-> laptop"
+      ]
+    },
+    {
+      "image_id": 2376574,
+      "url": "data/vg_focused/images/2376574.jpg",
+      "relationships": [
+        "box -[on]-> table",
+        "laptop -[on]-> desk",
+        "laptop -[in front of]-> man",
+        "man -[in]-> chair",
+        "paper -[in]-> hand"
+      ]
+    },
+    {
+      "image_id": 2384633,
+      "url": "data/vg_focused/images/2384633.jpg",
+      "relationships": [
+        "lamp -[on]-> desk",
+        "laptop -[on]-> desk",
+        "pillow -[on]-> chair"
+      ]
+    },
+    {
+      "image_id": 2402500,
+      "url": "data/vg_focused/images/2402500.jpg",
+      "relationships": [
+        "chair -[under]-> table",
+        "laptop -[above]-> desk",
+        "people -[using]-> laptop",
+        "person -[on]-> laptop"
+      ]
+    },
+    {
+      "image_id": 2405480,
+      "url": "data/vg_focused/images/2405480.jpg",
+      "relationships": [
+        "glass -[on]-> face",
+        "lamp -[on]-> desk",
+        "man -[sitting on]-> chair",
+        "man -[with]-> glass",
+        "man -[using]-> laptop"
+      ]
+    }
+  ],
+  "glass-on-desk": [
+    {
+      "image_id": 1159805,
+      "url": "data/vg_focused/images/1159805.jpg",
+      "relationships": [
+        "glass -[on]-> desk",
+        "laptop -[sitting on]-> desk",
+        "wire -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2346670,
+      "url": "data/vg_focused/images/2346670.jpg",
+      "relationships": [
+        "cabinet -[of]-> desk",
+        "drawer -[of]-> desk",
+        "glass -[on]-> desk",
+        "handle -[to]-> window",
+        "laptop -[on]-> desk",
+        "paper -[and]-> book"
+      ]
+    },
+    {
+      "image_id": 2405480,
+      "url": "data/vg_focused/images/2405480.jpg",
+      "relationships": [
+        "glass -[on]-> face",
+        "lamp -[on]-> desk",
+        "man -[sitting on]-> chair",
+        "man -[with]-> glass",
+        "man -[using]-> laptop"
+      ]
+    }
+  ],
+  "paper-on-desk": [
+    {
+      "image_id": 2346670,
+      "url": "data/vg_focused/images/2346670.jpg",
+      "relationships": [
+        "cabinet -[of]-> desk",
+        "drawer -[of]-> desk",
+        "glass -[on]-> desk",
+        "handle -[to]-> window",
+        "laptop -[on]-> desk",
+        "paper -[and]-> book"
+      ]
+    },
+    {
+      "image_id": 2362878,
+      "url": "data/vg_focused/images/2362878.jpg",
+      "relationships": [
+        "box -[on]-> desk",
+        "paper -[behind]-> laptop",
+        "people -[wearing]-> jacket",
+        "window -[near]-> desk"
+      ]
+    },
+    {
+      "image_id": 2372868,
+      "url": "data/vg_focused/images/2372868.jpg",
+      "relationships": [
+        "book -[on]-> desk",
+        "logo -[on]-> screen",
+        "screen -[on]-> laptop",
+        "paper -[on]-> desk"
+      ]
+    },
+    {
+      "image_id": 2376421,
+      "url": "data/vg_focused/images/2376421.jpg",
+      "relationships": [
+        "book -[on]-> desk",
+        "cat -[lying on]-> laptop",
+        "desk -[under]-> laptop",
+        "phone -[near]-> paper"
+      ]
+    },
+    {
+      "image_id": 2376574,
+      "url": "data/vg_focused/images/2376574.jpg",
+      "relationships": [
+        "box -[on]-> table",
+        "laptop -[on]-> desk",
+        "laptop -[in front of]-> man",
+        "man -[in]-> chair",
+        "paper -[in]-> hand"
+      ]
+    },
+    {
+      "image_id": 2397589,
+      "url": "data/vg_focused/images/2397589.jpg",
+      "relationships": [
+        "book -[on]-> desk",
+        "lamp -[on]-> desk",
+        "laptop -[on]-> desk",
+        "paper -[on]-> board",
+        "phone -[on]-> desk"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,211 @@
+{
+  "clock-on-tower": [
+    {
+      "image_id": 1159328,
+      "url": "data/vg_focused/images/1159328.jpg",
+      "relationships": [
+        "building -[has]-> roof",
+        "clock -[on]-> tower",
+        "letter -[on]-> sign",
+        "man -[wearing]-> coat",
+        "man -[walking on]-> street",
+        "sign -[attached to]-> building",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2346280,
+      "url": "data/vg_focused/images/2346280.jpg",
+      "relationships": [
+        "building -[holding]-> flower",
+        "clock -[wearing]-> tower",
+        "clock -[on]-> tower",
+        "door -[behind]-> plant",
+        "door -[in]-> building",
+        "window -[on]-> shirt",
+        "window -[of]-> building"
+      ]
+    },
+    {
+      "image_id": 2353072,
+      "url": "data/vg_focused/images/2353072.jpg",
+      "relationships": [
+        "building -[near]-> tower",
+        "clock -[on]-> tower"
+      ]
+    },
+    {
+      "image_id": 2369107,
+      "url": "data/vg_focused/images/2369107.jpg",
+      "relationships": [
+        "bench -[in]-> building",
+        "clock -[on]-> tower",
+        "post -[under]-> building",
+        "roof -[on]-> building",
+        "tree -[behind]-> tower"
+      ]
+    },
+    {
+      "image_id": 2369299,
+      "url": "data/vg_focused/images/2369299.jpg",
+      "relationships": [
+        "clock -[on]-> tower",
+        "hand -[on]-> clock",
+        "window -[on]-> tower"
+      ]
+    },
+    {
+      "image_id": 2379260,
+      "url": "data/vg_focused/images/2379260.jpg",
+      "relationships": [
+        "face -[on]-> clock",
+        "hand -[on]-> clock",
+        "light -[on]-> tower",
+        "wire -[near]-> clock"
+      ]
+    },
+    {
+      "image_id": 2391251,
+      "url": "data/vg_focused/images/2391251.jpg",
+      "relationships": [
+        "building -[has]-> roof",
+        "tower -[has]-> roof",
+        "window -[above]-> clock"
+      ]
+    },
+    {
+      "image_id": 2391641,
+      "url": "data/vg_focused/images/2391641.jpg",
+      "relationships": [
+        "clock -[with]-> tower",
+        "roof -[of]-> building",
+        "wire -[on]-> building"
+      ]
+    },
+    {
+      "image_id": 2395592,
+      "url": "data/vg_focused/images/2395592.jpg",
+      "relationships": [
+        "clock -[on]-> tower",
+        "window -[of]-> building"
+      ]
+    },
+    {
+      "image_id": 2397030,
+      "url": "data/vg_focused/images/2397030.jpg",
+      "relationships": [
+        "clock -[in]-> tower",
+        "roof -[of]-> tower",
+        "tower -[on]-> building"
+      ]
+    }
+  ],
+  "hand-on-clock": [
+    {
+      "image_id": 2348303,
+      "url": "data/vg_focused/images/2348303.jpg",
+      "relationships": [
+        "building -[has]-> clock",
+        "building -[on]-> hand",
+        "clock -[on]-> hand",
+        "clock -[has]-> number",
+        "hand -[on]-> clock",
+        "hand -[has]-> beach",
+        "number -[on]-> hand",
+        "window -[under]-> clock",
+        "window -[on]-> hand"
+      ]
+    },
+    {
+      "image_id": 2369299,
+      "url": "data/vg_focused/images/2369299.jpg",
+      "relationships": [
+        "clock -[on]-> tower",
+        "hand -[on]-> clock",
+        "window -[on]-> tower"
+      ]
+    },
+    {
+      "image_id": 2369416,
+      "url": "data/vg_focused/images/2369416.jpg",
+      "relationships": [
+        "book -[on]-> umbrella",
+        "book -[sitting on]-> shelf",
+        "hand -[on]-> clock",
+        "hand -[on]-> railing",
+        "post -[in front of]-> book",
+        "post -[of]-> clock",
+        "railing -[behind]-> clock",
+        "shelf -[on]-> hand"
+      ]
+    },
+    {
+      "image_id": 2379260,
+      "url": "data/vg_focused/images/2379260.jpg",
+      "relationships": [
+        "face -[on]-> clock",
+        "hand -[on]-> clock",
+        "light -[on]-> tower",
+        "wire -[near]-> clock"
+      ]
+    }
+  ],
+  "face-has-hand": [
+    {
+      "image_id": 2351681,
+      "url": "data/vg_focused/images/2351681.jpg",
+      "relationships": [
+        "face -[of]-> elephant",
+        "face -[has]-> nose",
+        "girl -[has]-> finger",
+        "nose -[wearing]-> girl",
+        "nose -[wearing]-> head",
+        "hand -[has]-> finger",
+        "hand -[on]-> nose"
+      ]
+    },
+    {
+      "image_id": 2368933,
+      "url": "data/vg_focused/images/2368933.jpg",
+      "relationships": [
+        "ear -[on]-> vehicle",
+        "eye -[wearing]-> face",
+        "face -[on]-> window",
+        "hand -[has]-> finger"
+      ]
+    },
+    {
+      "image_id": 2379260,
+      "url": "data/vg_focused/images/2379260.jpg",
+      "relationships": [
+        "face -[on]-> clock",
+        "hand -[on]-> clock",
+        "light -[on]-> tower",
+        "wire -[near]-> clock"
+      ]
+    },
+    {
+      "image_id": 2383872,
+      "url": "data/vg_focused/images/2383872.jpg",
+      "relationships": [
+        "face -[of]-> woman",
+        "hand -[holding]-> racket",
+        "racket -[has]-> head",
+        "woman -[has]-> arm"
+      ]
+    },
+    {
+      "image_id": 2385193,
+      "url": "data/vg_focused/images/2385193.jpg",
+      "relationships": [
+        "elephant -[has]-> ear",
+        "elephant -[has]-> trunk",
+        "person -[in front of]-> car",
+        "person -[near]-> elephant",
+        "person -[has]-> face",
+        "person -[has]-> hand",
+        "person -[has]-> head"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+Xử lý ảnh: ./data/vg_focused/images/2358401.jpg
+Thời gian dự đoán: 26.62 giây
+Số lượng dự đoán: 10
+Tổng số ảnh duy nhất được truy vấn: 25
+Kết quả truy vấn theo cặp: {
+  "1_or_more": 25,
+  "2_or_more": 15,
+  "3_or_more": 8,
+  "4_or_more": 0,
+  "5_or_more": 0
+}
+Kết quả truy vấn theo bộ ba: {
+  "1_or_more_full": 23,
+  "2_or_more_full": 9,
+  "3_or_more_full": 0,
+  "4_or_more_full": 0,
+  "5_or_more_full": 0
+}
+Kết quả matching pairs: {
+  "sign-on-bus": 16,
+  "bus-on-street": 12,
+  "bus-has-tire": 11,
+  "window-on-bus": 24,
+  "car-behind-bus": 3,
+  "windshield-on-bus": 9,
+  "bus-has-window": 24,
+  "bus-has-sign": 16
+}
+Kết quả đánh giá mô hình:
+  pairs_1_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_2_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_3_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_4_or_more:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  pairs_5_or_more:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  full_triples_1_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_2_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_3_or_more_full:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  full_triples_4_or_more_full:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  full_triples_5_or_more_full:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000

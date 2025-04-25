@@ -1,0 +1,281 @@
+{
+  "1_or_more_full": [
+    {
+      "image_id": 2375059,
+      "matching_triples": 2,
+      "total_triples": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "player -[wearing]-> helmet",
+        "player -[wearing]-> pant"
+      ]
+    },
+    {
+      "image_id": 2362708,
+      "matching_triples": 1,
+      "total_triples": 2,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "man -[wearing]-> shirt",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2345359,
+      "matching_triples": 2,
+      "total_triples": 5,
+      "matching_percentage": 40.0,
+      "relationships": [
+        "helmet -[near]-> person",
+        "number -[on]-> person",
+        "number -[on]-> shirt",
+        "player -[holding]-> glove",
+        "player -[wearing]-> helmet"
+      ]
+    },
+    {
+      "image_id": 1593213,
+      "matching_triples": 1,
+      "total_triples": 3,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "helmet -[on]-> head",
+        "horse -[has]-> head",
+        "man -[has]-> helmet"
+      ]
+    },
+    {
+      "image_id": 2405920,
+      "matching_triples": 1,
+      "total_triples": 3,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "logo -[on]-> table",
+        "player -[wearing]-> pant",
+        "player -[has]-> logo"
+      ]
+    },
+    {
+      "image_id": 2375466,
+      "matching_triples": 2,
+      "total_triples": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "man -[wearing]-> glove",
+        "man -[in]-> snow",
+        "man -[wearing]-> pant",
+        "man -[wearing]-> shirt",
+        "snow -[on]-> snow",
+        "tree -[behind]-> man",
+        "skier -[wearing]-> jacket"
+      ]
+    },
+    {
+      "image_id": 2347211,
+      "matching_triples": 1,
+      "total_triples": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "man -[wearing]-> shirt",
+        "man -[wearing]-> hat",
+        "mouth -[belonging to]-> horse",
+        "nose -[belonging to]-> horse"
+      ]
+    },
+    {
+      "image_id": 2351049,
+      "matching_triples": 1,
+      "total_triples": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "man -[wearing]-> shirt",
+        "man -[in]-> racket",
+        "man -[with]-> short",
+        "man -[wears]-> sock"
+      ]
+    },
+    {
+      "image_id": 2403422,
+      "matching_triples": 2,
+      "total_triples": 9,
+      "matching_percentage": 22.22,
+      "relationships": [
+        "basket -[near]-> lady",
+        "flag -[on]-> fence",
+        "lady -[watching]-> man",
+        "lady -[in]-> hat",
+        "man -[wearing]-> cap",
+        "man -[holding]-> racket",
+        "man -[in]-> chair",
+        "man -[wearing]-> pant",
+        "man -[wearing]-> shirt"
+      ]
+    },
+    {
+      "image_id": 2345576,
+      "matching_triples": 1,
+      "total_triples": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "glove -[in]-> glove",
+        "man -[on]-> basket",
+        "man -[wearing]-> glove",
+        "man -[wearing]-> shirt",
+        "shirt -[near]-> shirt"
+      ]
+    },
+    {
+      "image_id": 2374196,
+      "matching_triples": 1,
+      "total_triples": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "man -[wearing]-> shirt",
+        "man -[wearing]-> short",
+        "hand -[holding]-> racket",
+        "sock -[on]-> leg",
+        "hair -[on]-> man"
+      ]
+    },
+    {
+      "image_id": 2386101,
+      "matching_triples": 1,
+      "total_triples": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "bus -[in front of]-> man",
+        "man -[wearing]-> pant",
+        "sign -[on]-> pole",
+        "tree -[in front of]-> building",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2362520,
+      "matching_triples": 1,
+      "total_triples": 6,
+      "matching_percentage": 16.67,
+      "relationships": [
+        "track -[in]-> snow",
+        "man -[wearing]-> pant",
+        "man -[has]-> ski",
+        "people -[over]-> snow",
+        "skier -[in]-> snow",
+        "sign -[behind]-> people"
+      ]
+    },
+    {
+      "image_id": 2373765,
+      "matching_triples": 1,
+      "total_triples": 6,
+      "matching_percentage": 16.67,
+      "relationships": [
+        "bowl -[has]-> snow",
+        "helmet -[on]-> head",
+        "man -[has]-> arm",
+        "man -[wearing]-> jacket",
+        "man -[has]-> leg",
+        "skier -[wearing]-> pant"
+      ]
+    },
+    {
+      "image_id": 2350600,
+      "matching_triples": 1,
+      "total_triples": 7,
+      "matching_percentage": 14.29,
+      "relationships": [
+        "fence -[on]-> cat",
+        "hair -[on]-> head",
+        "head -[of]-> hair",
+        "man -[wearing]-> shirt",
+        "short -[of]-> man",
+        "sign -[on]-> fence",
+        "sign -[of]-> shirt"
+      ]
+    },
+    {
+      "image_id": 2347596,
+      "matching_triples": 1,
+      "total_triples": 16,
+      "matching_percentage": 6.25,
+      "relationships": [
+        "boy -[with]-> arm",
+        "boy -[wears]-> hat",
+        "boy -[wearing]-> pant",
+        "boy -[wears]-> sock",
+        "shoe -[of]-> boy",
+        "head -[of]-> boy",
+        "leg -[of]-> boy",
+        "leg -[carrying]-> number",
+        "number -[on]-> shirt",
+        "pant -[of]-> shirt",
+        "sock -[on]-> sock",
+        "boy -[sitting on]-> laptop",
+        "man -[wearing]-> sock",
+        "sock -[with]-> man",
+        "sock -[covering]-> woman",
+        "sock -[holding]-> jean"
+      ]
+    }
+  ],
+  "2_or_more_full": [
+    {
+      "image_id": 2375059,
+      "matching_triples": 2,
+      "total_triples": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "player -[wearing]-> helmet",
+        "player -[wearing]-> pant"
+      ]
+    },
+    {
+      "image_id": 2345359,
+      "matching_triples": 2,
+      "total_triples": 5,
+      "matching_percentage": 40.0,
+      "relationships": [
+        "helmet -[near]-> person",
+        "number -[on]-> person",
+        "number -[on]-> shirt",
+        "player -[holding]-> glove",
+        "player -[wearing]-> helmet"
+      ]
+    },
+    {
+      "image_id": 2375466,
+      "matching_triples": 2,
+      "total_triples": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "man -[wearing]-> glove",
+        "man -[in]-> snow",
+        "man -[wearing]-> pant",
+        "man -[wearing]-> shirt",
+        "snow -[on]-> snow",
+        "tree -[behind]-> man",
+        "skier -[wearing]-> jacket"
+      ]
+    },
+    {
+      "image_id": 2403422,
+      "matching_triples": 2,
+      "total_triples": 9,
+      "matching_percentage": 22.22,
+      "relationships": [
+        "basket -[near]-> lady",
+        "flag -[on]-> fence",
+        "lady -[watching]-> man",
+        "lady -[in]-> hat",
+        "man -[wearing]-> cap",
+        "man -[holding]-> racket",
+        "man -[in]-> chair",
+        "man -[wearing]-> pant",
+        "man -[wearing]-> shirt"
+      ]
+    }
+  ],
+  "3_or_more_full": [],
+  "4_or_more_full": [],
+  "5_or_more_full": []
+}

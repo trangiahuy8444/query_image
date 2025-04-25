@@ -1,0 +1,161 @@
+{
+  "1_or_more": [
+    {
+      "image_id": 2369299,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "clock -[on]-> tower",
+        "hand -[on]-> clock",
+        "window -[on]-> tower"
+      ]
+    },
+    {
+      "image_id": 2353072,
+      "matching_pairs": 1,
+      "total_pairs": 2,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "building -[near]-> tower",
+        "clock -[on]-> tower"
+      ]
+    },
+    {
+      "image_id": 2395592,
+      "matching_pairs": 1,
+      "total_pairs": 2,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "clock -[on]-> tower",
+        "window -[of]-> building"
+      ]
+    },
+    {
+      "image_id": 2391641,
+      "matching_pairs": 1,
+      "total_pairs": 3,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "clock -[with]-> tower",
+        "roof -[of]-> building",
+        "wire -[on]-> building"
+      ]
+    },
+    {
+      "image_id": 2397030,
+      "matching_pairs": 1,
+      "total_pairs": 3,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "clock -[in]-> tower",
+        "roof -[of]-> tower",
+        "tower -[on]-> building"
+      ]
+    },
+    {
+      "image_id": 2379260,
+      "matching_pairs": 1,
+      "total_pairs": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "face -[on]-> clock",
+        "hand -[on]-> clock",
+        "light -[on]-> tower",
+        "wire -[near]-> clock"
+      ]
+    },
+    {
+      "image_id": 2369107,
+      "matching_pairs": 1,
+      "total_pairs": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "bench -[in]-> building",
+        "clock -[on]-> tower",
+        "post -[under]-> building",
+        "roof -[on]-> building",
+        "tree -[behind]-> tower"
+      ]
+    },
+    {
+      "image_id": 2346280,
+      "matching_pairs": 1,
+      "total_pairs": 6,
+      "matching_percentage": 16.67,
+      "relationships": [
+        "building -[holding]-> flower",
+        "clock -[wearing]-> tower",
+        "clock -[on]-> tower",
+        "door -[behind]-> plant",
+        "door -[in]-> building",
+        "window -[on]-> shirt",
+        "window -[of]-> building"
+      ]
+    },
+    {
+      "image_id": 1159328,
+      "matching_pairs": 1,
+      "total_pairs": 7,
+      "matching_percentage": 14.29,
+      "relationships": [
+        "building -[has]-> roof",
+        "clock -[on]-> tower",
+        "letter -[on]-> sign",
+        "man -[wearing]-> coat",
+        "man -[walking on]-> street",
+        "sign -[attached to]-> building",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2369416,
+      "matching_pairs": 1,
+      "total_pairs": 8,
+      "matching_percentage": 12.5,
+      "relationships": [
+        "book -[on]-> umbrella",
+        "book -[sitting on]-> shelf",
+        "hand -[on]-> clock",
+        "hand -[on]-> railing",
+        "post -[in front of]-> book",
+        "post -[of]-> clock",
+        "railing -[behind]-> clock",
+        "shelf -[on]-> hand"
+      ]
+    },
+    {
+      "image_id": 2348303,
+      "matching_pairs": 1,
+      "total_pairs": 9,
+      "matching_percentage": 11.11,
+      "relationships": [
+        "building -[has]-> clock",
+        "building -[on]-> hand",
+        "clock -[on]-> hand",
+        "clock -[has]-> number",
+        "hand -[on]-> clock",
+        "hand -[has]-> beach",
+        "number -[on]-> hand",
+        "window -[under]-> clock",
+        "window -[on]-> hand"
+      ]
+    }
+  ],
+  "2_or_more": [
+    {
+      "image_id": 2369299,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "clock -[on]-> tower",
+        "hand -[on]-> clock",
+        "window -[on]-> tower"
+      ]
+    }
+  ],
+  "3_or_more": [],
+  "4_or_more": [],
+  "5_or_more": []
+}

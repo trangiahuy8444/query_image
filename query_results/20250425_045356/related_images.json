@@ -1,0 +1,798 @@
+{
+  "1_or_more": [
+    {
+      "image_id": 2345189,
+      "matching_pairs": 3,
+      "total_pairs": 3,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "plane -[on]-> tail",
+        "nose -[of]-> plane",
+        "wing -[on]-> plane"
+      ]
+    },
+    {
+      "image_id": 2392214,
+      "matching_pairs": 3,
+      "total_pairs": 3,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "engine -[of]-> plane",
+        "tail -[of]-> plane",
+        "wing -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2393490,
+      "matching_pairs": 3,
+      "total_pairs": 3,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "engine -[of]-> plane",
+        "tail -[of]-> plane",
+        "wing -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2406216,
+      "matching_pairs": 3,
+      "total_pairs": 3,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "nose -[of]-> plane",
+        "tail -[of]-> plane",
+        "wing -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2345360,
+      "matching_pairs": 2,
+      "total_pairs": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "nose -[of]-> plane",
+        "plane -[has]-> wing"
+      ]
+    },
+    {
+      "image_id": 2370124,
+      "matching_pairs": 2,
+      "total_pairs": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "plane -[has]-> wing",
+        "tail -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2374814,
+      "matching_pairs": 2,
+      "total_pairs": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "tail -[on]-> plane",
+        "wing -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2381693,
+      "matching_pairs": 2,
+      "total_pairs": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "plane -[has]-> wing",
+        "tail -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2344849,
+      "matching_pairs": 1,
+      "total_pairs": 1,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "plane -[has]-> wing"
+      ]
+    },
+    {
+      "image_id": 2359826,
+      "matching_pairs": 1,
+      "total_pairs": 1,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "wing -[on]-> plane"
+      ]
+    },
+    {
+      "image_id": 2404171,
+      "matching_pairs": 4,
+      "total_pairs": 5,
+      "matching_percentage": 80.0,
+      "relationships": [
+        "building -[behind]-> plane",
+        "plane -[has]-> wheel",
+        "plane -[has]-> tail",
+        "plane -[has]-> engine",
+        "plane -[has]-> wing"
+      ]
+    },
+    {
+      "image_id": 2411144,
+      "matching_pairs": 4,
+      "total_pairs": 5,
+      "matching_percentage": 80.0,
+      "relationships": [
+        "door -[of]-> plane",
+        "plane -[has]-> engine",
+        "plane -[with]-> logo",
+        "plane -[has]-> tail",
+        "plane -[with]-> wheel"
+      ]
+    },
+    {
+      "image_id": 2345996,
+      "matching_pairs": 3,
+      "total_pairs": 4,
+      "matching_percentage": 75.0,
+      "relationships": [
+        "plane -[has]-> wing",
+        "nose -[on]-> plane",
+        "tail -[of]-> plane",
+        "wheel -[on]-> plane"
+      ]
+    },
+    {
+      "image_id": 2378948,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "door -[near]-> plane",
+        "engine -[hanging from]-> wing",
+        "tail -[on back of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2391085,
+      "matching_pairs": 3,
+      "total_pairs": 6,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "nose -[of]-> plane",
+        "plane -[has]-> wheel",
+        "tail -[of]-> plane",
+        "window -[attached to]-> plane",
+        "windshield -[on]-> plane",
+        "wing -[of]-> airplane"
+      ]
+    },
+    {
+      "image_id": 2354125,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "engine -[near]-> plane",
+        "nose -[of]-> plane",
+        "windshield -[on]-> plane",
+        "window -[near]-> plane"
+      ]
+    },
+    {
+      "image_id": 2360860,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "building -[near]-> plane",
+        "tail -[of]-> plane",
+        "window -[of]-> plane",
+        "wing -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2379670,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "engine -[under]-> wing",
+        "logo -[on]-> tail",
+        "tail -[in]-> plane",
+        "wing -[in]-> plane"
+      ]
+    },
+    {
+      "image_id": 2399747,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "plane -[has]-> nose",
+        "plane -[has]-> tail",
+        "plane -[has]-> wing",
+        "truck -[near]-> plane"
+      ]
+    },
+    {
+      "image_id": 2411179,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "engine -[on]-> wing",
+        "nose -[of]-> plane",
+        "tail -[of]-> plane",
+        "wheel -[under]-> plane"
+      ]
+    },
+    {
+      "image_id": 2372928,
+      "matching_pairs": 1,
+      "total_pairs": 2,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "nose -[of]-> plane",
+        "snow -[on]-> mountain"
+      ]
+    },
+    {
+      "image_id": 2373217,
+      "matching_pairs": 1,
+      "total_pairs": 2,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "nose -[on]-> plane",
+        "plane -[has]-> window"
+      ]
+    },
+    {
+      "image_id": 2386937,
+      "matching_pairs": 1,
+      "total_pairs": 3,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "wing -[of]-> plane",
+        "tail -[of]-> airplane",
+        "wheel -[on]-> plane"
+      ]
+    },
+    {
+      "image_id": 2369661,
+      "matching_pairs": 2,
+      "total_pairs": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "engine -[under]-> wing",
+        "engine -[for]-> plane",
+        "tail -[of]-> airplane",
+        "tree -[behind]-> airplane",
+        "window -[near]-> plane",
+        "logo -[on]-> airplane",
+        "door -[near]-> plane"
+      ]
+    },
+    {
+      "image_id": 2346657,
+      "matching_pairs": 1,
+      "total_pairs": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "flag -[on]-> plane",
+        "leaf -[on]-> plane",
+        "nose -[of]-> plane",
+        "window -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2353965,
+      "matching_pairs": 1,
+      "total_pairs": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "plane -[on]-> street",
+        "plane -[of]-> plate",
+        "tail -[of]-> plane",
+        "tail -[of]-> plate"
+      ]
+    },
+    {
+      "image_id": 2354871,
+      "matching_pairs": 1,
+      "total_pairs": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "window -[on]-> plane",
+        "wing -[of]-> plane",
+        "wing -[of]-> window",
+        "wing -[on]-> bowl"
+      ]
+    },
+    {
+      "image_id": 2391325,
+      "matching_pairs": 1,
+      "total_pairs": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "pole -[between]-> wing",
+        "tail -[on]-> plane",
+        "wheel -[under]-> plane",
+        "person -[in]-> plane"
+      ]
+    },
+    {
+      "image_id": 2353205,
+      "matching_pairs": 3,
+      "total_pairs": 15,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "box -[on]-> engine",
+        "engine -[has]-> sign",
+        "engine -[on]-> box",
+        "engine -[wearing]-> number",
+        "number -[on]-> box",
+        "number -[above]-> wheel",
+        "plane -[has]-> engine",
+        "plane -[has]-> wheel",
+        "plane -[has]-> wing",
+        "wheel -[wearing]-> plane",
+        "wheel -[wearing]-> wing",
+        "wing -[has]-> bag",
+        "wing -[has]-> bench",
+        "wing -[has]-> girl",
+        "wing -[has]-> hair"
+      ]
+    },
+    {
+      "image_id": 2351129,
+      "matching_pairs": 1,
+      "total_pairs": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "engine -[on]-> plane",
+        "logo -[on]-> tail",
+        "tail -[with]-> flower",
+        "window -[along]-> airplane",
+        "truck -[near]-> plane"
+      ]
+    },
+    {
+      "image_id": 2355945,
+      "matching_pairs": 1,
+      "total_pairs": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "man -[riding]-> motorcycle",
+        "number -[near]-> plane",
+        "tail -[on]-> plane",
+        "wheel -[on]-> plane",
+        "person -[wearing]-> jacket"
+      ]
+    },
+    {
+      "image_id": 2361161,
+      "matching_pairs": 1,
+      "total_pairs": 6,
+      "matching_percentage": 16.67,
+      "relationships": [
+        "engine -[under]-> wing",
+        "wheel -[on]-> plane",
+        "window -[on]-> plane",
+        "windshield -[on]-> airplane",
+        "wing -[on]-> plane",
+        "wing -[of]-> airplane"
+      ]
+    },
+    {
+      "image_id": 2345565,
+      "matching_pairs": 1,
+      "total_pairs": 7,
+      "matching_percentage": 14.29,
+      "relationships": [
+        "logo -[on]-> plane",
+        "letter -[on]-> plane",
+        "tire -[of]-> plane",
+        "window -[near]-> plane",
+        "windshield -[of]-> plane",
+        "wing -[of]-> plane",
+        "wheel -[on]-> plane"
+      ]
+    }
+  ],
+  "2_or_more": [
+    {
+      "image_id": 2345189,
+      "matching_pairs": 3,
+      "total_pairs": 3,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "plane -[on]-> tail",
+        "nose -[of]-> plane",
+        "wing -[on]-> plane"
+      ]
+    },
+    {
+      "image_id": 2392214,
+      "matching_pairs": 3,
+      "total_pairs": 3,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "engine -[of]-> plane",
+        "tail -[of]-> plane",
+        "wing -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2393490,
+      "matching_pairs": 3,
+      "total_pairs": 3,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "engine -[of]-> plane",
+        "tail -[of]-> plane",
+        "wing -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2406216,
+      "matching_pairs": 3,
+      "total_pairs": 3,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "nose -[of]-> plane",
+        "tail -[of]-> plane",
+        "wing -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2345360,
+      "matching_pairs": 2,
+      "total_pairs": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "nose -[of]-> plane",
+        "plane -[has]-> wing"
+      ]
+    },
+    {
+      "image_id": 2370124,
+      "matching_pairs": 2,
+      "total_pairs": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "plane -[has]-> wing",
+        "tail -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2374814,
+      "matching_pairs": 2,
+      "total_pairs": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "tail -[on]-> plane",
+        "wing -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2381693,
+      "matching_pairs": 2,
+      "total_pairs": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "plane -[has]-> wing",
+        "tail -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2404171,
+      "matching_pairs": 4,
+      "total_pairs": 5,
+      "matching_percentage": 80.0,
+      "relationships": [
+        "building -[behind]-> plane",
+        "plane -[has]-> wheel",
+        "plane -[has]-> tail",
+        "plane -[has]-> engine",
+        "plane -[has]-> wing"
+      ]
+    },
+    {
+      "image_id": 2411144,
+      "matching_pairs": 4,
+      "total_pairs": 5,
+      "matching_percentage": 80.0,
+      "relationships": [
+        "door -[of]-> plane",
+        "plane -[has]-> engine",
+        "plane -[with]-> logo",
+        "plane -[has]-> tail",
+        "plane -[with]-> wheel"
+      ]
+    },
+    {
+      "image_id": 2345996,
+      "matching_pairs": 3,
+      "total_pairs": 4,
+      "matching_percentage": 75.0,
+      "relationships": [
+        "plane -[has]-> wing",
+        "nose -[on]-> plane",
+        "tail -[of]-> plane",
+        "wheel -[on]-> plane"
+      ]
+    },
+    {
+      "image_id": 2378948,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "door -[near]-> plane",
+        "engine -[hanging from]-> wing",
+        "tail -[on back of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2391085,
+      "matching_pairs": 3,
+      "total_pairs": 6,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "nose -[of]-> plane",
+        "plane -[has]-> wheel",
+        "tail -[of]-> plane",
+        "window -[attached to]-> plane",
+        "windshield -[on]-> plane",
+        "wing -[of]-> airplane"
+      ]
+    },
+    {
+      "image_id": 2354125,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "engine -[near]-> plane",
+        "nose -[of]-> plane",
+        "windshield -[on]-> plane",
+        "window -[near]-> plane"
+      ]
+    },
+    {
+      "image_id": 2360860,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "building -[near]-> plane",
+        "tail -[of]-> plane",
+        "window -[of]-> plane",
+        "wing -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2379670,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "engine -[under]-> wing",
+        "logo -[on]-> tail",
+        "tail -[in]-> plane",
+        "wing -[in]-> plane"
+      ]
+    },
+    {
+      "image_id": 2399747,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "plane -[has]-> nose",
+        "plane -[has]-> tail",
+        "plane -[has]-> wing",
+        "truck -[near]-> plane"
+      ]
+    },
+    {
+      "image_id": 2411179,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "engine -[on]-> wing",
+        "nose -[of]-> plane",
+        "tail -[of]-> plane",
+        "wheel -[under]-> plane"
+      ]
+    },
+    {
+      "image_id": 2369661,
+      "matching_pairs": 2,
+      "total_pairs": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "engine -[under]-> wing",
+        "engine -[for]-> plane",
+        "tail -[of]-> airplane",
+        "tree -[behind]-> airplane",
+        "window -[near]-> plane",
+        "logo -[on]-> airplane",
+        "door -[near]-> plane"
+      ]
+    },
+    {
+      "image_id": 2353205,
+      "matching_pairs": 3,
+      "total_pairs": 15,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "box -[on]-> engine",
+        "engine -[has]-> sign",
+        "engine -[on]-> box",
+        "engine -[wearing]-> number",
+        "number -[on]-> box",
+        "number -[above]-> wheel",
+        "plane -[has]-> engine",
+        "plane -[has]-> wheel",
+        "plane -[has]-> wing",
+        "wheel -[wearing]-> plane",
+        "wheel -[wearing]-> wing",
+        "wing -[has]-> bag",
+        "wing -[has]-> bench",
+        "wing -[has]-> girl",
+        "wing -[has]-> hair"
+      ]
+    }
+  ],
+  "3_or_more": [
+    {
+      "image_id": 2345189,
+      "matching_pairs": 3,
+      "total_pairs": 3,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "plane -[on]-> tail",
+        "nose -[of]-> plane",
+        "wing -[on]-> plane"
+      ]
+    },
+    {
+      "image_id": 2392214,
+      "matching_pairs": 3,
+      "total_pairs": 3,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "engine -[of]-> plane",
+        "tail -[of]-> plane",
+        "wing -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2393490,
+      "matching_pairs": 3,
+      "total_pairs": 3,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "engine -[of]-> plane",
+        "tail -[of]-> plane",
+        "wing -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2406216,
+      "matching_pairs": 3,
+      "total_pairs": 3,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "nose -[of]-> plane",
+        "tail -[of]-> plane",
+        "wing -[of]-> plane"
+      ]
+    },
+    {
+      "image_id": 2404171,
+      "matching_pairs": 4,
+      "total_pairs": 5,
+      "matching_percentage": 80.0,
+      "relationships": [
+        "building -[behind]-> plane",
+        "plane -[has]-> wheel",
+        "plane -[has]-> tail",
+        "plane -[has]-> engine",
+        "plane -[has]-> wing"
+      ]
+    },
+    {
+      "image_id": 2411144,
+      "matching_pairs": 4,
+      "total_pairs": 5,
+      "matching_percentage": 80.0,
+      "relationships": [
+        "door -[of]-> plane",
+        "plane -[has]-> engine",
+        "plane -[with]-> logo",
+        "plane -[has]-> tail",
+        "plane -[with]-> wheel"
+      ]
+    },
+    {
+      "image_id": 2345996,
+      "matching_pairs": 3,
+      "total_pairs": 4,
+      "matching_percentage": 75.0,
+      "relationships": [
+        "plane -[has]-> wing",
+        "nose -[on]-> plane",
+        "tail -[of]-> plane",
+        "wheel -[on]-> plane"
+      ]
+    },
+    {
+      "image_id": 2391085,
+      "matching_pairs": 3,
+      "total_pairs": 6,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "nose -[of]-> plane",
+        "plane -[has]-> wheel",
+        "tail -[of]-> plane",
+        "window -[attached to]-> plane",
+        "windshield -[on]-> plane",
+        "wing -[of]-> airplane"
+      ]
+    },
+    {
+      "image_id": 2353205,
+      "matching_pairs": 3,
+      "total_pairs": 15,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "box -[on]-> engine",
+        "engine -[has]-> sign",
+        "engine -[on]-> box",
+        "engine -[wearing]-> number",
+        "number -[on]-> box",
+        "number -[above]-> wheel",
+        "plane -[has]-> engine",
+        "plane -[has]-> wheel",
+        "plane -[has]-> wing",
+        "wheel -[wearing]-> plane",
+        "wheel -[wearing]-> wing",
+        "wing -[has]-> bag",
+        "wing -[has]-> bench",
+        "wing -[has]-> girl",
+        "wing -[has]-> hair"
+      ]
+    }
+  ],
+  "4_or_more": [
+    {
+      "image_id": 2404171,
+      "matching_pairs": 4,
+      "total_pairs": 5,
+      "matching_percentage": 80.0,
+      "relationships": [
+        "building -[behind]-> plane",
+        "plane -[has]-> wheel",
+        "plane -[has]-> tail",
+        "plane -[has]-> engine",
+        "plane -[has]-> wing"
+      ]
+    },
+    {
+      "image_id": 2411144,
+      "matching_pairs": 4,
+      "total_pairs": 5,
+      "matching_percentage": 80.0,
+      "relationships": [
+        "door -[of]-> plane",
+        "plane -[has]-> engine",
+        "plane -[with]-> logo",
+        "plane -[has]-> tail",
+        "plane -[with]-> wheel"
+      ]
+    }
+  ],
+  "5_or_more": []
+}

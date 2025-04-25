@@ -1,0 +1,998 @@
+{
+  "1_or_more": [
+    {
+      "image_id": 2362680,
+      "matching_pairs": 2,
+      "total_pairs": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "door -[on]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 1159512,
+      "matching_pairs": 1,
+      "total_pairs": 1,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2345837,
+      "matching_pairs": 1,
+      "total_pairs": 1,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "train -[over]-> track"
+      ]
+    },
+    {
+      "image_id": 2346872,
+      "matching_pairs": 1,
+      "total_pairs": 1,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2363210,
+      "matching_pairs": 1,
+      "total_pairs": 1,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "track -[in front of]-> train"
+      ]
+    },
+    {
+      "image_id": 2353851,
+      "matching_pairs": 3,
+      "total_pairs": 4,
+      "matching_percentage": 75.0,
+      "relationships": [
+        "door -[to]-> train",
+        "pole -[with]-> light",
+        "sign -[on]-> pole",
+        "window -[in]-> train"
+      ]
+    },
+    {
+      "image_id": 2361202,
+      "matching_pairs": 3,
+      "total_pairs": 4,
+      "matching_percentage": 75.0,
+      "relationships": [
+        "car -[of]-> train",
+        "door -[of]-> train",
+        "train -[on]-> track",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2351935,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "train -[on]-> track",
+        "window -[of]-> train",
+        "train -[has]-> door"
+      ]
+    },
+    {
+      "image_id": 2360889,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "light -[on]-> train",
+        "train -[on]-> track",
+        "wire -[above]-> train"
+      ]
+    },
+    {
+      "image_id": 2361942,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "train -[on]-> track",
+        "train -[at]-> train",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2373029,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "track -[under]-> train",
+        "tree -[behind]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2383480,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "logo -[on]-> train",
+        "train -[on]-> track",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2402886,
+      "matching_pairs": 3,
+      "total_pairs": 5,
+      "matching_percentage": 60.0,
+      "relationships": [
+        "clock -[on]-> post",
+        "door -[in]-> train",
+        "track -[for]-> train",
+        "track -[carrying]-> train",
+        "train -[with]-> light",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2356518,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "door -[on back of]-> train",
+        "pole -[with]-> sign",
+        "window -[near]-> train",
+        "number -[on back of]-> train"
+      ]
+    },
+    {
+      "image_id": 2370481,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "engine -[on]-> train",
+        "tree -[on]-> track",
+        "window -[on]-> train",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2371776,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "car -[of]-> train",
+        "house -[near]-> track",
+        "window -[of]-> train",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2400061,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "train -[has]-> sign",
+        "train -[has]-> window",
+        "train -[on]-> track",
+        "wire -[above]-> train"
+      ]
+    },
+    {
+      "image_id": 2401753,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "track -[in front of]-> train",
+        "track -[under]-> train",
+        "train -[has]-> engine",
+        "train -[has]-> wheel",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2408171,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "door -[on]-> train",
+        "number -[on]-> train",
+        "train -[on]-> track",
+        "train -[has]-> window"
+      ]
+    },
+    {
+      "image_id": 2361484,
+      "matching_pairs": 1,
+      "total_pairs": 2,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "man -[on]-> train",
+        "sign -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2362708,
+      "matching_pairs": 1,
+      "total_pairs": 2,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "man -[wearing]-> shirt",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2369272,
+      "matching_pairs": 1,
+      "total_pairs": 2,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "train -[on]-> track",
+        "person -[on]-> sidewalk"
+      ]
+    },
+    {
+      "image_id": 2374236,
+      "matching_pairs": 1,
+      "total_pairs": 2,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "wheel -[of]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2375855,
+      "matching_pairs": 1,
+      "total_pairs": 2,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "engine -[with]-> car",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2391319,
+      "matching_pairs": 1,
+      "total_pairs": 2,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "people -[on]-> boat",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2387579,
+      "matching_pairs": 2,
+      "total_pairs": 5,
+      "matching_percentage": 40.0,
+      "relationships": [
+        "pole -[with]-> wire",
+        "rock -[along]-> track",
+        "sign -[near]-> track",
+        "track -[for]-> train",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 2404158,
+      "matching_pairs": 2,
+      "total_pairs": 6,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "door -[of]-> train",
+        "engine -[of]-> train",
+        "number -[on]-> train",
+        "wheel -[on]-> track",
+        "wheel -[of]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2358253,
+      "matching_pairs": 1,
+      "total_pairs": 3,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "pole -[near]-> track",
+        "train -[on]-> track",
+        "tree -[has]-> tree"
+      ]
+    },
+    {
+      "image_id": 2361203,
+      "matching_pairs": 1,
+      "total_pairs": 3,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "train -[on]-> track",
+        "train -[has]-> window",
+        "train -[has]-> wire"
+      ]
+    },
+    {
+      "image_id": 2373822,
+      "matching_pairs": 1,
+      "total_pairs": 3,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "car -[on]-> train",
+        "light -[on]-> train",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2384853,
+      "matching_pairs": 1,
+      "total_pairs": 3,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "car -[near]-> building",
+        "track -[under]-> train",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 2386277,
+      "matching_pairs": 1,
+      "total_pairs": 3,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "glove -[hanging from]-> post",
+        "window -[of]-> car",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2358242,
+      "matching_pairs": 4,
+      "total_pairs": 14,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "sign -[on]-> train",
+        "track -[of]-> sign",
+        "track -[for]-> train",
+        "track -[of]-> screen",
+        "train -[of]-> windshield",
+        "train -[of]-> screen",
+        "window -[of]-> train",
+        "windshield -[wearing]-> helmet",
+        "windshield -[of]-> train",
+        "windshield -[on]-> window",
+        "windshield -[wearing]-> building",
+        "wire -[has]-> head",
+        "wire -[above]-> track",
+        "wire -[sitting on]-> table"
+      ]
+    },
+    {
+      "image_id": 2349840,
+      "matching_pairs": 2,
+      "total_pairs": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "leaf -[on]-> train",
+        "leaf -[on]-> tree",
+        "tree -[behind]-> train",
+        "tree -[behind]-> window",
+        "window -[has]-> hair",
+        "window -[on]-> train",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2348685,
+      "matching_pairs": 2,
+      "total_pairs": 8,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "light -[on]-> train",
+        "person -[wearing]-> shirt",
+        "person -[walking on]-> sidewalk",
+        "sign -[mounted on]-> pole",
+        "sign -[mounted on]-> sign",
+        "wire -[above]-> train",
+        "person -[wearing]-> jean",
+        "sign -[near]-> track"
+      ]
+    },
+    {
+      "image_id": 1160185,
+      "matching_pairs": 1,
+      "total_pairs": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "leaf -[on]-> tree",
+        "man -[standing on]-> track",
+        "sign -[on]-> building",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2365098,
+      "matching_pairs": 1,
+      "total_pairs": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "building -[behind]-> train",
+        "door -[on]-> train",
+        "track -[in front of]-> fence",
+        "tree -[along]-> train"
+      ]
+    },
+    {
+      "image_id": 2369846,
+      "matching_pairs": 1,
+      "total_pairs": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "number -[on]-> train",
+        "train -[with]-> door",
+        "roof -[of]-> house",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2392362,
+      "matching_pairs": 1,
+      "total_pairs": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "head -[of]-> train",
+        "hill -[near]-> track",
+        "sign -[on]-> train",
+        "wheel -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2415056,
+      "matching_pairs": 1,
+      "total_pairs": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "building -[near]-> track",
+        "train -[on]-> track",
+        "train -[has]-> window",
+        "vehicle -[near]-> fence"
+      ]
+    },
+    {
+      "image_id": 2351006,
+      "matching_pairs": 2,
+      "total_pairs": 9,
+      "matching_percentage": 22.22,
+      "relationships": [
+        "tree -[in]-> train",
+        "tree -[on]-> track",
+        "window -[on]-> leaf",
+        "window -[in]-> train",
+        "track -[has]-> short",
+        "track -[in]-> man",
+        "track -[wears]-> track",
+        "track -[with]-> track",
+        "track -[wears]-> train",
+        "track -[wearing]-> bed"
+      ]
+    },
+    {
+      "image_id": 2369701,
+      "matching_pairs": 1,
+      "total_pairs": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "man -[wearing]-> jacket",
+        "people -[in]-> train",
+        "person -[walking on]-> sidewalk",
+        "track -[in front of]-> building",
+        "train -[above]-> track"
+      ]
+    },
+    {
+      "image_id": 2373028,
+      "matching_pairs": 1,
+      "total_pairs": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "car -[behind]-> car",
+        "car -[on]-> track",
+        "door -[on]-> car",
+        "wheel -[on]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2379289,
+      "matching_pairs": 1,
+      "total_pairs": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "building -[has]-> window",
+        "light -[on]-> train",
+        "train -[has]-> door",
+        "train -[has]-> window",
+        "train -[has]-> track"
+      ]
+    },
+    {
+      "image_id": 2386101,
+      "matching_pairs": 1,
+      "total_pairs": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "bus -[in front of]-> man",
+        "man -[wearing]-> pant",
+        "sign -[on]-> pole",
+        "tree -[in front of]-> building",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2386466,
+      "matching_pairs": 1,
+      "total_pairs": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "engine -[has]-> wheel",
+        "hill -[near]-> track",
+        "train -[above]-> track",
+        "train -[has]-> window",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 1159328,
+      "matching_pairs": 1,
+      "total_pairs": 7,
+      "matching_percentage": 14.29,
+      "relationships": [
+        "building -[has]-> roof",
+        "clock -[on]-> tower",
+        "letter -[on]-> sign",
+        "man -[wearing]-> coat",
+        "man -[walking on]-> street",
+        "sign -[attached to]-> building",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2354069,
+      "matching_pairs": 2,
+      "total_pairs": 15,
+      "matching_percentage": 13.33,
+      "relationships": [
+        "train -[on]-> pant",
+        "car -[near]-> train",
+        "fence -[near]-> train",
+        "fence -[wearing]-> car",
+        "fence -[in front of]-> sign",
+        "light -[on]-> jean",
+        "light -[on]-> train",
+        "light -[on]-> wave",
+        "sign -[on]-> train",
+        "sign -[has]-> person",
+        "sign -[has]-> snow",
+        "wave -[near]-> train",
+        "wave -[on]-> sign",
+        "windshield -[of]-> train",
+        "windshield -[in front of]-> fence"
+      ]
+    },
+    {
+      "image_id": 2344291,
+      "matching_pairs": 1,
+      "total_pairs": 12,
+      "matching_percentage": 8.33,
+      "relationships": [
+        "boat -[on]-> face",
+        "door -[on]-> boat",
+        "door -[of]-> face",
+        "face -[of]-> train",
+        "fence -[on]-> face",
+        "fence -[near]-> track",
+        "man -[standing on]-> boat",
+        "man -[on]-> sidewalk",
+        "sign -[near]-> track",
+        "sign -[on]-> street",
+        "track -[wearing]-> train",
+        "window -[on]-> boat"
+      ]
+    }
+  ],
+  "2_or_more": [
+    {
+      "image_id": 2362680,
+      "matching_pairs": 2,
+      "total_pairs": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "door -[on]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2353851,
+      "matching_pairs": 3,
+      "total_pairs": 4,
+      "matching_percentage": 75.0,
+      "relationships": [
+        "door -[to]-> train",
+        "pole -[with]-> light",
+        "sign -[on]-> pole",
+        "window -[in]-> train"
+      ]
+    },
+    {
+      "image_id": 2361202,
+      "matching_pairs": 3,
+      "total_pairs": 4,
+      "matching_percentage": 75.0,
+      "relationships": [
+        "car -[of]-> train",
+        "door -[of]-> train",
+        "train -[on]-> track",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2351935,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "train -[on]-> track",
+        "window -[of]-> train",
+        "train -[has]-> door"
+      ]
+    },
+    {
+      "image_id": 2360889,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "light -[on]-> train",
+        "train -[on]-> track",
+        "wire -[above]-> train"
+      ]
+    },
+    {
+      "image_id": 2361942,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "train -[on]-> track",
+        "train -[at]-> train",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2373029,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "track -[under]-> train",
+        "tree -[behind]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2383480,
+      "matching_pairs": 2,
+      "total_pairs": 3,
+      "matching_percentage": 66.67,
+      "relationships": [
+        "logo -[on]-> train",
+        "train -[on]-> track",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2402886,
+      "matching_pairs": 3,
+      "total_pairs": 5,
+      "matching_percentage": 60.0,
+      "relationships": [
+        "clock -[on]-> post",
+        "door -[in]-> train",
+        "track -[for]-> train",
+        "track -[carrying]-> train",
+        "train -[with]-> light",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2356518,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "door -[on back of]-> train",
+        "pole -[with]-> sign",
+        "window -[near]-> train",
+        "number -[on back of]-> train"
+      ]
+    },
+    {
+      "image_id": 2370481,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "engine -[on]-> train",
+        "tree -[on]-> track",
+        "window -[on]-> train",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2371776,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "car -[of]-> train",
+        "house -[near]-> track",
+        "window -[of]-> train",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2400061,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "train -[has]-> sign",
+        "train -[has]-> window",
+        "train -[on]-> track",
+        "wire -[above]-> train"
+      ]
+    },
+    {
+      "image_id": 2401753,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "track -[in front of]-> train",
+        "track -[under]-> train",
+        "train -[has]-> engine",
+        "train -[has]-> wheel",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2408171,
+      "matching_pairs": 2,
+      "total_pairs": 4,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "door -[on]-> train",
+        "number -[on]-> train",
+        "train -[on]-> track",
+        "train -[has]-> window"
+      ]
+    },
+    {
+      "image_id": 2387579,
+      "matching_pairs": 2,
+      "total_pairs": 5,
+      "matching_percentage": 40.0,
+      "relationships": [
+        "pole -[with]-> wire",
+        "rock -[along]-> track",
+        "sign -[near]-> track",
+        "track -[for]-> train",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 2404158,
+      "matching_pairs": 2,
+      "total_pairs": 6,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "door -[of]-> train",
+        "engine -[of]-> train",
+        "number -[on]-> train",
+        "wheel -[on]-> track",
+        "wheel -[of]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2358242,
+      "matching_pairs": 4,
+      "total_pairs": 14,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "sign -[on]-> train",
+        "track -[of]-> sign",
+        "track -[for]-> train",
+        "track -[of]-> screen",
+        "train -[of]-> windshield",
+        "train -[of]-> screen",
+        "window -[of]-> train",
+        "windshield -[wearing]-> helmet",
+        "windshield -[of]-> train",
+        "windshield -[on]-> window",
+        "windshield -[wearing]-> building",
+        "wire -[has]-> head",
+        "wire -[above]-> track",
+        "wire -[sitting on]-> table"
+      ]
+    },
+    {
+      "image_id": 2349840,
+      "matching_pairs": 2,
+      "total_pairs": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "leaf -[on]-> train",
+        "leaf -[on]-> tree",
+        "tree -[behind]-> train",
+        "tree -[behind]-> window",
+        "window -[has]-> hair",
+        "window -[on]-> train",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2348685,
+      "matching_pairs": 2,
+      "total_pairs": 8,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "light -[on]-> train",
+        "person -[wearing]-> shirt",
+        "person -[walking on]-> sidewalk",
+        "sign -[mounted on]-> pole",
+        "sign -[mounted on]-> sign",
+        "wire -[above]-> train",
+        "person -[wearing]-> jean",
+        "sign -[near]-> track"
+      ]
+    },
+    {
+      "image_id": 2351006,
+      "matching_pairs": 2,
+      "total_pairs": 9,
+      "matching_percentage": 22.22,
+      "relationships": [
+        "tree -[in]-> train",
+        "tree -[on]-> track",
+        "window -[on]-> leaf",
+        "window -[in]-> train",
+        "track -[has]-> short",
+        "track -[in]-> man",
+        "track -[wears]-> track",
+        "track -[with]-> track",
+        "track -[wears]-> train",
+        "track -[wearing]-> bed"
+      ]
+    },
+    {
+      "image_id": 2354069,
+      "matching_pairs": 2,
+      "total_pairs": 15,
+      "matching_percentage": 13.33,
+      "relationships": [
+        "train -[on]-> pant",
+        "car -[near]-> train",
+        "fence -[near]-> train",
+        "fence -[wearing]-> car",
+        "fence -[in front of]-> sign",
+        "light -[on]-> jean",
+        "light -[on]-> train",
+        "light -[on]-> wave",
+        "sign -[on]-> train",
+        "sign -[has]-> person",
+        "sign -[has]-> snow",
+        "wave -[near]-> train",
+        "wave -[on]-> sign",
+        "windshield -[of]-> train",
+        "windshield -[in front of]-> fence"
+      ]
+    }
+  ],
+  "3_or_more": [
+    {
+      "image_id": 2353851,
+      "matching_pairs": 3,
+      "total_pairs": 4,
+      "matching_percentage": 75.0,
+      "relationships": [
+        "door -[to]-> train",
+        "pole -[with]-> light",
+        "sign -[on]-> pole",
+        "window -[in]-> train"
+      ]
+    },
+    {
+      "image_id": 2361202,
+      "matching_pairs": 3,
+      "total_pairs": 4,
+      "matching_percentage": 75.0,
+      "relationships": [
+        "car -[of]-> train",
+        "door -[of]-> train",
+        "train -[on]-> track",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2402886,
+      "matching_pairs": 3,
+      "total_pairs": 5,
+      "matching_percentage": 60.0,
+      "relationships": [
+        "clock -[on]-> post",
+        "door -[in]-> train",
+        "track -[for]-> train",
+        "track -[carrying]-> train",
+        "train -[with]-> light",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2358242,
+      "matching_pairs": 4,
+      "total_pairs": 14,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "sign -[on]-> train",
+        "track -[of]-> sign",
+        "track -[for]-> train",
+        "track -[of]-> screen",
+        "train -[of]-> windshield",
+        "train -[of]-> screen",
+        "window -[of]-> train",
+        "windshield -[wearing]-> helmet",
+        "windshield -[of]-> train",
+        "windshield -[on]-> window",
+        "windshield -[wearing]-> building",
+        "wire -[has]-> head",
+        "wire -[above]-> track",
+        "wire -[sitting on]-> table"
+      ]
+    }
+  ],
+  "4_or_more": [
+    {
+      "image_id": 2358242,
+      "matching_pairs": 4,
+      "total_pairs": 14,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "sign -[on]-> train",
+        "track -[of]-> sign",
+        "track -[for]-> train",
+        "track -[of]-> screen",
+        "train -[of]-> windshield",
+        "train -[of]-> screen",
+        "window -[of]-> train",
+        "windshield -[wearing]-> helmet",
+        "windshield -[of]-> train",
+        "windshield -[on]-> window",
+        "windshield -[wearing]-> building",
+        "wire -[has]-> head",
+        "wire -[above]-> track",
+        "wire -[sitting on]-> table"
+      ]
+    }
+  ],
+  "5_or_more": []
+}

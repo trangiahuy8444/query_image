@@ -27,9 +27,9 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 # Kết nối Neo4j
-uri = "neo4j+s://b40b4f2a.databases.neo4j.io"
+uri = "bolt://localhost:7689"
 username = "neo4j"
-password = "fpKNUXKT-4z0kQMm1nuUaiXe8p70uIebc3y3a4Z8kUA"
+password = "12345678"
 driver = GraphDatabase.driver(uri, auth=(username, password))
 
 # Load mô hình RelTR
@@ -326,6 +326,9 @@ def upload_and_predict():
                 "5_or_more": query_images_by_pairs_count(predictions, 5),
             }
             logger.info(f"Truy vấn theo cặp thành công: {json.dumps({k: len(v) for k, v in related_images.items()}, indent=2)}")
+            
+            # Tính tổng số ảnh được truy vấn theo cặp
+            total_images_by_pairs = sum(len(images) for images in related_images.values())
         except Exception as e:
             logger.error(f"Lỗi khi truy vấn ảnh theo cặp: {str(e)}")
             return jsonify({"error": f"Lỗi khi truy vấn ảnh theo cặp: {str(e)}"}), 500
@@ -340,6 +343,9 @@ def upload_and_predict():
                 "5_or_more_full": query_images_by_full_pairs_count(predictions, 5),
             }
             logger.info(f"Truy vấn theo bộ ba thành công: {json.dumps({k: len(v) for k, v in related_images_full.items()}, indent=2)}")
+            
+            # Tính tổng số ảnh được truy vấn theo bộ ba
+            total_images_by_full = sum(len(images) for images in related_images_full.values())
         except Exception as e:
             logger.error(f"Lỗi khi truy vấn ảnh theo bộ ba: {str(e)}")
             return jsonify({"error": f"Lỗi khi truy vấn ảnh theo bộ ba: {str(e)}"}), 500
@@ -396,6 +402,9 @@ def upload_and_predict():
                     if image['image_id'] not in counted_images:
                         counted_images.add(image['image_id'])
                         total_images += 1
+                        
+        # In thông tin tổng số ảnh được truy vấn
+        logger.info(f"Tổng số ảnh duy nhất được truy vấn: {total_images}")
 
         input_image_id = os.path.splitext(filename)[0]
 

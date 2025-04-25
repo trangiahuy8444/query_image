@@ -1,0 +1,201 @@
+{
+  "1_or_more_full": [
+    {
+      "image_id": 2378552,
+      "matching_triples": 2,
+      "total_triples": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "head -[of]-> zebra",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2397807,
+      "matching_triples": 2,
+      "total_triples": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "head -[of]-> zebra",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2353845,
+      "matching_triples": 1,
+      "total_triples": 1,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "tail -[on]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2372281,
+      "matching_triples": 1,
+      "total_triples": 2,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "head -[of]-> zebra",
+        "tail -[of]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2392374,
+      "matching_triples": 1,
+      "total_triples": 2,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "head -[of]-> zebra",
+        "tail -[attached to]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2395631,
+      "matching_triples": 1,
+      "total_triples": 3,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2355195,
+      "matching_triples": 1,
+      "total_triples": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "branch -[wearing]-> jacket",
+        "branch -[with]-> tree",
+        "tree -[has]-> branch",
+        "tree -[walking on]-> beach"
+      ]
+    },
+    {
+      "image_id": 2390993,
+      "matching_triples": 1,
+      "total_triples": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "horse -[has]-> face",
+        "horse -[has]-> nose",
+        "man -[has]-> head",
+        "man -[riding]-> horse",
+        "tree -[has]-> trunk"
+      ]
+    },
+    {
+      "image_id": 2400075,
+      "matching_triples": 1,
+      "total_triples": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> head",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> neck",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2414029,
+      "matching_triples": 1,
+      "total_triples": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> face",
+        "zebra -[has]-> head",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2403393,
+      "matching_triples": 1,
+      "total_triples": 6,
+      "matching_percentage": 16.67,
+      "relationships": [
+        "ear -[of]-> zebra",
+        "fence -[behind]-> zebra",
+        "leg -[of]-> zebra",
+        "nose -[on]-> zebra",
+        "tail -[on]-> zebra",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2361215,
+      "matching_triples": 1,
+      "total_triples": 7,
+      "matching_percentage": 14.29,
+      "relationships": [
+        "giraffe -[has]-> head",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[has]-> branch",
+        "giraffe -[in front of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2345406,
+      "matching_triples": 1,
+      "total_triples": 8,
+      "matching_percentage": 12.5,
+      "relationships": [
+        "giraffe -[near]-> tree",
+        "branch -[on]-> tree",
+        "fence -[in front of]-> giraffe",
+        "flower -[behind]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2382947,
+      "matching_triples": 1,
+      "total_triples": 8,
+      "matching_percentage": 12.5,
+      "relationships": [
+        "branch -[in]-> tree",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[in front of]-> tree",
+        "tail -[has]-> hair",
+        "tree -[has]-> trunk",
+        "tree -[behind]-> giraffe"
+      ]
+    }
+  ],
+  "2_or_more_full": [
+    {
+      "image_id": 2378552,
+      "matching_triples": 2,
+      "total_triples": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "head -[of]-> zebra",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2397807,
+      "matching_triples": 2,
+      "total_triples": 2,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "head -[of]-> zebra",
+        "zebra -[has]-> tail"
+      ]
+    }
+  ],
+  "3_or_more_full": [],
+  "4_or_more_full": [],
+  "5_or_more_full": []
+}

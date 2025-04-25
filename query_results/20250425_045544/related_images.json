@@ -1,0 +1,360 @@
+{
+  "1_or_more": [
+    {
+      "image_id": 2368276,
+      "matching_pairs": 1,
+      "total_pairs": 1,
+      "matching_percentage": 100.0,
+      "relationships": [
+        "man -[wearing]-> jacket"
+      ]
+    },
+    {
+      "image_id": 2362520,
+      "matching_pairs": 3,
+      "total_pairs": 6,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "track -[in]-> snow",
+        "man -[wearing]-> pant",
+        "man -[has]-> ski",
+        "people -[over]-> snow",
+        "skier -[in]-> snow",
+        "sign -[behind]-> people"
+      ]
+    },
+    {
+      "image_id": 2366066,
+      "matching_pairs": 2,
+      "total_pairs": 6,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "pant -[of]-> man",
+        "skier -[wearing]-> shirt",
+        "track -[in]-> snow",
+        "tree -[on]-> mountain",
+        "person -[on]-> snow",
+        "cap -[of]-> man"
+      ]
+    },
+    {
+      "image_id": 2382013,
+      "matching_pairs": 2,
+      "total_pairs": 6,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "branch -[over]-> skier",
+        "skier -[wearing]-> jacket",
+        "skier -[holding]-> pole",
+        "ski -[in]-> snow",
+        "track -[in]-> snow",
+        "tree -[in]-> snow"
+      ]
+    },
+    {
+      "image_id": 2360659,
+      "matching_pairs": 2,
+      "total_pairs": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "man -[standing on]-> snow",
+        "mountain -[covered in]-> snow",
+        "person -[on]-> snow",
+        "ski -[on]-> hill",
+        "track -[in]-> snow",
+        "woman -[wearing]-> jacket",
+        "skier -[sitting on]-> cap"
+      ]
+    },
+    {
+      "image_id": 2364757,
+      "matching_pairs": 2,
+      "total_pairs": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "tree -[behind]-> skier",
+        "head -[of]-> man",
+        "man -[wearing]-> coat",
+        "man -[has]-> pant",
+        "man -[standing on]-> snow",
+        "snow -[covering]-> ski",
+        "person -[on]-> ski"
+      ]
+    },
+    {
+      "image_id": 2375466,
+      "matching_pairs": 2,
+      "total_pairs": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "man -[wearing]-> glove",
+        "man -[in]-> snow",
+        "man -[wearing]-> pant",
+        "man -[wearing]-> shirt",
+        "snow -[on]-> snow",
+        "tree -[behind]-> man",
+        "skier -[wearing]-> jacket"
+      ]
+    },
+    {
+      "image_id": 2410500,
+      "matching_pairs": 2,
+      "total_pairs": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "building -[near]-> snow",
+        "fence -[in]-> snow",
+        "person -[has]-> head",
+        "person -[wears]-> pant",
+        "track -[in]-> snow",
+        "tree -[near]-> snow",
+        "skier -[on]-> snow"
+      ]
+    },
+    {
+      "image_id": 2372451,
+      "matching_pairs": 1,
+      "total_pairs": 4,
+      "matching_percentage": 25.0,
+      "relationships": [
+        "person -[wears]-> shoe",
+        "man -[wears]-> pant",
+        "ski -[of]-> skier",
+        "wire -[for]-> skier"
+      ]
+    },
+    {
+      "image_id": 2369701,
+      "matching_pairs": 1,
+      "total_pairs": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "man -[wearing]-> jacket",
+        "people -[in]-> train",
+        "person -[walking on]-> sidewalk",
+        "track -[in front of]-> building",
+        "train -[above]-> track"
+      ]
+    },
+    {
+      "image_id": 2386101,
+      "matching_pairs": 1,
+      "total_pairs": 5,
+      "matching_percentage": 20.0,
+      "relationships": [
+        "bus -[in front of]-> man",
+        "man -[wearing]-> pant",
+        "sign -[on]-> pole",
+        "tree -[in front of]-> building",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2373765,
+      "matching_pairs": 1,
+      "total_pairs": 6,
+      "matching_percentage": 16.67,
+      "relationships": [
+        "bowl -[has]-> snow",
+        "helmet -[on]-> head",
+        "man -[has]-> arm",
+        "man -[wearing]-> jacket",
+        "man -[has]-> leg",
+        "skier -[wearing]-> pant"
+      ]
+    },
+    {
+      "image_id": 2378750,
+      "matching_pairs": 1,
+      "total_pairs": 7,
+      "matching_percentage": 14.29,
+      "relationships": [
+        "horse -[has]-> head",
+        "horse -[with]-> man",
+        "man -[riding]-> horse",
+        "man -[wearing]-> jacket",
+        "man -[wearing]-> helmet",
+        "man -[wearing]-> hat",
+        "man -[wearing]-> cup"
+      ]
+    },
+    {
+      "image_id": 2349070,
+      "matching_pairs": 1,
+      "total_pairs": 8,
+      "matching_percentage": 12.5,
+      "relationships": [
+        "jacket -[on]-> track",
+        "man -[wearing]-> hat",
+        "shoe -[on]-> man",
+        "track -[in]-> snow",
+        "track -[has]-> man",
+        "person -[wearing]-> jacket",
+        "person -[has]-> leaf",
+        "hat -[in]-> shoe"
+      ]
+    },
+    {
+      "image_id": 2403422,
+      "matching_pairs": 1,
+      "total_pairs": 9,
+      "matching_percentage": 11.11,
+      "relationships": [
+        "basket -[near]-> lady",
+        "flag -[on]-> fence",
+        "lady -[watching]-> man",
+        "lady -[in]-> hat",
+        "man -[wearing]-> cap",
+        "man -[holding]-> racket",
+        "man -[in]-> chair",
+        "man -[wearing]-> pant",
+        "man -[wearing]-> shirt"
+      ]
+    },
+    {
+      "image_id": 2343847,
+      "matching_pairs": 1,
+      "total_pairs": 15,
+      "matching_percentage": 6.67,
+      "relationships": [
+        "snow -[in]-> hat",
+        "hat -[near]-> coat",
+        "child -[behind]-> fence",
+        "fence -[near]-> snow",
+        "fence -[behind]-> woman",
+        "handle -[wearing]-> fence",
+        "handle -[above]-> pole",
+        "hill -[with]-> child",
+        "hill -[behind]-> man",
+        "lady -[in]-> coat",
+        "lady -[in]-> hat",
+        "lady -[with]-> window",
+        "man -[on]-> lady",
+        "pole -[on]-> lady",
+        "woman -[behind]-> lady"
+      ]
+    }
+  ],
+  "2_or_more": [
+    {
+      "image_id": 2362520,
+      "matching_pairs": 3,
+      "total_pairs": 6,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "track -[in]-> snow",
+        "man -[wearing]-> pant",
+        "man -[has]-> ski",
+        "people -[over]-> snow",
+        "skier -[in]-> snow",
+        "sign -[behind]-> people"
+      ]
+    },
+    {
+      "image_id": 2366066,
+      "matching_pairs": 2,
+      "total_pairs": 6,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "pant -[of]-> man",
+        "skier -[wearing]-> shirt",
+        "track -[in]-> snow",
+        "tree -[on]-> mountain",
+        "person -[on]-> snow",
+        "cap -[of]-> man"
+      ]
+    },
+    {
+      "image_id": 2382013,
+      "matching_pairs": 2,
+      "total_pairs": 6,
+      "matching_percentage": 33.33,
+      "relationships": [
+        "branch -[over]-> skier",
+        "skier -[wearing]-> jacket",
+        "skier -[holding]-> pole",
+        "ski -[in]-> snow",
+        "track -[in]-> snow",
+        "tree -[in]-> snow"
+      ]
+    },
+    {
+      "image_id": 2360659,
+      "matching_pairs": 2,
+      "total_pairs": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "man -[standing on]-> snow",
+        "mountain -[covered in]-> snow",
+        "person -[on]-> snow",
+        "ski -[on]-> hill",
+        "track -[in]-> snow",
+        "woman -[wearing]-> jacket",
+        "skier -[sitting on]-> cap"
+      ]
+    },
+    {
+      "image_id": 2364757,
+      "matching_pairs": 2,
+      "total_pairs": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "tree -[behind]-> skier",
+        "head -[of]-> man",
+        "man -[wearing]-> coat",
+        "man -[has]-> pant",
+        "man -[standing on]-> snow",
+        "snow -[covering]-> ski",
+        "person -[on]-> ski"
+      ]
+    },
+    {
+      "image_id": 2375466,
+      "matching_pairs": 2,
+      "total_pairs": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "man -[wearing]-> glove",
+        "man -[in]-> snow",
+        "man -[wearing]-> pant",
+        "man -[wearing]-> shirt",
+        "snow -[on]-> snow",
+        "tree -[behind]-> man",
+        "skier -[wearing]-> jacket"
+      ]
+    },
+    {
+      "image_id": 2410500,
+      "matching_pairs": 2,
+      "total_pairs": 7,
+      "matching_percentage": 28.57,
+      "relationships": [
+        "building -[near]-> snow",
+        "fence -[in]-> snow",
+        "person -[has]-> head",
+        "person -[wears]-> pant",
+        "track -[in]-> snow",
+        "tree -[near]-> snow",
+        "skier -[on]-> snow"
+      ]
+    }
+  ],
+  "3_or_more": [
+    {
+      "image_id": 2362520,
+      "matching_pairs": 3,
+      "total_pairs": 6,
+      "matching_percentage": 50.0,
+      "relationships": [
+        "track -[in]-> snow",
+        "man -[wearing]-> pant",
+        "man -[has]-> ski",
+        "people -[over]-> snow",
+        "skier -[in]-> snow",
+        "sign -[behind]-> people"
+      ]
+    }
+  ],
+  "4_or_more": [],
+  "5_or_more": []
+}

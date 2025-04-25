@@ -1,0 +1,1864 @@
+{
+  "train-on-track": [
+    {
+      "image_id": 1159328,
+      "url": "data/vg_focused/images/1159328.jpg",
+      "relationships": [
+        "building -[has]-> roof",
+        "clock -[on]-> tower",
+        "letter -[on]-> sign",
+        "man -[wearing]-> coat",
+        "man -[walking on]-> street",
+        "sign -[attached to]-> building",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 1160185,
+      "url": "data/vg_focused/images/1160185.jpg",
+      "relationships": [
+        "leaf -[on]-> tree",
+        "man -[standing on]-> track",
+        "sign -[on]-> building",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2344291,
+      "url": "data/vg_focused/images/2344291.jpg",
+      "relationships": [
+        "boat -[on]-> face",
+        "door -[on]-> boat",
+        "door -[of]-> face",
+        "face -[of]-> train",
+        "fence -[on]-> face",
+        "fence -[near]-> track",
+        "man -[standing on]-> boat",
+        "man -[on]-> sidewalk",
+        "sign -[near]-> track",
+        "sign -[on]-> street",
+        "track -[wearing]-> train",
+        "window -[on]-> boat"
+      ]
+    },
+    {
+      "image_id": 2345837,
+      "url": "data/vg_focused/images/2345837.jpg",
+      "relationships": [
+        "train -[over]-> track"
+      ]
+    },
+    {
+      "image_id": 2346872,
+      "url": "data/vg_focused/images/2346872.jpg",
+      "relationships": [
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2346878,
+      "url": "data/vg_focused/images/2346878.jpg",
+      "relationships": [
+        "track -[in]-> sock",
+        "tree -[near]-> track",
+        "light -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2348685,
+      "url": "data/vg_focused/images/2348685.jpg",
+      "relationships": [
+        "light -[on]-> train",
+        "person -[wearing]-> shirt",
+        "person -[walking on]-> sidewalk",
+        "sign -[mounted on]-> pole",
+        "sign -[mounted on]-> sign",
+        "wire -[above]-> train",
+        "person -[wearing]-> jean",
+        "sign -[near]-> track"
+      ]
+    },
+    {
+      "image_id": 2351006,
+      "url": "data/vg_focused/images/2351006.jpg",
+      "relationships": [
+        "tree -[in]-> train",
+        "tree -[on]-> track",
+        "window -[on]-> leaf",
+        "window -[in]-> train",
+        "track -[has]-> short",
+        "track -[in]-> man",
+        "track -[wears]-> track",
+        "track -[with]-> track",
+        "track -[wears]-> train",
+        "track -[wearing]-> bed"
+      ]
+    },
+    {
+      "image_id": 2351935,
+      "url": "data/vg_focused/images/2351935.jpg",
+      "relationships": [
+        "train -[on]-> track",
+        "window -[of]-> train",
+        "train -[has]-> door"
+      ]
+    },
+    {
+      "image_id": 2358242,
+      "url": "data/vg_focused/images/2358242.jpg",
+      "relationships": [
+        "sign -[on]-> train",
+        "track -[of]-> sign",
+        "track -[for]-> train",
+        "track -[of]-> screen",
+        "train -[of]-> windshield",
+        "train -[of]-> screen",
+        "window -[of]-> train",
+        "windshield -[wearing]-> helmet",
+        "windshield -[of]-> train",
+        "windshield -[on]-> window",
+        "windshield -[wearing]-> building",
+        "wire -[has]-> head",
+        "wire -[above]-> track",
+        "wire -[sitting on]-> table"
+      ]
+    },
+    {
+      "image_id": 2358253,
+      "url": "data/vg_focused/images/2358253.jpg",
+      "relationships": [
+        "pole -[near]-> track",
+        "train -[on]-> track",
+        "tree -[has]-> tree"
+      ]
+    },
+    {
+      "image_id": 2358722,
+      "url": "data/vg_focused/images/2358722.jpg",
+      "relationships": [
+        "light -[above]-> track",
+        "track -[under]-> light",
+        "number -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2360889,
+      "url": "data/vg_focused/images/2360889.jpg",
+      "relationships": [
+        "light -[on]-> train",
+        "train -[on]-> track",
+        "wire -[above]-> train"
+      ]
+    },
+    {
+      "image_id": 2361202,
+      "url": "data/vg_focused/images/2361202.jpg",
+      "relationships": [
+        "car -[of]-> train",
+        "door -[of]-> train",
+        "train -[on]-> track",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2361203,
+      "url": "data/vg_focused/images/2361203.jpg",
+      "relationships": [
+        "train -[on]-> track",
+        "train -[has]-> window",
+        "train -[has]-> wire"
+      ]
+    },
+    {
+      "image_id": 2361942,
+      "url": "data/vg_focused/images/2361942.jpg",
+      "relationships": [
+        "train -[on]-> track",
+        "train -[at]-> train",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2363210,
+      "url": "data/vg_focused/images/2363210.jpg",
+      "relationships": [
+        "track -[in front of]-> train"
+      ]
+    },
+    {
+      "image_id": 2365098,
+      "url": "data/vg_focused/images/2365098.jpg",
+      "relationships": [
+        "building -[behind]-> train",
+        "door -[on]-> train",
+        "track -[in front of]-> fence",
+        "tree -[along]-> train"
+      ]
+    },
+    {
+      "image_id": 2369272,
+      "url": "data/vg_focused/images/2369272.jpg",
+      "relationships": [
+        "train -[on]-> track",
+        "person -[on]-> sidewalk"
+      ]
+    },
+    {
+      "image_id": 2369701,
+      "url": "data/vg_focused/images/2369701.jpg",
+      "relationships": [
+        "man -[wearing]-> jacket",
+        "people -[in]-> train",
+        "person -[walking on]-> sidewalk",
+        "track -[in front of]-> building",
+        "train -[above]-> track"
+      ]
+    },
+    {
+      "image_id": 2370481,
+      "url": "data/vg_focused/images/2370481.jpg",
+      "relationships": [
+        "engine -[on]-> train",
+        "tree -[on]-> track",
+        "window -[on]-> train",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2371776,
+      "url": "data/vg_focused/images/2371776.jpg",
+      "relationships": [
+        "car -[of]-> train",
+        "house -[near]-> track",
+        "window -[of]-> train",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2373028,
+      "url": "data/vg_focused/images/2373028.jpg",
+      "relationships": [
+        "car -[behind]-> car",
+        "car -[on]-> track",
+        "door -[on]-> car",
+        "wheel -[on]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2373029,
+      "url": "data/vg_focused/images/2373029.jpg",
+      "relationships": [
+        "track -[under]-> train",
+        "tree -[behind]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2373570,
+      "url": "data/vg_focused/images/2373570.jpg",
+      "relationships": [
+        "roof -[of]-> house",
+        "track -[near]-> house",
+        "engine -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2375855,
+      "url": "data/vg_focused/images/2375855.jpg",
+      "relationships": [
+        "engine -[with]-> car",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2378977,
+      "url": "data/vg_focused/images/2378977.jpg",
+      "relationships": [
+        "fence -[near]-> train",
+        "snow -[covering]-> track",
+        "train -[has]-> windshield"
+      ]
+    },
+    {
+      "image_id": 2379289,
+      "url": "data/vg_focused/images/2379289.jpg",
+      "relationships": [
+        "building -[has]-> window",
+        "light -[on]-> train",
+        "train -[has]-> door",
+        "train -[has]-> window",
+        "train -[has]-> track"
+      ]
+    },
+    {
+      "image_id": 2383480,
+      "url": "data/vg_focused/images/2383480.jpg",
+      "relationships": [
+        "logo -[on]-> train",
+        "train -[on]-> track",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2384853,
+      "url": "data/vg_focused/images/2384853.jpg",
+      "relationships": [
+        "car -[near]-> building",
+        "track -[under]-> train",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 2386466,
+      "url": "data/vg_focused/images/2386466.jpg",
+      "relationships": [
+        "engine -[has]-> wheel",
+        "hill -[near]-> track",
+        "train -[above]-> track",
+        "train -[has]-> window",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 2387579,
+      "url": "data/vg_focused/images/2387579.jpg",
+      "relationships": [
+        "pole -[with]-> wire",
+        "rock -[along]-> track",
+        "sign -[near]-> track",
+        "track -[for]-> train",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 2391091,
+      "url": "data/vg_focused/images/2391091.jpg",
+      "relationships": [
+        "car -[near]-> fence",
+        "car -[near]-> train",
+        "engine -[on]-> train",
+        "fence -[of]-> track",
+        "pole -[and]-> wire",
+        "wheel -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2391319,
+      "url": "data/vg_focused/images/2391319.jpg",
+      "relationships": [
+        "people -[on]-> boat",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2392362,
+      "url": "data/vg_focused/images/2392362.jpg",
+      "relationships": [
+        "head -[of]-> train",
+        "hill -[near]-> track",
+        "sign -[on]-> train",
+        "wheel -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2400061,
+      "url": "data/vg_focused/images/2400061.jpg",
+      "relationships": [
+        "train -[has]-> sign",
+        "train -[has]-> window",
+        "train -[on]-> track",
+        "wire -[above]-> train"
+      ]
+    },
+    {
+      "image_id": 2401753,
+      "url": "data/vg_focused/images/2401753.jpg",
+      "relationships": [
+        "track -[in front of]-> train",
+        "track -[under]-> train",
+        "train -[has]-> engine",
+        "train -[has]-> wheel",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2402886,
+      "url": "data/vg_focused/images/2402886.jpg",
+      "relationships": [
+        "clock -[on]-> post",
+        "door -[in]-> train",
+        "track -[for]-> train",
+        "track -[carrying]-> train",
+        "train -[with]-> light",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2404158,
+      "url": "data/vg_focused/images/2404158.jpg",
+      "relationships": [
+        "door -[of]-> train",
+        "engine -[of]-> train",
+        "number -[on]-> train",
+        "wheel -[on]-> track",
+        "wheel -[of]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2408171,
+      "url": "data/vg_focused/images/2408171.jpg",
+      "relationships": [
+        "door -[on]-> train",
+        "number -[on]-> train",
+        "train -[on]-> track",
+        "train -[has]-> window"
+      ]
+    },
+    {
+      "image_id": 2415056,
+      "url": "data/vg_focused/images/2415056.jpg",
+      "relationships": [
+        "building -[near]-> track",
+        "train -[on]-> track",
+        "train -[has]-> window",
+        "vehicle -[near]-> fence"
+      ]
+    }
+  ],
+  "sign-on-train": [
+    {
+      "image_id": 1159328,
+      "url": "data/vg_focused/images/1159328.jpg",
+      "relationships": [
+        "building -[has]-> roof",
+        "clock -[on]-> tower",
+        "letter -[on]-> sign",
+        "man -[wearing]-> coat",
+        "man -[walking on]-> street",
+        "sign -[attached to]-> building",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 1160185,
+      "url": "data/vg_focused/images/1160185.jpg",
+      "relationships": [
+        "leaf -[on]-> tree",
+        "man -[standing on]-> track",
+        "sign -[on]-> building",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2344291,
+      "url": "data/vg_focused/images/2344291.jpg",
+      "relationships": [
+        "boat -[on]-> face",
+        "door -[on]-> boat",
+        "door -[of]-> face",
+        "face -[of]-> train",
+        "fence -[on]-> face",
+        "fence -[near]-> track",
+        "man -[standing on]-> boat",
+        "man -[on]-> sidewalk",
+        "sign -[near]-> track",
+        "sign -[on]-> street",
+        "track -[wearing]-> train",
+        "window -[on]-> boat"
+      ]
+    },
+    {
+      "image_id": 2348685,
+      "url": "data/vg_focused/images/2348685.jpg",
+      "relationships": [
+        "light -[on]-> train",
+        "person -[wearing]-> shirt",
+        "person -[walking on]-> sidewalk",
+        "sign -[mounted on]-> pole",
+        "sign -[mounted on]-> sign",
+        "wire -[above]-> train",
+        "person -[wearing]-> jean",
+        "sign -[near]-> track"
+      ]
+    },
+    {
+      "image_id": 2353851,
+      "url": "data/vg_focused/images/2353851.jpg",
+      "relationships": [
+        "door -[to]-> train",
+        "pole -[with]-> light",
+        "sign -[on]-> pole",
+        "window -[in]-> train"
+      ]
+    },
+    {
+      "image_id": 2354069,
+      "url": "data/vg_focused/images/2354069.jpg",
+      "relationships": [
+        "train -[on]-> pant",
+        "car -[near]-> train",
+        "fence -[near]-> train",
+        "fence -[wearing]-> car",
+        "fence -[in front of]-> sign",
+        "light -[on]-> jean",
+        "light -[on]-> train",
+        "light -[on]-> wave",
+        "sign -[on]-> train",
+        "sign -[has]-> person",
+        "sign -[has]-> snow",
+        "wave -[near]-> train",
+        "wave -[on]-> sign",
+        "windshield -[of]-> train",
+        "windshield -[in front of]-> fence"
+      ]
+    },
+    {
+      "image_id": 2356518,
+      "url": "data/vg_focused/images/2356518.jpg",
+      "relationships": [
+        "door -[on back of]-> train",
+        "pole -[with]-> sign",
+        "window -[near]-> train",
+        "number -[on back of]-> train"
+      ]
+    },
+    {
+      "image_id": 2358242,
+      "url": "data/vg_focused/images/2358242.jpg",
+      "relationships": [
+        "sign -[on]-> train",
+        "track -[of]-> sign",
+        "track -[for]-> train",
+        "track -[of]-> screen",
+        "train -[of]-> windshield",
+        "train -[of]-> screen",
+        "window -[of]-> train",
+        "windshield -[wearing]-> helmet",
+        "windshield -[of]-> train",
+        "windshield -[on]-> window",
+        "windshield -[wearing]-> building",
+        "wire -[has]-> head",
+        "wire -[above]-> track",
+        "wire -[sitting on]-> table"
+      ]
+    },
+    {
+      "image_id": 2361484,
+      "url": "data/vg_focused/images/2361484.jpg",
+      "relationships": [
+        "man -[on]-> train",
+        "sign -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2387579,
+      "url": "data/vg_focused/images/2387579.jpg",
+      "relationships": [
+        "pole -[with]-> wire",
+        "rock -[along]-> track",
+        "sign -[near]-> track",
+        "track -[for]-> train",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 2392362,
+      "url": "data/vg_focused/images/2392362.jpg",
+      "relationships": [
+        "head -[of]-> train",
+        "hill -[near]-> track",
+        "sign -[on]-> train",
+        "wheel -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2400061,
+      "url": "data/vg_focused/images/2400061.jpg",
+      "relationships": [
+        "train -[has]-> sign",
+        "train -[has]-> window",
+        "train -[on]-> track",
+        "wire -[above]-> train"
+      ]
+    }
+  ],
+  "window-on-train": [
+    {
+      "image_id": 1159512,
+      "url": "data/vg_focused/images/1159512.jpg",
+      "relationships": [
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2344291,
+      "url": "data/vg_focused/images/2344291.jpg",
+      "relationships": [
+        "boat -[on]-> face",
+        "door -[on]-> boat",
+        "door -[of]-> face",
+        "face -[of]-> train",
+        "fence -[on]-> face",
+        "fence -[near]-> track",
+        "man -[standing on]-> boat",
+        "man -[on]-> sidewalk",
+        "sign -[near]-> track",
+        "sign -[on]-> street",
+        "track -[wearing]-> train",
+        "window -[on]-> boat"
+      ]
+    },
+    {
+      "image_id": 2349840,
+      "url": "data/vg_focused/images/2349840.jpg",
+      "relationships": [
+        "leaf -[on]-> train",
+        "leaf -[on]-> tree",
+        "tree -[behind]-> train",
+        "tree -[behind]-> window",
+        "window -[has]-> hair",
+        "window -[on]-> train",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2351006,
+      "url": "data/vg_focused/images/2351006.jpg",
+      "relationships": [
+        "tree -[in]-> train",
+        "tree -[on]-> track",
+        "window -[on]-> leaf",
+        "window -[in]-> train",
+        "track -[has]-> short",
+        "track -[in]-> man",
+        "track -[wears]-> track",
+        "track -[with]-> track",
+        "track -[wears]-> train",
+        "track -[wearing]-> bed"
+      ]
+    },
+    {
+      "image_id": 2351935,
+      "url": "data/vg_focused/images/2351935.jpg",
+      "relationships": [
+        "train -[on]-> track",
+        "window -[of]-> train",
+        "train -[has]-> door"
+      ]
+    },
+    {
+      "image_id": 2353851,
+      "url": "data/vg_focused/images/2353851.jpg",
+      "relationships": [
+        "door -[to]-> train",
+        "pole -[with]-> light",
+        "sign -[on]-> pole",
+        "window -[in]-> train"
+      ]
+    },
+    {
+      "image_id": 2356518,
+      "url": "data/vg_focused/images/2356518.jpg",
+      "relationships": [
+        "door -[on back of]-> train",
+        "pole -[with]-> sign",
+        "window -[near]-> train",
+        "number -[on back of]-> train"
+      ]
+    },
+    {
+      "image_id": 2358242,
+      "url": "data/vg_focused/images/2358242.jpg",
+      "relationships": [
+        "sign -[on]-> train",
+        "track -[of]-> sign",
+        "track -[for]-> train",
+        "track -[of]-> screen",
+        "train -[of]-> windshield",
+        "train -[of]-> screen",
+        "window -[of]-> train",
+        "windshield -[wearing]-> helmet",
+        "windshield -[of]-> train",
+        "windshield -[on]-> window",
+        "windshield -[wearing]-> building",
+        "wire -[has]-> head",
+        "wire -[above]-> track",
+        "wire -[sitting on]-> table"
+      ]
+    },
+    {
+      "image_id": 2361202,
+      "url": "data/vg_focused/images/2361202.jpg",
+      "relationships": [
+        "car -[of]-> train",
+        "door -[of]-> train",
+        "train -[on]-> track",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2361203,
+      "url": "data/vg_focused/images/2361203.jpg",
+      "relationships": [
+        "train -[on]-> track",
+        "train -[has]-> window",
+        "train -[has]-> wire"
+      ]
+    },
+    {
+      "image_id": 2362680,
+      "url": "data/vg_focused/images/2362680.jpg",
+      "relationships": [
+        "door -[on]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2369846,
+      "url": "data/vg_focused/images/2369846.jpg",
+      "relationships": [
+        "number -[on]-> train",
+        "train -[with]-> door",
+        "roof -[of]-> house",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2370481,
+      "url": "data/vg_focused/images/2370481.jpg",
+      "relationships": [
+        "engine -[on]-> train",
+        "tree -[on]-> track",
+        "window -[on]-> train",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2371776,
+      "url": "data/vg_focused/images/2371776.jpg",
+      "relationships": [
+        "car -[of]-> train",
+        "house -[near]-> track",
+        "window -[of]-> train",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2373028,
+      "url": "data/vg_focused/images/2373028.jpg",
+      "relationships": [
+        "car -[behind]-> car",
+        "car -[on]-> track",
+        "door -[on]-> car",
+        "wheel -[on]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2373029,
+      "url": "data/vg_focused/images/2373029.jpg",
+      "relationships": [
+        "track -[under]-> train",
+        "tree -[behind]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2374236,
+      "url": "data/vg_focused/images/2374236.jpg",
+      "relationships": [
+        "wheel -[of]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2379289,
+      "url": "data/vg_focused/images/2379289.jpg",
+      "relationships": [
+        "building -[has]-> window",
+        "light -[on]-> train",
+        "train -[has]-> door",
+        "train -[has]-> window",
+        "train -[has]-> track"
+      ]
+    },
+    {
+      "image_id": 2386277,
+      "url": "data/vg_focused/images/2386277.jpg",
+      "relationships": [
+        "glove -[hanging from]-> post",
+        "window -[of]-> car",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2386466,
+      "url": "data/vg_focused/images/2386466.jpg",
+      "relationships": [
+        "engine -[has]-> wheel",
+        "hill -[near]-> track",
+        "train -[above]-> track",
+        "train -[has]-> window",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 2400061,
+      "url": "data/vg_focused/images/2400061.jpg",
+      "relationships": [
+        "train -[has]-> sign",
+        "train -[has]-> window",
+        "train -[on]-> track",
+        "wire -[above]-> train"
+      ]
+    },
+    {
+      "image_id": 2401753,
+      "url": "data/vg_focused/images/2401753.jpg",
+      "relationships": [
+        "track -[in front of]-> train",
+        "track -[under]-> train",
+        "train -[has]-> engine",
+        "train -[has]-> wheel",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2402886,
+      "url": "data/vg_focused/images/2402886.jpg",
+      "relationships": [
+        "clock -[on]-> post",
+        "door -[in]-> train",
+        "track -[for]-> train",
+        "track -[carrying]-> train",
+        "train -[with]-> light",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2404158,
+      "url": "data/vg_focused/images/2404158.jpg",
+      "relationships": [
+        "door -[of]-> train",
+        "engine -[of]-> train",
+        "number -[on]-> train",
+        "wheel -[on]-> track",
+        "wheel -[of]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2408171,
+      "url": "data/vg_focused/images/2408171.jpg",
+      "relationships": [
+        "door -[on]-> train",
+        "number -[on]-> train",
+        "train -[on]-> track",
+        "train -[has]-> window"
+      ]
+    },
+    {
+      "image_id": 2415056,
+      "url": "data/vg_focused/images/2415056.jpg",
+      "relationships": [
+        "building -[near]-> track",
+        "train -[on]-> track",
+        "train -[has]-> window",
+        "vehicle -[near]-> fence"
+      ]
+    }
+  ],
+  "track-under-train": [
+    {
+      "image_id": 1159328,
+      "url": "data/vg_focused/images/1159328.jpg",
+      "relationships": [
+        "building -[has]-> roof",
+        "clock -[on]-> tower",
+        "letter -[on]-> sign",
+        "man -[wearing]-> coat",
+        "man -[walking on]-> street",
+        "sign -[attached to]-> building",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 1160185,
+      "url": "data/vg_focused/images/1160185.jpg",
+      "relationships": [
+        "leaf -[on]-> tree",
+        "man -[standing on]-> track",
+        "sign -[on]-> building",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2344291,
+      "url": "data/vg_focused/images/2344291.jpg",
+      "relationships": [
+        "boat -[on]-> face",
+        "door -[on]-> boat",
+        "door -[of]-> face",
+        "face -[of]-> train",
+        "fence -[on]-> face",
+        "fence -[near]-> track",
+        "man -[standing on]-> boat",
+        "man -[on]-> sidewalk",
+        "sign -[near]-> track",
+        "sign -[on]-> street",
+        "track -[wearing]-> train",
+        "window -[on]-> boat"
+      ]
+    },
+    {
+      "image_id": 2345837,
+      "url": "data/vg_focused/images/2345837.jpg",
+      "relationships": [
+        "train -[over]-> track"
+      ]
+    },
+    {
+      "image_id": 2346872,
+      "url": "data/vg_focused/images/2346872.jpg",
+      "relationships": [
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2346878,
+      "url": "data/vg_focused/images/2346878.jpg",
+      "relationships": [
+        "track -[in]-> sock",
+        "tree -[near]-> track",
+        "light -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2348685,
+      "url": "data/vg_focused/images/2348685.jpg",
+      "relationships": [
+        "light -[on]-> train",
+        "person -[wearing]-> shirt",
+        "person -[walking on]-> sidewalk",
+        "sign -[mounted on]-> pole",
+        "sign -[mounted on]-> sign",
+        "wire -[above]-> train",
+        "person -[wearing]-> jean",
+        "sign -[near]-> track"
+      ]
+    },
+    {
+      "image_id": 2351006,
+      "url": "data/vg_focused/images/2351006.jpg",
+      "relationships": [
+        "tree -[in]-> train",
+        "tree -[on]-> track",
+        "window -[on]-> leaf",
+        "window -[in]-> train",
+        "track -[has]-> short",
+        "track -[in]-> man",
+        "track -[wears]-> track",
+        "track -[with]-> track",
+        "track -[wears]-> train",
+        "track -[wearing]-> bed"
+      ]
+    },
+    {
+      "image_id": 2351935,
+      "url": "data/vg_focused/images/2351935.jpg",
+      "relationships": [
+        "train -[on]-> track",
+        "window -[of]-> train",
+        "train -[has]-> door"
+      ]
+    },
+    {
+      "image_id": 2358242,
+      "url": "data/vg_focused/images/2358242.jpg",
+      "relationships": [
+        "sign -[on]-> train",
+        "track -[of]-> sign",
+        "track -[for]-> train",
+        "track -[of]-> screen",
+        "train -[of]-> windshield",
+        "train -[of]-> screen",
+        "window -[of]-> train",
+        "windshield -[wearing]-> helmet",
+        "windshield -[of]-> train",
+        "windshield -[on]-> window",
+        "windshield -[wearing]-> building",
+        "wire -[has]-> head",
+        "wire -[above]-> track",
+        "wire -[sitting on]-> table"
+      ]
+    },
+    {
+      "image_id": 2358253,
+      "url": "data/vg_focused/images/2358253.jpg",
+      "relationships": [
+        "pole -[near]-> track",
+        "train -[on]-> track",
+        "tree -[has]-> tree"
+      ]
+    },
+    {
+      "image_id": 2358722,
+      "url": "data/vg_focused/images/2358722.jpg",
+      "relationships": [
+        "light -[above]-> track",
+        "track -[under]-> light",
+        "number -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2360889,
+      "url": "data/vg_focused/images/2360889.jpg",
+      "relationships": [
+        "light -[on]-> train",
+        "train -[on]-> track",
+        "wire -[above]-> train"
+      ]
+    },
+    {
+      "image_id": 2361202,
+      "url": "data/vg_focused/images/2361202.jpg",
+      "relationships": [
+        "car -[of]-> train",
+        "door -[of]-> train",
+        "train -[on]-> track",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2361203,
+      "url": "data/vg_focused/images/2361203.jpg",
+      "relationships": [
+        "train -[on]-> track",
+        "train -[has]-> window",
+        "train -[has]-> wire"
+      ]
+    },
+    {
+      "image_id": 2361942,
+      "url": "data/vg_focused/images/2361942.jpg",
+      "relationships": [
+        "train -[on]-> track",
+        "train -[at]-> train",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2363210,
+      "url": "data/vg_focused/images/2363210.jpg",
+      "relationships": [
+        "track -[in front of]-> train"
+      ]
+    },
+    {
+      "image_id": 2365098,
+      "url": "data/vg_focused/images/2365098.jpg",
+      "relationships": [
+        "building -[behind]-> train",
+        "door -[on]-> train",
+        "track -[in front of]-> fence",
+        "tree -[along]-> train"
+      ]
+    },
+    {
+      "image_id": 2369272,
+      "url": "data/vg_focused/images/2369272.jpg",
+      "relationships": [
+        "train -[on]-> track",
+        "person -[on]-> sidewalk"
+      ]
+    },
+    {
+      "image_id": 2369701,
+      "url": "data/vg_focused/images/2369701.jpg",
+      "relationships": [
+        "man -[wearing]-> jacket",
+        "people -[in]-> train",
+        "person -[walking on]-> sidewalk",
+        "track -[in front of]-> building",
+        "train -[above]-> track"
+      ]
+    },
+    {
+      "image_id": 2370481,
+      "url": "data/vg_focused/images/2370481.jpg",
+      "relationships": [
+        "engine -[on]-> train",
+        "tree -[on]-> track",
+        "window -[on]-> train",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2371776,
+      "url": "data/vg_focused/images/2371776.jpg",
+      "relationships": [
+        "car -[of]-> train",
+        "house -[near]-> track",
+        "window -[of]-> train",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2373028,
+      "url": "data/vg_focused/images/2373028.jpg",
+      "relationships": [
+        "car -[behind]-> car",
+        "car -[on]-> track",
+        "door -[on]-> car",
+        "wheel -[on]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2373029,
+      "url": "data/vg_focused/images/2373029.jpg",
+      "relationships": [
+        "track -[under]-> train",
+        "tree -[behind]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2373570,
+      "url": "data/vg_focused/images/2373570.jpg",
+      "relationships": [
+        "roof -[of]-> house",
+        "track -[near]-> house",
+        "engine -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2375855,
+      "url": "data/vg_focused/images/2375855.jpg",
+      "relationships": [
+        "engine -[with]-> car",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2378977,
+      "url": "data/vg_focused/images/2378977.jpg",
+      "relationships": [
+        "fence -[near]-> train",
+        "snow -[covering]-> track",
+        "train -[has]-> windshield"
+      ]
+    },
+    {
+      "image_id": 2379289,
+      "url": "data/vg_focused/images/2379289.jpg",
+      "relationships": [
+        "building -[has]-> window",
+        "light -[on]-> train",
+        "train -[has]-> door",
+        "train -[has]-> window",
+        "train -[has]-> track"
+      ]
+    },
+    {
+      "image_id": 2383480,
+      "url": "data/vg_focused/images/2383480.jpg",
+      "relationships": [
+        "logo -[on]-> train",
+        "train -[on]-> track",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2384853,
+      "url": "data/vg_focused/images/2384853.jpg",
+      "relationships": [
+        "car -[near]-> building",
+        "track -[under]-> train",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 2386466,
+      "url": "data/vg_focused/images/2386466.jpg",
+      "relationships": [
+        "engine -[has]-> wheel",
+        "hill -[near]-> track",
+        "train -[above]-> track",
+        "train -[has]-> window",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 2387579,
+      "url": "data/vg_focused/images/2387579.jpg",
+      "relationships": [
+        "pole -[with]-> wire",
+        "rock -[along]-> track",
+        "sign -[near]-> track",
+        "track -[for]-> train",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 2391091,
+      "url": "data/vg_focused/images/2391091.jpg",
+      "relationships": [
+        "car -[near]-> fence",
+        "car -[near]-> train",
+        "engine -[on]-> train",
+        "fence -[of]-> track",
+        "pole -[and]-> wire",
+        "wheel -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2391319,
+      "url": "data/vg_focused/images/2391319.jpg",
+      "relationships": [
+        "people -[on]-> boat",
+        "train -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2392362,
+      "url": "data/vg_focused/images/2392362.jpg",
+      "relationships": [
+        "head -[of]-> train",
+        "hill -[near]-> track",
+        "sign -[on]-> train",
+        "wheel -[on]-> track"
+      ]
+    },
+    {
+      "image_id": 2400061,
+      "url": "data/vg_focused/images/2400061.jpg",
+      "relationships": [
+        "train -[has]-> sign",
+        "train -[has]-> window",
+        "train -[on]-> track",
+        "wire -[above]-> train"
+      ]
+    },
+    {
+      "image_id": 2401753,
+      "url": "data/vg_focused/images/2401753.jpg",
+      "relationships": [
+        "track -[in front of]-> train",
+        "track -[under]-> train",
+        "train -[has]-> engine",
+        "train -[has]-> wheel",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2402886,
+      "url": "data/vg_focused/images/2402886.jpg",
+      "relationships": [
+        "clock -[on]-> post",
+        "door -[in]-> train",
+        "track -[for]-> train",
+        "track -[carrying]-> train",
+        "train -[with]-> light",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2404158,
+      "url": "data/vg_focused/images/2404158.jpg",
+      "relationships": [
+        "door -[of]-> train",
+        "engine -[of]-> train",
+        "number -[on]-> train",
+        "wheel -[on]-> track",
+        "wheel -[of]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2408171,
+      "url": "data/vg_focused/images/2408171.jpg",
+      "relationships": [
+        "door -[on]-> train",
+        "number -[on]-> train",
+        "train -[on]-> track",
+        "train -[has]-> window"
+      ]
+    },
+    {
+      "image_id": 2415056,
+      "url": "data/vg_focused/images/2415056.jpg",
+      "relationships": [
+        "building -[near]-> track",
+        "train -[on]-> track",
+        "train -[has]-> window",
+        "vehicle -[near]-> fence"
+      ]
+    }
+  ],
+  "windshield-on-train": [
+    {
+      "image_id": 713599,
+      "url": "data/vg_focused/images/713599.jpg",
+      "relationships": [
+        "bus -[in]-> street",
+        "car -[on]-> street",
+        "windshield -[on]-> bus",
+        "train -[above]-> street"
+      ]
+    },
+    {
+      "image_id": 2349840,
+      "url": "data/vg_focused/images/2349840.jpg",
+      "relationships": [
+        "leaf -[on]-> train",
+        "leaf -[on]-> tree",
+        "tree -[behind]-> train",
+        "tree -[behind]-> window",
+        "window -[has]-> hair",
+        "window -[on]-> train",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2354069,
+      "url": "data/vg_focused/images/2354069.jpg",
+      "relationships": [
+        "train -[on]-> pant",
+        "car -[near]-> train",
+        "fence -[near]-> train",
+        "fence -[wearing]-> car",
+        "fence -[in front of]-> sign",
+        "light -[on]-> jean",
+        "light -[on]-> train",
+        "light -[on]-> wave",
+        "sign -[on]-> train",
+        "sign -[has]-> person",
+        "sign -[has]-> snow",
+        "wave -[near]-> train",
+        "wave -[on]-> sign",
+        "windshield -[of]-> train",
+        "windshield -[in front of]-> fence"
+      ]
+    },
+    {
+      "image_id": 2358242,
+      "url": "data/vg_focused/images/2358242.jpg",
+      "relationships": [
+        "sign -[on]-> train",
+        "track -[of]-> sign",
+        "track -[for]-> train",
+        "track -[of]-> screen",
+        "train -[of]-> windshield",
+        "train -[of]-> screen",
+        "window -[of]-> train",
+        "windshield -[wearing]-> helmet",
+        "windshield -[of]-> train",
+        "windshield -[on]-> window",
+        "windshield -[wearing]-> building",
+        "wire -[has]-> head",
+        "wire -[above]-> track",
+        "wire -[sitting on]-> table"
+      ]
+    },
+    {
+      "image_id": 2361942,
+      "url": "data/vg_focused/images/2361942.jpg",
+      "relationships": [
+        "train -[on]-> track",
+        "train -[at]-> train",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2362708,
+      "url": "data/vg_focused/images/2362708.jpg",
+      "relationships": [
+        "man -[wearing]-> shirt",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2373822,
+      "url": "data/vg_focused/images/2373822.jpg",
+      "relationships": [
+        "car -[on]-> train",
+        "light -[on]-> train",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2378977,
+      "url": "data/vg_focused/images/2378977.jpg",
+      "relationships": [
+        "fence -[near]-> train",
+        "snow -[covering]-> track",
+        "train -[has]-> windshield"
+      ]
+    },
+    {
+      "image_id": 2383480,
+      "url": "data/vg_focused/images/2383480.jpg",
+      "relationships": [
+        "logo -[on]-> train",
+        "train -[on]-> track",
+        "windshield -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2390172,
+      "url": "data/vg_focused/images/2390172.jpg",
+      "relationships": [
+        "train -[has]-> windshield",
+        "windshield -[for]-> man"
+      ]
+    }
+  ],
+  "wire-above-train": [
+    {
+      "image_id": 2348685,
+      "url": "data/vg_focused/images/2348685.jpg",
+      "relationships": [
+        "light -[on]-> train",
+        "person -[wearing]-> shirt",
+        "person -[walking on]-> sidewalk",
+        "sign -[mounted on]-> pole",
+        "sign -[mounted on]-> sign",
+        "wire -[above]-> train",
+        "person -[wearing]-> jean",
+        "sign -[near]-> track"
+      ]
+    },
+    {
+      "image_id": 2358242,
+      "url": "data/vg_focused/images/2358242.jpg",
+      "relationships": [
+        "sign -[on]-> train",
+        "track -[of]-> sign",
+        "track -[for]-> train",
+        "track -[of]-> screen",
+        "train -[of]-> windshield",
+        "train -[of]-> screen",
+        "window -[of]-> train",
+        "windshield -[wearing]-> helmet",
+        "windshield -[of]-> train",
+        "windshield -[on]-> window",
+        "windshield -[wearing]-> building",
+        "wire -[has]-> head",
+        "wire -[above]-> track",
+        "wire -[sitting on]-> table"
+      ]
+    },
+    {
+      "image_id": 2360889,
+      "url": "data/vg_focused/images/2360889.jpg",
+      "relationships": [
+        "light -[on]-> train",
+        "train -[on]-> track",
+        "wire -[above]-> train"
+      ]
+    },
+    {
+      "image_id": 2361203,
+      "url": "data/vg_focused/images/2361203.jpg",
+      "relationships": [
+        "train -[on]-> track",
+        "train -[has]-> window",
+        "train -[has]-> wire"
+      ]
+    },
+    {
+      "image_id": 2387579,
+      "url": "data/vg_focused/images/2387579.jpg",
+      "relationships": [
+        "pole -[with]-> wire",
+        "rock -[along]-> track",
+        "sign -[near]-> track",
+        "track -[for]-> train",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 2391091,
+      "url": "data/vg_focused/images/2391091.jpg",
+      "relationships": [
+        "car -[near]-> fence",
+        "car -[near]-> train",
+        "engine -[on]-> train",
+        "fence -[of]-> track",
+        "pole -[and]-> wire",
+        "wheel -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2400061,
+      "url": "data/vg_focused/images/2400061.jpg",
+      "relationships": [
+        "train -[has]-> sign",
+        "train -[has]-> window",
+        "train -[on]-> track",
+        "wire -[above]-> train"
+      ]
+    }
+  ],
+  "sign-on-pole": [
+    {
+      "image_id": 2344998,
+      "url": "data/vg_focused/images/2344998.jpg",
+      "relationships": [
+        "sign -[above]-> sign",
+        "letter -[has]-> light",
+        "letter -[on]-> sign",
+        "letter -[wearing]-> girl",
+        "pole -[holding]-> light",
+        "pole -[with]-> sign",
+        "sign -[on]-> sign",
+        "post -[on]-> sign",
+        "post -[holding]-> sign"
+      ]
+    },
+    {
+      "image_id": 2347062,
+      "url": "data/vg_focused/images/2347062.jpg",
+      "relationships": [
+        "board -[with]-> arm",
+        "board -[standing on]-> board",
+        "board -[near]-> building",
+        "building -[wearing]-> sign",
+        "pole -[holding]-> sign",
+        "window -[wearing]-> pole",
+        "window -[above]-> sign"
+      ]
+    },
+    {
+      "image_id": 2348685,
+      "url": "data/vg_focused/images/2348685.jpg",
+      "relationships": [
+        "light -[on]-> train",
+        "person -[wearing]-> shirt",
+        "person -[walking on]-> sidewalk",
+        "sign -[mounted on]-> pole",
+        "sign -[mounted on]-> sign",
+        "wire -[above]-> train",
+        "person -[wearing]-> jean",
+        "sign -[near]-> track"
+      ]
+    },
+    {
+      "image_id": 2349773,
+      "url": "data/vg_focused/images/2349773.jpg",
+      "relationships": [
+        "logo -[wearing]-> door",
+        "logo -[on]-> door",
+        "logo -[wearing]-> pole",
+        "logo -[wearing]-> sign",
+        "logo -[wearing]-> tree",
+        "pole -[near]-> truck",
+        "tree -[behind]-> sign",
+        "window -[on]-> truck",
+        "window -[of]-> truck",
+        "tire -[of]-> truck"
+      ]
+    },
+    {
+      "image_id": 2353851,
+      "url": "data/vg_focused/images/2353851.jpg",
+      "relationships": [
+        "door -[to]-> train",
+        "pole -[with]-> light",
+        "sign -[on]-> pole",
+        "window -[in]-> train"
+      ]
+    },
+    {
+      "image_id": 2356518,
+      "url": "data/vg_focused/images/2356518.jpg",
+      "relationships": [
+        "door -[on back of]-> train",
+        "pole -[with]-> sign",
+        "window -[near]-> train",
+        "number -[on back of]-> train"
+      ]
+    },
+    {
+      "image_id": 2357681,
+      "url": "data/vg_focused/images/2357681.jpg",
+      "relationships": [
+        "bus -[near]-> post",
+        "bus -[has]-> window",
+        "people -[on]-> man",
+        "people -[on]-> bus",
+        "pole -[behind]-> bus",
+        "pole -[along]-> sidewalk",
+        "post -[for]-> window",
+        "sidewalk -[behind]-> bus",
+        "sign -[on]-> bus",
+        "wheel -[in]-> bus",
+        "wheel -[on]-> bus",
+        "wheel -[near]-> building",
+        "window -[over]-> sign",
+        "window -[on]-> woman",
+        "woman -[on]-> sidewalk"
+      ]
+    },
+    {
+      "image_id": 2367538,
+      "url": "data/vg_focused/images/2367538.jpg",
+      "relationships": [
+        "pole -[in]-> sidewalk",
+        "pole -[on]-> person",
+        "sidewalk -[on]-> pole",
+        "pole -[with]-> sign",
+        "sign -[of]-> tire"
+      ]
+    },
+    {
+      "image_id": 2377663,
+      "url": "data/vg_focused/images/2377663.jpg",
+      "relationships": [
+        "logo -[on]-> sign",
+        "man -[holding]-> pole",
+        "skier -[on]-> snow"
+      ]
+    },
+    {
+      "image_id": 2381888,
+      "url": "data/vg_focused/images/2381888.jpg",
+      "relationships": [
+        "light -[on]-> bus",
+        "pole -[with]-> sign",
+        "sign -[near]-> bus",
+        "sign -[on]-> sidewalk",
+        "window -[on]-> bus",
+        "windshield -[on]-> bus",
+        "number -[on]-> sign",
+        "railing -[on]-> street"
+      ]
+    },
+    {
+      "image_id": 2386101,
+      "url": "data/vg_focused/images/2386101.jpg",
+      "relationships": [
+        "bus -[in front of]-> man",
+        "man -[wearing]-> pant",
+        "sign -[on]-> pole",
+        "tree -[in front of]-> building",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2387579,
+      "url": "data/vg_focused/images/2387579.jpg",
+      "relationships": [
+        "pole -[with]-> wire",
+        "rock -[along]-> track",
+        "sign -[near]-> track",
+        "track -[for]-> train",
+        "tree -[behind]-> train"
+      ]
+    },
+    {
+      "image_id": 2390207,
+      "url": "data/vg_focused/images/2390207.jpg",
+      "relationships": [
+        "horse -[has]-> head",
+        "man -[wearing]-> helmet",
+        "man -[riding]-> horse",
+        "pole -[has]-> sign",
+        "window -[on]-> building",
+        "sign -[near]-> man"
+      ]
+    },
+    {
+      "image_id": 2391655,
+      "url": "data/vg_focused/images/2391655.jpg",
+      "relationships": [
+        "person -[on]-> snow",
+        "pole -[in]-> snow",
+        "sign -[in]-> snow",
+        "girl -[wearing]-> jacket",
+        "skier -[wearing]-> jacket"
+      ]
+    },
+    {
+      "image_id": 2402307,
+      "url": "data/vg_focused/images/2402307.jpg",
+      "relationships": [
+        "bus -[has]-> window",
+        "man -[has]-> jean",
+        "plant -[on]-> sidewalk",
+        "pole -[on]-> sidewalk",
+        "sign -[on]-> building"
+      ]
+    },
+    {
+      "image_id": 2406968,
+      "url": "data/vg_focused/images/2406968.jpg",
+      "relationships": [
+        "number -[on]-> bus",
+        "pole -[near]-> bus",
+        "sign -[on]-> fence",
+        "window -[on]-> bus",
+        "woman -[has]-> hair"
+      ]
+    }
+  ],
+  "door-on-train": [
+    {
+      "image_id": 2344291,
+      "url": "data/vg_focused/images/2344291.jpg",
+      "relationships": [
+        "boat -[on]-> face",
+        "door -[on]-> boat",
+        "door -[of]-> face",
+        "face -[of]-> train",
+        "fence -[on]-> face",
+        "fence -[near]-> track",
+        "man -[standing on]-> boat",
+        "man -[on]-> sidewalk",
+        "sign -[near]-> track",
+        "sign -[on]-> street",
+        "track -[wearing]-> train",
+        "window -[on]-> boat"
+      ]
+    },
+    {
+      "image_id": 2351935,
+      "url": "data/vg_focused/images/2351935.jpg",
+      "relationships": [
+        "train -[on]-> track",
+        "window -[of]-> train",
+        "train -[has]-> door"
+      ]
+    },
+    {
+      "image_id": 2353851,
+      "url": "data/vg_focused/images/2353851.jpg",
+      "relationships": [
+        "door -[to]-> train",
+        "pole -[with]-> light",
+        "sign -[on]-> pole",
+        "window -[in]-> train"
+      ]
+    },
+    {
+      "image_id": 2356518,
+      "url": "data/vg_focused/images/2356518.jpg",
+      "relationships": [
+        "door -[on back of]-> train",
+        "pole -[with]-> sign",
+        "window -[near]-> train",
+        "number -[on back of]-> train"
+      ]
+    },
+    {
+      "image_id": 2361202,
+      "url": "data/vg_focused/images/2361202.jpg",
+      "relationships": [
+        "car -[of]-> train",
+        "door -[of]-> train",
+        "train -[on]-> track",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2362680,
+      "url": "data/vg_focused/images/2362680.jpg",
+      "relationships": [
+        "door -[on]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2365098,
+      "url": "data/vg_focused/images/2365098.jpg",
+      "relationships": [
+        "building -[behind]-> train",
+        "door -[on]-> train",
+        "track -[in front of]-> fence",
+        "tree -[along]-> train"
+      ]
+    },
+    {
+      "image_id": 2369846,
+      "url": "data/vg_focused/images/2369846.jpg",
+      "relationships": [
+        "number -[on]-> train",
+        "train -[with]-> door",
+        "roof -[of]-> house",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2373028,
+      "url": "data/vg_focused/images/2373028.jpg",
+      "relationships": [
+        "car -[behind]-> car",
+        "car -[on]-> track",
+        "door -[on]-> car",
+        "wheel -[on]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2379289,
+      "url": "data/vg_focused/images/2379289.jpg",
+      "relationships": [
+        "building -[has]-> window",
+        "light -[on]-> train",
+        "train -[has]-> door",
+        "train -[has]-> window",
+        "train -[has]-> track"
+      ]
+    },
+    {
+      "image_id": 2402886,
+      "url": "data/vg_focused/images/2402886.jpg",
+      "relationships": [
+        "clock -[on]-> post",
+        "door -[in]-> train",
+        "track -[for]-> train",
+        "track -[carrying]-> train",
+        "train -[with]-> light",
+        "window -[of]-> train"
+      ]
+    },
+    {
+      "image_id": 2404158,
+      "url": "data/vg_focused/images/2404158.jpg",
+      "relationships": [
+        "door -[of]-> train",
+        "engine -[of]-> train",
+        "number -[on]-> train",
+        "wheel -[on]-> track",
+        "wheel -[of]-> train",
+        "window -[on]-> train"
+      ]
+    },
+    {
+      "image_id": 2408171,
+      "url": "data/vg_focused/images/2408171.jpg",
+      "relationships": [
+        "door -[on]-> train",
+        "number -[on]-> train",
+        "train -[on]-> track",
+        "train -[has]-> window"
+      ]
+    }
+  ],
+  "rock-near-track": [
+    {
+      "image_id": 2387579,
+      "url": "data/vg_focused/images/2387579.jpg",
+      "relationships": [
+        "pole -[with]-> wire",
+        "rock -[along]-> track",
+        "sign -[near]-> track",
+        "track -[for]-> train",
+        "tree -[behind]-> train"
+      ]
+    }
+  ]
+}

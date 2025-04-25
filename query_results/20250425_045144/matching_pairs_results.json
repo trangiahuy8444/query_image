@@ -1,0 +1,733 @@
+{
+  "zebra-has-tail": [
+    {
+      "image_id": 2353845,
+      "url": "data/vg_focused/images/2353845.jpg",
+      "relationships": [
+        "tail -[on]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2353919,
+      "url": "data/vg_focused/images/2353919.jpg",
+      "relationships": [
+        "hair -[on]-> tail",
+        "lady -[wearing]-> shirt",
+        "rock -[under]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2372281,
+      "url": "data/vg_focused/images/2372281.jpg",
+      "relationships": [
+        "head -[of]-> zebra",
+        "tail -[of]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2373015,
+      "url": "data/vg_focused/images/2373015.jpg",
+      "relationships": [
+        "bird -[near]-> zebra",
+        "hair -[on]-> zebra",
+        "tail -[of]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2378552,
+      "url": "data/vg_focused/images/2378552.jpg",
+      "relationships": [
+        "head -[of]-> zebra",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2392374,
+      "url": "data/vg_focused/images/2392374.jpg",
+      "relationships": [
+        "head -[of]-> zebra",
+        "tail -[attached to]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2395631,
+      "url": "data/vg_focused/images/2395631.jpg",
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2397807,
+      "url": "data/vg_focused/images/2397807.jpg",
+      "relationships": [
+        "head -[of]-> zebra",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2400075,
+      "url": "data/vg_focused/images/2400075.jpg",
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> head",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> neck",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2403393,
+      "url": "data/vg_focused/images/2403393.jpg",
+      "relationships": [
+        "ear -[of]-> zebra",
+        "fence -[behind]-> zebra",
+        "leg -[of]-> zebra",
+        "nose -[on]-> zebra",
+        "tail -[on]-> zebra",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2414029,
+      "url": "data/vg_focused/images/2414029.jpg",
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> face",
+        "zebra -[has]-> head",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> tail"
+      ]
+    }
+  ],
+  "tree-has-trunk": [
+    {
+      "image_id": 2347363,
+      "url": "data/vg_focused/images/2347363.jpg",
+      "relationships": [
+        "tree -[on]-> bench",
+        "tree -[behind]-> giraffe",
+        "face -[of]-> leg",
+        "giraffe -[has]-> face",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[near]-> neck",
+        "giraffe -[has]-> neck",
+        "head -[of]-> leg",
+        "trunk -[near]-> giraffe",
+        "trunk -[on]-> leg"
+      ]
+    },
+    {
+      "image_id": 2354040,
+      "url": "data/vg_focused/images/2354040.jpg",
+      "relationships": [
+        "fence -[with]-> head",
+        "face -[on]-> man",
+        "face -[on]-> fence",
+        "giraffe -[behind]-> fence",
+        "giraffe -[on]-> fence",
+        "giraffe -[has]-> face",
+        "giraffe -[has]-> leg",
+        "head -[wearing]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[holding]-> leg",
+        "leaf -[wearing]-> tree",
+        "leaf -[in]-> tree",
+        "leaf -[wearing]-> trunk",
+        "leaf -[wearing]-> roof",
+        "trunk -[behind]-> giraffe",
+        "roof -[behind]-> giraffe",
+        "roof -[has]-> tree",
+        "roof -[has]-> trunk"
+      ]
+    },
+    {
+      "image_id": 2356040,
+      "url": "data/vg_focused/images/2356040.jpg",
+      "relationships": [
+        "building -[behind]-> elephant",
+        "ear -[belonging to]-> elephant",
+        "head -[of]-> elephant",
+        "leg -[of]-> elephant",
+        "mouth -[on]-> elephant",
+        "tree -[behind]-> elephant",
+        "trunk -[of]-> elephant",
+        "window -[on]-> house",
+        "eye -[of]-> elephant"
+      ]
+    },
+    {
+      "image_id": 2356445,
+      "url": "data/vg_focused/images/2356445.jpg",
+      "relationships": [
+        "ear -[of]-> elephant",
+        "tree -[attached to]-> building",
+        "rock -[near]-> building",
+        "tail -[of]-> elephant",
+        "trunk -[of]-> elephant"
+      ]
+    },
+    {
+      "image_id": 2358050,
+      "url": "data/vg_focused/images/2358050.jpg",
+      "relationships": [
+        "giraffe -[behind]-> fence",
+        "giraffe -[has]-> neck",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> branch",
+        "leg -[of]-> giraffe",
+        "rock -[in front of]-> tree",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2365071,
+      "url": "data/vg_focused/images/2365071.jpg",
+      "relationships": [
+        "elephant -[has]-> tail",
+        "elephant -[has]-> ear",
+        "elephant -[near]-> fence",
+        "elephant -[has]-> trunk",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2373821,
+      "url": "data/vg_focused/images/2373821.jpg",
+      "relationships": [
+        "ear -[on]-> elephant",
+        "elephant -[has]-> mouth",
+        "eye -[of]-> elephant",
+        "tree -[behind]-> elephant",
+        "trunk -[of]-> elephant"
+      ]
+    },
+    {
+      "image_id": 2374342,
+      "url": "data/vg_focused/images/2374342.jpg",
+      "relationships": [
+        "elephant -[has]-> ear",
+        "elephant -[has]-> leg",
+        "elephant -[has]-> trunk",
+        "tree -[behind]-> elephant"
+      ]
+    },
+    {
+      "image_id": 2382198,
+      "url": "data/vg_focused/images/2382198.jpg",
+      "relationships": [
+        "ear -[of]-> elephant",
+        "head -[of]-> elephant",
+        "leg -[of]-> elephant",
+        "tree -[behind]-> elephant",
+        "trunk -[of]-> elephant",
+        "vehicle -[in front of]-> elephant"
+      ]
+    },
+    {
+      "image_id": 2382947,
+      "url": "data/vg_focused/images/2382947.jpg",
+      "relationships": [
+        "branch -[in]-> tree",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[in front of]-> tree",
+        "tail -[has]-> hair",
+        "tree -[has]-> trunk",
+        "tree -[behind]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2383325,
+      "url": "data/vg_focused/images/2383325.jpg",
+      "relationships": [
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[behind]-> fence",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2386936,
+      "url": "data/vg_focused/images/2386936.jpg",
+      "relationships": [
+        "elephant -[has]-> ear",
+        "elephant -[with]-> elephant",
+        "elephant -[has]-> hair",
+        "elephant -[has]-> leg",
+        "elephant -[has]-> mouth",
+        "elephant -[has]-> trunk",
+        "fence -[has]-> post",
+        "fence -[behind]-> elephant",
+        "tree -[near]-> fence"
+      ]
+    },
+    {
+      "image_id": 2390993,
+      "url": "data/vg_focused/images/2390993.jpg",
+      "relationships": [
+        "horse -[has]-> face",
+        "horse -[has]-> nose",
+        "man -[has]-> head",
+        "man -[riding]-> horse",
+        "tree -[has]-> trunk"
+      ]
+    },
+    {
+      "image_id": 2408749,
+      "url": "data/vg_focused/images/2408749.jpg",
+      "relationships": [
+        "bird -[behind]-> elephant",
+        "elephant -[has]-> trunk",
+        "elephant -[has]-> tail",
+        "tree -[behind]-> elephant"
+      ]
+    }
+  ],
+  "tail-on-zebra": [
+    {
+      "image_id": 2353845,
+      "url": "data/vg_focused/images/2353845.jpg",
+      "relationships": [
+        "tail -[on]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2353919,
+      "url": "data/vg_focused/images/2353919.jpg",
+      "relationships": [
+        "hair -[on]-> tail",
+        "lady -[wearing]-> shirt",
+        "rock -[under]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2372281,
+      "url": "data/vg_focused/images/2372281.jpg",
+      "relationships": [
+        "head -[of]-> zebra",
+        "tail -[of]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2373015,
+      "url": "data/vg_focused/images/2373015.jpg",
+      "relationships": [
+        "bird -[near]-> zebra",
+        "hair -[on]-> zebra",
+        "tail -[of]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2378552,
+      "url": "data/vg_focused/images/2378552.jpg",
+      "relationships": [
+        "head -[of]-> zebra",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2392374,
+      "url": "data/vg_focused/images/2392374.jpg",
+      "relationships": [
+        "head -[of]-> zebra",
+        "tail -[attached to]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2395631,
+      "url": "data/vg_focused/images/2395631.jpg",
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2397807,
+      "url": "data/vg_focused/images/2397807.jpg",
+      "relationships": [
+        "head -[of]-> zebra",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2400075,
+      "url": "data/vg_focused/images/2400075.jpg",
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> head",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> neck",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2403393,
+      "url": "data/vg_focused/images/2403393.jpg",
+      "relationships": [
+        "ear -[of]-> zebra",
+        "fence -[behind]-> zebra",
+        "leg -[of]-> zebra",
+        "nose -[on]-> zebra",
+        "tail -[on]-> zebra",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2414029,
+      "url": "data/vg_focused/images/2414029.jpg",
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> face",
+        "zebra -[has]-> head",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> tail"
+      ]
+    }
+  ],
+  "head-of-zebra": [
+    {
+      "image_id": 2366011,
+      "url": "data/vg_focused/images/2366011.jpg",
+      "relationships": [
+        "zebra -[has]-> head"
+      ]
+    },
+    {
+      "image_id": 2372281,
+      "url": "data/vg_focused/images/2372281.jpg",
+      "relationships": [
+        "head -[of]-> zebra",
+        "tail -[of]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2378552,
+      "url": "data/vg_focused/images/2378552.jpg",
+      "relationships": [
+        "head -[of]-> zebra",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2383247,
+      "url": "data/vg_focused/images/2383247.jpg",
+      "relationships": [
+        "eye -[on]-> head",
+        "hair -[on]-> ear",
+        "hair -[near]-> eye",
+        "zebra -[has]-> mouth",
+        "zebra -[has]-> nose"
+      ]
+    },
+    {
+      "image_id": 2392374,
+      "url": "data/vg_focused/images/2392374.jpg",
+      "relationships": [
+        "head -[of]-> zebra",
+        "tail -[attached to]-> zebra"
+      ]
+    },
+    {
+      "image_id": 2397807,
+      "url": "data/vg_focused/images/2397807.jpg",
+      "relationships": [
+        "head -[of]-> zebra",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2400075,
+      "url": "data/vg_focused/images/2400075.jpg",
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> head",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> neck",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2414029,
+      "url": "data/vg_focused/images/2414029.jpg",
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> face",
+        "zebra -[has]-> head",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> tail"
+      ]
+    }
+  ],
+  "tree-near-zebra": [
+    {
+      "image_id": 2348955,
+      "url": "data/vg_focused/images/2348955.jpg",
+      "relationships": [
+        "leaf -[on]-> tree",
+        "tree -[of]-> zebra",
+        "zebra -[under]-> tree"
+      ]
+    },
+    {
+      "image_id": 2402927,
+      "url": "data/vg_focused/images/2402927.jpg",
+      "relationships": [
+        "zebra -[has]-> hair",
+        "zebra -[in front of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2403393,
+      "url": "data/vg_focused/images/2403393.jpg",
+      "relationships": [
+        "ear -[of]-> zebra",
+        "fence -[behind]-> zebra",
+        "leg -[of]-> zebra",
+        "nose -[on]-> zebra",
+        "tail -[on]-> zebra",
+        "tree -[behind]-> fence"
+      ]
+    }
+  ],
+  "leg-on-zebra": [
+    {
+      "image_id": 2381487,
+      "url": "data/vg_focused/images/2381487.jpg",
+      "relationships": [
+        "ear -[on]-> zebra",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> nose"
+      ]
+    },
+    {
+      "image_id": 2395631,
+      "url": "data/vg_focused/images/2395631.jpg",
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2400075,
+      "url": "data/vg_focused/images/2400075.jpg",
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> head",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> neck",
+        "zebra -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2403393,
+      "url": "data/vg_focused/images/2403393.jpg",
+      "relationships": [
+        "ear -[of]-> zebra",
+        "fence -[behind]-> zebra",
+        "leg -[of]-> zebra",
+        "nose -[on]-> zebra",
+        "tail -[on]-> zebra",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2414029,
+      "url": "data/vg_focused/images/2414029.jpg",
+      "relationships": [
+        "zebra -[has]-> ear",
+        "zebra -[has]-> face",
+        "zebra -[has]-> head",
+        "zebra -[has]-> leg",
+        "zebra -[has]-> tail"
+      ]
+    }
+  ],
+  "tree-has-branch": [
+    {
+      "image_id": 2345406,
+      "url": "data/vg_focused/images/2345406.jpg",
+      "relationships": [
+        "giraffe -[near]-> tree",
+        "branch -[on]-> tree",
+        "fence -[in front of]-> giraffe",
+        "flower -[behind]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2355195,
+      "url": "data/vg_focused/images/2355195.jpg",
+      "relationships": [
+        "branch -[wearing]-> jacket",
+        "branch -[with]-> tree",
+        "tree -[has]-> branch",
+        "tree -[walking on]-> beach"
+      ]
+    },
+    {
+      "image_id": 2358050,
+      "url": "data/vg_focused/images/2358050.jpg",
+      "relationships": [
+        "giraffe -[behind]-> fence",
+        "giraffe -[has]-> neck",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> branch",
+        "leg -[of]-> giraffe",
+        "rock -[in front of]-> tree",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2360848,
+      "url": "data/vg_focused/images/2360848.jpg",
+      "relationships": [
+        "branch -[above]-> giraffe",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2361215,
+      "url": "data/vg_focused/images/2361215.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[has]-> branch",
+        "giraffe -[in front of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2382013,
+      "url": "data/vg_focused/images/2382013.jpg",
+      "relationships": [
+        "branch -[over]-> skier",
+        "skier -[wearing]-> jacket",
+        "skier -[holding]-> pole",
+        "ski -[in]-> snow",
+        "track -[in]-> snow",
+        "tree -[in]-> snow"
+      ]
+    },
+    {
+      "image_id": 2382947,
+      "url": "data/vg_focused/images/2382947.jpg",
+      "relationships": [
+        "branch -[in]-> tree",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[in front of]-> tree",
+        "tail -[has]-> hair",
+        "tree -[has]-> trunk",
+        "tree -[behind]-> giraffe"
+      ]
+    }
+  ],
+  "branch-on-tree": [
+    {
+      "image_id": 2345406,
+      "url": "data/vg_focused/images/2345406.jpg",
+      "relationships": [
+        "giraffe -[near]-> tree",
+        "branch -[on]-> tree",
+        "fence -[in front of]-> giraffe",
+        "flower -[behind]-> giraffe",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[on]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2355195,
+      "url": "data/vg_focused/images/2355195.jpg",
+      "relationships": [
+        "branch -[wearing]-> jacket",
+        "branch -[with]-> tree",
+        "tree -[has]-> branch",
+        "tree -[walking on]-> beach"
+      ]
+    },
+    {
+      "image_id": 2358050,
+      "url": "data/vg_focused/images/2358050.jpg",
+      "relationships": [
+        "giraffe -[behind]-> fence",
+        "giraffe -[has]-> neck",
+        "hair -[on]-> tail",
+        "head -[of]-> giraffe",
+        "leaf -[on]-> branch",
+        "leg -[of]-> giraffe",
+        "rock -[in front of]-> tree",
+        "trunk -[of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2360848,
+      "url": "data/vg_focused/images/2360848.jpg",
+      "relationships": [
+        "branch -[above]-> giraffe",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[has]-> tail",
+        "tree -[near]-> giraffe"
+      ]
+    },
+    {
+      "image_id": 2361215,
+      "url": "data/vg_focused/images/2361215.jpg",
+      "relationships": [
+        "giraffe -[has]-> head",
+        "leaf -[on]-> tree",
+        "leg -[of]-> giraffe",
+        "neck -[of]-> giraffe",
+        "tail -[of]-> giraffe",
+        "tree -[has]-> branch",
+        "giraffe -[in front of]-> tree"
+      ]
+    },
+    {
+      "image_id": 2382013,
+      "url": "data/vg_focused/images/2382013.jpg",
+      "relationships": [
+        "branch -[over]-> skier",
+        "skier -[wearing]-> jacket",
+        "skier -[holding]-> pole",
+        "ski -[in]-> snow",
+        "track -[in]-> snow",
+        "tree -[in]-> snow"
+      ]
+    },
+    {
+      "image_id": 2382947,
+      "url": "data/vg_focused/images/2382947.jpg",
+      "relationships": [
+        "branch -[in]-> tree",
+        "giraffe -[has]-> head",
+        "giraffe -[has]-> leg",
+        "giraffe -[has]-> neck",
+        "giraffe -[in front of]-> tree",
+        "tail -[has]-> hair",
+        "tree -[has]-> trunk",
+        "tree -[behind]-> giraffe"
+      ]
+    }
+  ]
+}

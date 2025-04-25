@@ -1,0 +1,67 @@
+Xử lý ảnh: ./data/vg_focused/images/2351465.jpg
+Thời gian dự đoán: 17.59 giây
+Số lượng dự đoán: 6
+Tổng số ảnh duy nhất được truy vấn: 18
+Kết quả truy vấn theo cặp: {
+  "1_or_more": 18,
+  "2_or_more": 10,
+  "3_or_more": 6,
+  "4_or_more": 2,
+  "5_or_more": 0
+}
+Kết quả truy vấn theo bộ ba: {
+  "1_or_more_full": 17,
+  "2_or_more_full": 10,
+  "3_or_more_full": 6,
+  "4_or_more_full": 2,
+  "5_or_more_full": 0
+}
+Kết quả matching pairs: {
+  "elephant-has-tail": 10,
+  "elephant-has-trunk": 19,
+  "building-behind-elephant": 2,
+  "elephant-has-ear": 16,
+  "tree-behind-elephant": 9,
+  "elephant-has-leg": 8
+}
+Kết quả đánh giá mô hình:
+  pairs_1_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_2_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_3_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_4_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_5_or_more:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  full_triples_1_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_2_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_3_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_4_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_5_or_more_full:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000

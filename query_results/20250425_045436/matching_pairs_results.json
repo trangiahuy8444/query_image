@@ -1,0 +1,398 @@
+{
+  "horse-has-tail": [
+    {
+      "image_id": 2354373,
+      "url": "data/vg_focused/images/2354373.jpg",
+      "relationships": [
+        "tail -[has]-> ear",
+        "tail -[has]-> eye",
+        "tail -[has]-> face",
+        "tail -[has]-> hair",
+        "tail -[has]-> head",
+        "tail -[has]-> horse",
+        "tail -[wearing]-> horse",
+        "horse -[with]-> tail",
+        "horse -[near]-> dog",
+        "horse -[has]-> head",
+        "animal -[near]-> dog"
+      ]
+    },
+    {
+      "image_id": 2355122,
+      "url": "data/vg_focused/images/2355122.jpg",
+      "relationships": [
+        "horse -[parked on]-> beach",
+        "beach -[sitting on]-> car",
+        "beach -[covering]-> beach",
+        "man -[behind]-> tree",
+        "man -[riding]-> horse",
+        "horse -[at]-> beach",
+        "horse -[has]-> head",
+        "horse -[has]-> tail",
+        "beach -[on]-> building",
+        "person -[on]-> horse",
+        "head -[behind]-> person"
+      ]
+    },
+    {
+      "image_id": 2359400,
+      "url": "data/vg_focused/images/2359400.jpg",
+      "relationships": [
+        "fence -[behind]-> horse",
+        "head -[of]-> horse",
+        "leg -[of]-> horse",
+        "tail -[of]-> horse",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2361201,
+      "url": "data/vg_focused/images/2361201.jpg",
+      "relationships": [
+        "helmet -[on]-> person",
+        "horse -[has]-> face",
+        "horse -[has]-> leg",
+        "tail -[on]-> horse",
+        "woman -[riding]-> horse",
+        "woman -[wearing]-> jean",
+        "woman -[wearing]-> shirt",
+        "lady -[wearing]-> helmet"
+      ]
+    },
+    {
+      "image_id": 2363819,
+      "url": "data/vg_focused/images/2363819.jpg",
+      "relationships": [
+        "dog -[watching]-> horse",
+        "horse -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2383084,
+      "url": "data/vg_focused/images/2383084.jpg",
+      "relationships": [
+        "horse -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2404170,
+      "url": "data/vg_focused/images/2404170.jpg",
+      "relationships": [
+        "horse -[standing on]-> fence",
+        "horse -[has]-> head",
+        "horse -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2407083,
+      "url": "data/vg_focused/images/2407083.jpg",
+      "relationships": [
+        "horse -[has]-> leg",
+        "tail -[of]-> horse"
+      ]
+    },
+    {
+      "image_id": 2411232,
+      "url": "data/vg_focused/images/2411232.jpg",
+      "relationships": [
+        "beach -[behind]-> girl",
+        "girl -[has]-> hair",
+        "girl -[wearing]-> helmet",
+        "girl -[riding]-> horse",
+        "girl -[wearing]-> shirt",
+        "girl -[wearing]-> short",
+        "horse -[has]-> tail",
+        "tree -[in]-> beach"
+      ]
+    },
+    {
+      "image_id": 2412060,
+      "url": "data/vg_focused/images/2412060.jpg",
+      "relationships": [
+        "building -[on]-> hill",
+        "fence -[has]-> post",
+        "horse -[has]-> tail",
+        "house -[on]-> hill",
+        "tree -[on]-> hill"
+      ]
+    },
+    {
+      "image_id": 2413551,
+      "url": "data/vg_focused/images/2413551.jpg",
+      "relationships": [
+        "horse -[has]-> leg",
+        "horse -[has]-> tail"
+      ]
+    }
+  ],
+  "tail-of-horse": [
+    {
+      "image_id": 2354373,
+      "url": "data/vg_focused/images/2354373.jpg",
+      "relationships": [
+        "tail -[has]-> ear",
+        "tail -[has]-> eye",
+        "tail -[has]-> face",
+        "tail -[has]-> hair",
+        "tail -[has]-> head",
+        "tail -[has]-> horse",
+        "tail -[wearing]-> horse",
+        "horse -[with]-> tail",
+        "horse -[near]-> dog",
+        "horse -[has]-> head",
+        "animal -[near]-> dog"
+      ]
+    },
+    {
+      "image_id": 2355122,
+      "url": "data/vg_focused/images/2355122.jpg",
+      "relationships": [
+        "horse -[parked on]-> beach",
+        "beach -[sitting on]-> car",
+        "beach -[covering]-> beach",
+        "man -[behind]-> tree",
+        "man -[riding]-> horse",
+        "horse -[at]-> beach",
+        "horse -[has]-> head",
+        "horse -[has]-> tail",
+        "beach -[on]-> building",
+        "person -[on]-> horse",
+        "head -[behind]-> person"
+      ]
+    },
+    {
+      "image_id": 2359400,
+      "url": "data/vg_focused/images/2359400.jpg",
+      "relationships": [
+        "fence -[behind]-> horse",
+        "head -[of]-> horse",
+        "leg -[of]-> horse",
+        "tail -[of]-> horse",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2361201,
+      "url": "data/vg_focused/images/2361201.jpg",
+      "relationships": [
+        "helmet -[on]-> person",
+        "horse -[has]-> face",
+        "horse -[has]-> leg",
+        "tail -[on]-> horse",
+        "woman -[riding]-> horse",
+        "woman -[wearing]-> jean",
+        "woman -[wearing]-> shirt",
+        "lady -[wearing]-> helmet"
+      ]
+    },
+    {
+      "image_id": 2363819,
+      "url": "data/vg_focused/images/2363819.jpg",
+      "relationships": [
+        "dog -[watching]-> horse",
+        "horse -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2383084,
+      "url": "data/vg_focused/images/2383084.jpg",
+      "relationships": [
+        "horse -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2404170,
+      "url": "data/vg_focused/images/2404170.jpg",
+      "relationships": [
+        "horse -[standing on]-> fence",
+        "horse -[has]-> head",
+        "horse -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2407083,
+      "url": "data/vg_focused/images/2407083.jpg",
+      "relationships": [
+        "horse -[has]-> leg",
+        "tail -[of]-> horse"
+      ]
+    },
+    {
+      "image_id": 2411232,
+      "url": "data/vg_focused/images/2411232.jpg",
+      "relationships": [
+        "beach -[behind]-> girl",
+        "girl -[has]-> hair",
+        "girl -[wearing]-> helmet",
+        "girl -[riding]-> horse",
+        "girl -[wearing]-> shirt",
+        "girl -[wearing]-> short",
+        "horse -[has]-> tail",
+        "tree -[in]-> beach"
+      ]
+    },
+    {
+      "image_id": 2412060,
+      "url": "data/vg_focused/images/2412060.jpg",
+      "relationships": [
+        "building -[on]-> hill",
+        "fence -[has]-> post",
+        "horse -[has]-> tail",
+        "house -[on]-> hill",
+        "tree -[on]-> hill"
+      ]
+    },
+    {
+      "image_id": 2413551,
+      "url": "data/vg_focused/images/2413551.jpg",
+      "relationships": [
+        "horse -[has]-> leg",
+        "horse -[has]-> tail"
+      ]
+    }
+  ],
+  "head-of-horse": [
+    {
+      "image_id": 1593213,
+      "url": "data/vg_focused/images/1593213.jpg",
+      "relationships": [
+        "helmet -[on]-> head",
+        "horse -[has]-> head",
+        "man -[has]-> helmet"
+      ]
+    },
+    {
+      "image_id": 2354373,
+      "url": "data/vg_focused/images/2354373.jpg",
+      "relationships": [
+        "tail -[has]-> ear",
+        "tail -[has]-> eye",
+        "tail -[has]-> face",
+        "tail -[has]-> hair",
+        "tail -[has]-> head",
+        "tail -[has]-> horse",
+        "tail -[wearing]-> horse",
+        "horse -[with]-> tail",
+        "horse -[near]-> dog",
+        "horse -[has]-> head",
+        "animal -[near]-> dog"
+      ]
+    },
+    {
+      "image_id": 2355122,
+      "url": "data/vg_focused/images/2355122.jpg",
+      "relationships": [
+        "horse -[parked on]-> beach",
+        "beach -[sitting on]-> car",
+        "beach -[covering]-> beach",
+        "man -[behind]-> tree",
+        "man -[riding]-> horse",
+        "horse -[at]-> beach",
+        "horse -[has]-> head",
+        "horse -[has]-> tail",
+        "beach -[on]-> building",
+        "person -[on]-> horse",
+        "head -[behind]-> person"
+      ]
+    },
+    {
+      "image_id": 2359400,
+      "url": "data/vg_focused/images/2359400.jpg",
+      "relationships": [
+        "fence -[behind]-> horse",
+        "head -[of]-> horse",
+        "leg -[of]-> horse",
+        "tail -[of]-> horse",
+        "tree -[behind]-> fence"
+      ]
+    },
+    {
+      "image_id": 2364597,
+      "url": "data/vg_focused/images/2364597.jpg",
+      "relationships": [
+        "head -[of]-> horse",
+        "leg -[of]-> horse",
+        "neck -[of]-> horse",
+        "window -[on]-> house"
+      ]
+    },
+    {
+      "image_id": 2378750,
+      "url": "data/vg_focused/images/2378750.jpg",
+      "relationships": [
+        "horse -[has]-> head",
+        "horse -[with]-> man",
+        "man -[riding]-> horse",
+        "man -[wearing]-> jacket",
+        "man -[wearing]-> helmet",
+        "man -[wearing]-> hat",
+        "man -[wearing]-> cup"
+      ]
+    },
+    {
+      "image_id": 2390207,
+      "url": "data/vg_focused/images/2390207.jpg",
+      "relationships": [
+        "horse -[has]-> head",
+        "man -[wearing]-> helmet",
+        "man -[riding]-> horse",
+        "pole -[has]-> sign",
+        "window -[on]-> building",
+        "sign -[near]-> man"
+      ]
+    },
+    {
+      "image_id": 2390993,
+      "url": "data/vg_focused/images/2390993.jpg",
+      "relationships": [
+        "horse -[has]-> face",
+        "horse -[has]-> nose",
+        "man -[has]-> head",
+        "man -[riding]-> horse",
+        "tree -[has]-> trunk"
+      ]
+    },
+    {
+      "image_id": 2403436,
+      "url": "data/vg_focused/images/2403436.jpg",
+      "relationships": [
+        "head -[on]-> horse",
+        "light -[under]-> tree",
+        "person -[on]-> bike"
+      ]
+    },
+    {
+      "image_id": 2404170,
+      "url": "data/vg_focused/images/2404170.jpg",
+      "relationships": [
+        "horse -[standing on]-> fence",
+        "horse -[has]-> head",
+        "horse -[has]-> tail"
+      ]
+    },
+    {
+      "image_id": 2406969,
+      "url": "data/vg_focused/images/2406969.jpg",
+      "relationships": [
+        "ear -[on]-> head",
+        "hat -[on]-> head",
+        "horse -[has]-> hair",
+        "man -[with]-> hat",
+        "man -[wearing]-> hat"
+      ]
+    }
+  ],
+  "horse-has-ear": [
+    {
+      "image_id": 2406969,
+      "url": "data/vg_focused/images/2406969.jpg",
+      "relationships": [
+        "ear -[on]-> head",
+        "hat -[on]-> head",
+        "horse -[has]-> hair",
+        "man -[with]-> hat",
+        "man -[wearing]-> hat"
+      ]
+    }
+  ]
+}

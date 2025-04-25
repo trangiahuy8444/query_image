@@ -1,0 +1,137 @@
+{
+  "image_path": "./data/vg_focused/images/2347363.jpg",
+  "prediction_time": 11.15,
+  "num_predictions": 9,
+  "total_unique_images": 42,
+  "related_images_counts": {
+    "1_or_more": 42,
+    "2_or_more": 30,
+    "3_or_more": 11,
+    "4_or_more": 6,
+    "5_or_more": 0
+  },
+  "related_images_full_counts": {
+    "1_or_more_full": 37,
+    "2_or_more_full": 21,
+    "3_or_more_full": 9,
+    "4_or_more_full": 4,
+    "5_or_more_full": 0
+  },
+  "matching_pairs_counts": {
+    "giraffe-has-tail": 20,
+    "giraffe-has-neck": 27,
+    "neck-of-giraffe": 27,
+    "giraffe-has-head": 28,
+    "giraffe-has-leg": 27,
+    "head-of-giraffe": 28,
+    "tail-on-giraffe": 20,
+    "tree-behind-giraffe": 24
+  },
+  "metrics": {
+    "pairs_1_or_more": {
+      "true_positives": 42,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108035,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "total_retrieved": 42
+    },
+    "pairs_2_or_more": {
+      "true_positives": 30,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108047,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "total_retrieved": 30
+    },
+    "pairs_3_or_more": {
+      "true_positives": 11,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108066,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "total_retrieved": 11
+    },
+    "pairs_4_or_more": {
+      "true_positives": 6,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108071,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "total_retrieved": 6
+    },
+    "pairs_5_or_more": {
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108077,
+      "precision": 0,
+      "recall": 0,
+      "f1_score": 0,
+      "total_retrieved": 0
+    },
+    "full_triples_1_or_more_full": {
+      "true_positives": 37,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108040,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "total_retrieved": 37
+    },
+    "full_triples_2_or_more_full": {
+      "true_positives": 21,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108056,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "total_retrieved": 21
+    },
+    "full_triples_3_or_more_full": {
+      "true_positives": 9,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108068,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "total_retrieved": 9
+    },
+    "full_triples_4_or_more_full": {
+      "true_positives": 4,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108073,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "total_retrieved": 4
+    },
+    "full_triples_5_or_more_full": {
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108077,
+      "precision": 0,
+      "recall": 0,
+      "f1_score": 0,
+      "total_retrieved": 0
+    },
+    "matching_pairs": {
+      "total_retrieved": 201,
+      "unique_images": 47
+    }
+  },
+  "timestamp": "20250425_045630"
+}

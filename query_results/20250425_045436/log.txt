@@ -1,0 +1,65 @@
+Xử lý ảnh: ./data/vg_focused/images/2359400.jpg
+Thời gian dự đoán: 12.69 giây
+Số lượng dự đoán: 6
+Tổng số ảnh duy nhất được truy vấn: 13
+Kết quả truy vấn theo cặp: {
+  "1_or_more": 13,
+  "2_or_more": 2,
+  "3_or_more": 0,
+  "4_or_more": 0,
+  "5_or_more": 0
+}
+Kết quả truy vấn theo bộ ba: {
+  "1_or_more_full": 10,
+  "2_or_more_full": 1,
+  "3_or_more_full": 0,
+  "4_or_more_full": 0,
+  "5_or_more_full": 0
+}
+Kết quả matching pairs: {
+  "horse-has-tail": 11,
+  "tail-of-horse": 11,
+  "head-of-horse": 11,
+  "horse-has-ear": 1
+}
+Kết quả đánh giá mô hình:
+  pairs_1_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_2_or_more:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  pairs_3_or_more:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  pairs_4_or_more:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  pairs_5_or_more:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  full_triples_1_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_2_or_more_full:
+    Precision: 1.0000
+    Recall: 1.0000
+    F1-score: 1.0000
+  full_triples_3_or_more_full:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  full_triples_4_or_more_full:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000
+  full_triples_5_or_more_full:
+    Precision: 0.0000
+    Recall: 0.0000
+    F1-score: 0.0000

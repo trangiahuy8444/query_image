@@ -10,9 +10,9 @@ import gc
 load_dotenv()
 
 # Neo4j connection
-uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+uri = os.getenv("NEO4J_URI", "neo4j+s://b40b4f2a.databases.neo4j.io")
 username = os.getenv("NEO4J_USER", "neo4j")
-password = os.getenv("NEO4J_PASSWORD", "12345678")
+password = os.getenv("NEO4J_PASSWORD", "fpKNUXKT-4z0kQMm1nuUaiXe8p70uIebc3y3a4Z8kUA")
 driver = GraphDatabase.driver(uri, auth=(username, password))
 
 # Optimized batch sizes for 16GB RAM

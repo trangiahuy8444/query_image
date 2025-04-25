@@ -1,0 +1,137 @@
+{
+  "image_path": "./data/vg_focused/images/2403422.jpg",
+  "prediction_time": 12.81,
+  "num_predictions": 10,
+  "total_unique_images": 22,
+  "related_images_counts": {
+    "1_or_more": 22,
+    "2_or_more": 4,
+    "3_or_more": 0,
+    "4_or_more": 0,
+    "5_or_more": 0
+  },
+  "related_images_full_counts": {
+    "1_or_more_full": 16,
+    "2_or_more_full": 4,
+    "3_or_more_full": 0,
+    "4_or_more_full": 0,
+    "5_or_more_full": 0
+  },
+  "matching_pairs_counts": {
+    "helmet-on-head": 4,
+    "number-on-shirt": 2,
+    "player-wearing-shirt": 3,
+    "man-wearing-shirt": 20,
+    "player-wearing-helmet": 3,
+    "player-wearing-pant": 2,
+    "pole-of-fence": 7,
+    "man-wearing-pant": 15
+  },
+  "metrics": {
+    "pairs_1_or_more": {
+      "true_positives": 22,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108055,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "total_retrieved": 22
+    },
+    "pairs_2_or_more": {
+      "true_positives": 4,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108073,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "total_retrieved": 4
+    },
+    "pairs_3_or_more": {
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108077,
+      "precision": 0,
+      "recall": 0,
+      "f1_score": 0,
+      "total_retrieved": 0
+    },
+    "pairs_4_or_more": {
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108077,
+      "precision": 0,
+      "recall": 0,
+      "f1_score": 0,
+      "total_retrieved": 0
+    },
+    "pairs_5_or_more": {
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108077,
+      "precision": 0,
+      "recall": 0,
+      "f1_score": 0,
+      "total_retrieved": 0
+    },
+    "full_triples_1_or_more_full": {
+      "true_positives": 16,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108061,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "total_retrieved": 16
+    },
+    "full_triples_2_or_more_full": {
+      "true_positives": 4,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108073,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "total_retrieved": 4
+    },
+    "full_triples_3_or_more_full": {
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108077,
+      "precision": 0,
+      "recall": 0,
+      "f1_score": 0,
+      "total_retrieved": 0
+    },
+    "full_triples_4_or_more_full": {
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108077,
+      "precision": 0,
+      "recall": 0,
+      "f1_score": 0,
+      "total_retrieved": 0
+    },
+    "full_triples_5_or_more_full": {
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 108077,
+      "precision": 0,
+      "recall": 0,
+      "f1_score": 0,
+      "total_retrieved": 0
+    },
+    "matching_pairs": {
+      "total_retrieved": 56,
+      "unique_images": 40
+    }
+  },
+  "timestamp": "20250425_045717"
+}
