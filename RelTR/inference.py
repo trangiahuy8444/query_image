@@ -61,8 +61,16 @@ def load_model(checkpoint_path='./ckpt/checkpoint0149.pth'):
     model = RelTR(backbone, transformer, num_classes=151, num_rel_classes=51,
                   num_entities=100, num_triplets=200)
     
-    # Load checkpoint với map_location phù hợp
-    ckpt = torch.load(checkpoint_path, map_location=device)
+    # Load checkpoint với weights_only=False và map_location phù hợp
+    try:
+        # Thêm Namespace vào danh sách an toàn
+        from argparse import Namespace
+        torch.serialization.add_safe_globals([Namespace])
+        ckpt = torch.load(checkpoint_path, map_location=device, weights_only=True)
+    except Exception as e:
+        print(f"Warning: Failed to load with weights_only=True, trying with weights_only=False: {e}")
+        ckpt = torch.load(checkpoint_path, map_location=device, weights_only=False)
+    
     model.load_state_dict(ckpt['model'])
     
     # Chuyển model sang GPU nếu có sẵn
