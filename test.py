@@ -853,28 +853,55 @@ def evaluate_model_with_data(model_predictions, ground_truth_data, threshold=0.5
     Returns:
         metrics: Dictionary chứa các metrics đánh giá
     """
-    # Tính toán metrics
-    y_true, y_score = calculate_roc_pr_metrics(model_predictions, ground_truth_data)
-    
-    # Vẽ ROC và Precision-Recall curves chỉ khi save_plots=True
-    if save_plots:
-        plot_roc_and_pr_curve(y_true, y_score, save_path="roc_pr_curves.png")
-    
-    # Chuyển đổi y_true thành nhãn nhị phân (0 hoặc 1)
-    y_true_binary = (y_true > 0).astype(int)
-    
-    # Tính precision, recall, và F1 score
-    precision = precision_score(y_true_binary, y_score > threshold)
-    recall = recall_score(y_true_binary, y_score > threshold)
-    f1 = f1_score(y_true_binary, y_score > threshold)
-    
-    return {
-        'precision': float(precision),  # Chuyển đổi thành float để JSON serializable
-        'recall': float(recall),        # Chuyển đổi thành float để JSON serializable
-        'f1': float(f1),                # Chuyển đổi thành float để JSON serializable
-        'y_true': y_true.tolist(),      # Chuyển đổi NumPy array thành list
-        'y_score': y_score.tolist()     # Chuyển đổi NumPy array thành list
-    }
+    try:
+        # Tính toán metrics
+        y_true, y_score = calculate_roc_pr_metrics(model_predictions, ground_truth_data)
+        
+        # Kiểm tra nếu không có dữ liệu hợp lệ
+        if len(y_true) == 0 or len(y_score) == 0:
+            print("Không có dữ liệu hợp lệ để đánh giá")
+            return {
+                'precision': 0.0,
+                'recall': 0.0,
+                'f1': 0.0,
+                'y_true': [],
+                'y_score': []
+            }
+        
+        # Vẽ ROC và Precision-Recall curves chỉ khi save_plots=True
+        if save_plots:
+            plot_roc_and_pr_curve(y_true, y_score, save_path="roc_pr_curves.png")
+        
+        # Chuyển đổi y_true thành nhãn nhị phân (0 hoặc 1)
+        y_true_binary = (y_true > 0).astype(int)
+        
+        # Tính precision, recall, và F1 score
+        try:
+            precision = precision_score(y_true_binary, y_score > threshold)
+            recall = recall_score(y_true_binary, y_score > threshold)
+            f1 = f1_score(y_true_binary, y_score > threshold)
+        except Exception as e:
+            print(f"Lỗi khi tính toán metrics: {str(e)}")
+            precision = 0.0
+            recall = 0.0
+            f1 = 0.0
+        
+        return {
+            'precision': float(precision),  # Chuyển đổi thành float để JSON serializable
+            'recall': float(recall),        # Chuyển đổi thành float để JSON serializable
+            'f1': float(f1),                # Chuyển đổi thành float để JSON serializable
+            'y_true': y_true.tolist() if isinstance(y_true, np.ndarray) else y_true,      # Chuyển đổi NumPy array thành list
+            'y_score': y_score.tolist() if isinstance(y_score, np.ndarray) else y_score     # Chuyển đổi NumPy array thành list
+        }
+    except Exception as e:
+        print(f"Lỗi trong evaluate_model_with_data: {str(e)}")
+        return {
+            'precision': 0.0,
+            'recall': 0.0,
+            'f1': 0.0,
+            'y_true': [],
+            'y_score': []
+        }
 
 def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_workers=5, save_results=True):
     """
@@ -1258,7 +1285,8 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
 if __name__ == "__main__":
     # Đường dẫn mặc định
     model_path = './RelTR/ckpt/fine_tune1/checkpoint0049.pth'
-    image_folder = "./image_test"  # Thư mục chứa các ảnh cần đánh giá
+    # image_folder = "./image_test"  # Thư mục chứa các ảnh cần đánh giá
+    image_folder = "./image_test/1159909.jpg"  # Thư mục chứa các ảnh cần đánh giá
     
     # Tạo thư mục kết quả nếu chưa tồn tại
     results_dir = "./evaluation_results"
