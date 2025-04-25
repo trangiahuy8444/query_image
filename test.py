@@ -585,6 +585,27 @@ def evaluate_model_with_data(model_predictions, ground_truth_data, threshold=0.5
         'y_score': y_score.tolist()     # Chuyển đổi NumPy array thành list
     }
 
+def rescale_bboxes(bboxes, orig_size):
+    """
+    Chuyển đổi bounding boxes từ kích thước 800x800 về kích thước gốc của ảnh
+    
+    Args:
+        bboxes: Tensor chứa các bounding boxes (x1, y1, x2, y2)
+        orig_size: Tuple chứa kích thước gốc của ảnh (width, height)
+    
+    Returns:
+        Tensor chứa các bounding boxes đã được scale về kích thước gốc
+    """
+    orig_w, orig_h = orig_size
+    scale_x = orig_w / 800
+    scale_y = orig_h / 800
+    
+    scaled_bboxes = bboxes.clone()
+    scaled_bboxes[:, [0, 2]] *= scale_x
+    scaled_bboxes[:, [1, 3]] *= scale_y
+    
+    return scaled_bboxes
+
 def evaluate_model_batch(image_paths, model_path, batch_size=4):
     """
     Đánh giá mô hình trên nhiều ảnh cùng lúc sử dụng batch processing
