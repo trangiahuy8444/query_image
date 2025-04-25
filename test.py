@@ -692,18 +692,55 @@ def save_query_results_to_json(image_path, predictions, ground_truth_pairs, grou
                 }
                 for pred in predictions
             ],
-            "ground_truth_pairs": ground_truth_pairs,
-            "ground_truth_triplets": ground_truth_triplets
+            "ground_truth": {
+                "pairs": [
+                    {
+                        "image_id": pair.get("image_id", ""),
+                        "matching_pairs": pair.get("matching_pairs", 0),
+                        "total_pairs": pair.get("total_pairs", 0),
+                        "matching_percentage": pair.get("matching_percentage", 0.0),
+                        "relationships": pair.get("relationships", [])
+                    }
+                    for pair in ground_truth_pairs
+                ],
+                "triplets": [
+                    {
+                        "image_id": triplet.get("image_id", ""),
+                        "matching_triples": triplet.get("matching_triples", 0),
+                        "total_triples": triplet.get("total_triples", 0),
+                        "matching_percentage": triplet.get("matching_percentage", 0.0),
+                        "relationships": triplet.get("relationships", [])
+                    }
+                    for triplet in ground_truth_triplets
+                ]
+            },
+            "summary": {
+                "total_predictions": len(predictions),
+                "total_pairs": len(ground_truth_pairs),
+                "total_triplets": len(ground_truth_triplets),
+                "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+            }
         }
+        
+        # Tạo thư mục nếu chưa tồn tại
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
         
         # Lưu vào file JSON
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(results, f, indent=4, ensure_ascii=False)
             
         print(f"Đã lưu kết quả truy vấn vào file {output_file}")
+        print(f"Số lượng dự đoán: {len(predictions)}")
+        print(f"Số lượng pairs: {len(ground_truth_pairs)}")
+        print(f"Số lượng triplets: {len(ground_truth_triplets)}")
         
     except Exception as e:
         print(f"Lỗi khi lưu kết quả vào file JSON: {str(e)}")
+        print(f"Dữ liệu gây lỗi:")
+        print(f"- Image path: {image_path}")
+        print(f"- Predictions: {predictions}")
+        print(f"- Ground truth pairs: {ground_truth_pairs}")
+        print(f"- Ground truth triplets: {ground_truth_triplets}")
 
 def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=True):
     """
