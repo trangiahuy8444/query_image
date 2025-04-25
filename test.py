@@ -29,8 +29,7 @@ driver = GraphDatabase.driver(
     max_connection_lifetime=3600,  # Kết nối tối đa 1 giờ
     max_connection_pool_size=50,   # Số lượng kết nối tối đa trong pool
     connection_acquisition_timeout=60,  # Thời gian chờ kết nối tối đa (giây)
-    connection_timeout=30,  # Thời gian chờ kết nối ban đầu (giây)
-    max_retry_time=30  # Thời gian thử lại tối đa (giây)
+    connection_timeout=30  # Thời gian chờ kết nối ban đầu (giây)
 )
 
 # Hàm kiểm tra kết nối
