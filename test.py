@@ -711,21 +711,18 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
 
 def plot_all_data_curves(all_results, save_path=None):
     """
-    Vẽ tất cả dữ liệu từ các ảnh trên một biểu đồ duy nhất
+    Vẽ tất cả dữ liệu từ các ảnh trên hai biểu đồ riêng biệt
     
     Args:
         all_results: Danh sách kết quả đánh giá của tất cả ảnh
         save_path: Đường dẫn để lưu đồ thị (nếu None thì hiển thị đồ thị)
     """
-    # Tạo biểu đồ
-    plt.figure(figsize=(15, 6))
-    
     # Màu sắc cho các đường cong
     colors = ['red', 'blue', 'green', 'purple', 'orange', 
               'brown', 'pink', 'gray', 'olive', 'cyan']
     
-    # Biểu đồ ROC
-    plt.subplot(1, 2, 1)
+    # Vẽ biểu đồ ROC
+    plt.figure(figsize=(10, 8))
     
     # Vẽ đường ROC cho từng min_pairs từ 1-5
     for min_pairs in range(1, 6):
@@ -762,8 +759,18 @@ def plot_all_data_curves(all_results, save_path=None):
     plt.title('Receiver Operating Characteristic')
     plt.legend(loc="lower right", fontsize=8)
     
-    # Biểu đồ Precision-Recall
-    plt.subplot(1, 2, 2)
+    # Lưu biểu đồ ROC
+    if save_path:
+        roc_path = save_path.replace('.png', '_roc.png')
+        plt.savefig(roc_path, dpi=300, bbox_inches='tight')
+        print(f"Đã lưu biểu đồ ROC vào {roc_path}")
+    else:
+        plt.show()
+    
+    plt.close()
+    
+    # Vẽ biểu đồ Precision-Recall
+    plt.figure(figsize=(10, 8))
     
     # Vẽ đường Precision-Recall cho từng min_pairs từ 1-5
     for min_pairs in range(1, 6):
@@ -793,15 +800,18 @@ def plot_all_data_curves(all_results, save_path=None):
     
     plt.xlabel('Recall')
     plt.ylabel('Precision')
-    plt.title('Precision-Recall')
+    plt.title('Precision-Recall Curve')
     plt.legend(loc="lower left", fontsize=8)
     
-    plt.tight_layout()
-    
+    # Lưu biểu đồ Precision-Recall
     if save_path:
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        pr_path = save_path.replace('.png', '_pr.png')
+        plt.savefig(pr_path, dpi=300, bbox_inches='tight')
+        print(f"Đã lưu biểu đồ Precision-Recall vào {pr_path}")
     else:
         plt.show()
+    
+    plt.close()
 
 # Thực thi đánh giá mô hình
 if __name__ == "__main__":
