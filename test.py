@@ -1258,7 +1258,7 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
     Đánh giá mô hình trên toàn bộ bộ dữ liệu ảnh
     
     Args:
-        image_folder: Thư mục chứa ảnh cần đánh giá
+        image_folder: Thư mục chứa ảnh cần đánh giá hoặc đường dẫn đến một ảnh
         model_path: Đường dẫn đến file checkpoint của mô hình
         min_pairs_range: Tuple (start, end) cho range của min_pairs
         save_results: Nếu True, lưu kết quả vào file JSON
@@ -1268,15 +1268,20 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
     Returns:
         results: Dictionary chứa kết quả đánh giá
     """
-    # Lấy danh sách tất cả các ảnh trong thư mục
-    image_files = [f for f in os.listdir(image_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
-    
-    # Giới hạn số lượng ảnh nếu cần
-    if max_images is not None and max_images < len(image_files):
-        image_files = image_files[:max_images]
-    
-    # Tạo danh sách đường dẫn đầy đủ
-    image_paths = [os.path.join(image_folder, image_file) for image_file in image_files]
+    # Kiểm tra xem image_folder là file hay thư mục
+    if os.path.isfile(image_folder):
+        # Nếu là file, đánh giá một ảnh duy nhất
+        image_paths = [image_folder]
+    else:
+        # Nếu là thư mục, lấy danh sách tất cả các ảnh trong thư mục
+        image_files = [f for f in os.listdir(image_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
+        
+        # Giới hạn số lượng ảnh nếu cần
+        if max_images is not None and max_images < len(image_files):
+            image_files = image_files[:max_images]
+        
+        # Tạo danh sách đường dẫn đầy đủ
+        image_paths = [os.path.join(image_folder, image_file) for image_file in image_files]
     
     # Sử dụng hàm đánh giá hàng loạt
     return evaluate_model_batch(image_paths, model_path, min_pairs_range, max_workers, save_results)
@@ -1285,8 +1290,7 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
 if __name__ == "__main__":
     # Đường dẫn mặc định
     model_path = './RelTR/ckpt/fine_tune1/checkpoint0049.pth'
-    # image_folder = "./image_test"  # Thư mục chứa các ảnh cần đánh giá
-    image_folder = "./image_test/1159909.jpg"  # Thư mục chứa các ảnh cần đánh giá
+    image_path = "./image_test/1159909.jpg"  # Đường dẫn đến ảnh cần đánh giá
     
     # Tạo thư mục kết quả nếu chưa tồn tại
     results_dir = "./evaluation_results"
@@ -1294,73 +1298,38 @@ if __name__ == "__main__":
         os.makedirs(results_dir)
         print(f"Đã tạo thư mục kết quả: {results_dir}")
     
-    # Lấy danh sách tất cả các ảnh trong thư mục
-    image_files = [f for f in os.listdir(image_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
-    image_paths = [os.path.join(image_folder, f) for f in image_files]
-    print(f"Tìm thấy {len(image_paths)} ảnh trong thư mục {image_folder}")
+    # Đánh giá mô hình trên một ảnh
+    result = evaluate_model(image_path, model_path)
     
-    # Đánh giá mô hình theo batch
-    batch_size = 4  # Có thể điều chỉnh tùy theo GPU memory
-    all_results = evaluate_model_batch(image_paths, model_path, batch_size)
-    
-    # Tính toán metrics trung bình
-    avg_metrics = {
-        'pairs': {
-            'precision': float(np.mean([r['pairs_metrics']['precision'] for r in all_results])),
-            'recall': float(np.mean([r['pairs_metrics']['recall'] for r in all_results])),
-            'f1': float(np.mean([r['pairs_metrics']['f1'] for r in all_results]))
-        },
-        'triplets': {
-            'precision': float(np.mean([r['triplets_metrics']['precision'] for r in all_results])),
-            'recall': float(np.mean([r['triplets_metrics']['recall'] for r in all_results])),
-            'f1': float(np.mean([r['triplets_metrics']['f1'] for r in all_results]))
+    if result:
+        # Tính toán metrics
+        pairs_metrics = result['pairs_metrics']
+        triplets_metrics = result['triplets_metrics']
+        
+        # In kết quả
+        print("\nKết quả đánh giá:")
+        print("\nMetrics cho pairs:")
+        print(f"Precision: {pairs_metrics['precision']:.4f}, "
+              f"Recall: {pairs_metrics['recall']:.4f}, "
+              f"F1: {pairs_metrics['f1']:.4f}")
+        
+        print("\nMetrics cho triplets:")
+        print(f"Precision: {triplets_metrics['precision']:.4f}, "
+              f"Recall: {triplets_metrics['recall']:.4f}, "
+              f"F1: {triplets_metrics['f1']:.4f}")
+        
+        # Lưu kết quả vào file JSON
+        json_result = {
+            'image_path': image_path,
+            'pairs_metrics': pairs_metrics,
+            'triplets_metrics': triplets_metrics,
+            'timestamp': time.strftime("%Y-%m-%d %H:%M:%S")
         }
-    }
-    
-    # Vẽ biểu đồ tổng hợp cho tất cả dữ liệu
-    print("\nVẽ biểu đồ tổng hợp cho tất cả dữ liệu...")
-    plot_all_data_curves(
-        all_results,
-        save_path=os.path.join(results_dir, "all_data_curves.png")
-    )
-    
-    # Lưu kết quả chi tiết vào file JSON
-    json_result = {
-        'average_metrics': avg_metrics,
-        'individual_results': []
-    }
-    
-    # Thêm kết quả từng ảnh vào JSON
-    for result in all_results:
-        json_result['individual_results'].append({
-            'image_file': result['image_file'],
-            'pairs_metrics': {
-                'precision': result['pairs_metrics']['precision'],
-                'recall': result['pairs_metrics']['recall'],
-                'f1': result['pairs_metrics']['f1']
-            },
-            'triplets_metrics': {
-                'precision': result['triplets_metrics']['precision'],
-                'recall': result['triplets_metrics']['recall'],
-                'f1': result['triplets_metrics']['f1']
-            }
-        })
-    
-    # Lưu kết quả vào file JSON
-    with open(os.path.join(results_dir, "evaluation_metrics.json"), "w") as f:
-        json.dump(json_result, f, indent=4)
-    
-    # In kết quả trung bình
-    print("\nKết quả trung bình trên toàn bộ bộ dữ liệu:")
-    print("\nMetrics cho pairs:")
-    print(f"Precision: {avg_metrics['pairs']['precision']:.4f}, "
-          f"Recall: {avg_metrics['pairs']['recall']:.4f}, "
-          f"F1: {avg_metrics['pairs']['f1']:.4f}")
-    
-    print("\nMetrics cho triplets:")
-    print(f"Precision: {avg_metrics['triplets']['precision']:.4f}, "
-          f"Recall: {avg_metrics['triplets']['recall']:.4f}, "
-          f"F1: {avg_metrics['triplets']['f1']:.4f}")
-    
-    print(f"\nKết quả chi tiết đã được lưu vào file '{os.path.join(results_dir, 'evaluation_metrics.json')}'")
-    print(f"Biểu đồ tổng hợp đã được lưu vào file '{os.path.join(results_dir, 'all_data_curves.png')}'")
+        
+        output_file = os.path.join(results_dir, f"evaluation_metrics_{os.path.basename(image_path)}.json")
+        with open(output_file, "w") as f:
+            json.dump(json_result, f, indent=4)
+        
+        print(f"\nKết quả chi tiết đã được lưu vào file '{output_file}'")
+    else:
+        print(f"Không thể đánh giá ảnh {image_path}")
