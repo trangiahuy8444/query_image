@@ -601,9 +601,9 @@ def evaluate_model_batch(image_paths, model_path, batch_size=4):
     model = load_model(model_path)
     model.eval()
     
-    # Khởi tạo transform
+    # Khởi tạo transform với kích thước cố định
     transform = T.Compose([
-        T.Resize(800),
+        T.Resize((800, 800)),  # Resize với kích thước cố định
         T.ToTensor(),
         T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
@@ -621,11 +621,20 @@ def evaluate_model_batch(image_paths, model_path, batch_size=4):
             batch_images = []
             batch_sizes = []
             for img_path in batch_paths:
-                im = Image.open(img_path)
-                batch_sizes.append(im.size)
-                img = transform(im).unsqueeze(0)
-                batch_images.append(img)
+                try:
+                    im = Image.open(img_path).convert('RGB')  # Đảm bảo ảnh là RGB
+                    original_size = im.size
+                    img = transform(im).unsqueeze(0)
+                    batch_images.append(img)
+                    batch_sizes.append(original_size)
+                except Exception as e:
+                    print(f"Error processing image {os.path.basename(img_path)}: {str(e)}")
+                    continue
             
+            if not batch_images:
+                print("No valid images in batch")
+                continue
+                
             # Ghép các ảnh thành một batch
             batch_tensor = torch.cat(batch_images, dim=0).to(device)
             
