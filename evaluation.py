@@ -221,11 +221,11 @@ if __name__ == "__main__":
     
     # Set up argument parser
     parser = argparse.ArgumentParser(description='Evaluate model predictions on images')
-    parser.add_argument('--input_path', type=str, default="./data/vg_focused/images", 
+    parser.add_argument('--input_path', type=str, default="data/vg_focused/images", 
                         help='Path to single image or folder containing images')
-    parser.add_argument('--model_path', type=str, default="./RelTR/ckpt/fine_tune1/checkpoint0049.pth", 
+    parser.add_argument('--model_path', type=str, default="RelTR/ckpt/fine_tune1/checkpoint0049.pth", 
                         help='Path to model checkpoint')
-    parser.add_argument('--save_dir', type=str, default="./evaluation_results", 
+    parser.add_argument('--save_dir', type=str, default="evaluation_results", 
                         help='Directory to save evaluation results')
     parser.add_argument('--max_images', type=int, default=None, 
                         help='Maximum number of images to evaluate (default: all images)')
