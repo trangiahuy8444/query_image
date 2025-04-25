@@ -1,0 +1,1325 @@
+
+=== Evaluation for image_test/2361148.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for image_test/1159909.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for image_test/2347188.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for image_test/2356640.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for image_test/2403380.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for image_test/498377.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for image_test/2346222.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for image_test/2362354.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for image_test/286068.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for image_test/2403739.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for image_test/713037.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for image_test/150542.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for data/vg_focused/images/2363159.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for data/vg_focused/images/2403384.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for data/vg_focused/images/2351855.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for data/vg_focused/images/2346497.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+3_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for data/vg_focused/images/2360336.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for data/vg_focused/images/2370125.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for data/vg_focused/images/2395817.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for data/vg_focused/images/2364144.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+3_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for data/vg_focused/images/2374357.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for data/vg_focused/images/2400699.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for data/vg_focused/images/2350587.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for data/vg_focused/images/2383907.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+
+=== Evaluation for data/vg_focused/images/2403390.jpg ===
+
+1_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+1_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+2_or_more_full:
+Precision: 1.0000
+Recall: 1.0000
+F1-score: 1.0000
+
+3_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+4_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
+5_or_more_full:
+Precision: 0.0000
+Recall: 0.0000
+F1-score: 0.0000
+
