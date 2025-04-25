@@ -6,14 +6,54 @@ from neo4j import GraphDatabase
 from RelTR.inference import load_model, predict
 import time
 import json
+from neo4j.exceptions import ServiceUnavailable
+import atexit
+import concurrent.futures
+import threading
 
-# Kết nối Neo4j
+# Kết nối Neo4j với cấu hình tối ưu
 # uri = "bolt://localhost:7689"
 uri = "neo4j+s://b40b4f2a.databases.neo4j.io"
 username = "neo4j"
 password = "fpKNUXKT-4z0kQMm1nuUaiXe8p70uIebc3y3a4Z8kUA"
 # password = "12345678"
-driver = GraphDatabase.driver(uri, auth=(username, password))
+
+# Cấu hình kết nối tối ưu
+from neo4j import GraphDatabase
+from neo4j.exceptions import ServiceUnavailable
+
+# Tạo driver với cấu hình tối ưu
+driver = GraphDatabase.driver(
+    uri, 
+    auth=(username, password),
+    max_connection_lifetime=3600,  # Kết nối tối đa 1 giờ
+    max_connection_pool_size=50,   # Số lượng kết nối tối đa trong pool
+    connection_acquisition_timeout=60,  # Thời gian chờ kết nối tối đa (giây)
+    connection_timeout=30,  # Thời gian chờ kết nối ban đầu (giây)
+    max_retry_time=30  # Thời gian thử lại tối đa (giây)
+)
+
+# Hàm kiểm tra kết nối
+def check_connection():
+    try:
+        with driver.session() as session:
+            result = session.run("RETURN 1")
+            return result.single()[0] == 1
+    except ServiceUnavailable:
+        print("Không thể kết nối đến Neo4j. Vui lòng kiểm tra lại kết nối mạng hoặc thông tin đăng nhập.")
+        return False
+
+# Kiểm tra kết nối khi khởi động
+if not check_connection():
+    print("Cảnh báo: Không thể kết nối đến Neo4j. Các truy vấn có thể sẽ thất bại.")
+
+# Hàm đóng kết nối khi kết thúc chương trình
+def close_connection():
+    driver.close()
+    print("Đã đóng kết nối Neo4j.")
+
+# Đăng ký hàm đóng kết nối khi chương trình kết thúc
+atexit.register(close_connection)
 
 def load_model_and_predict(image_path, model_path):
     """
@@ -49,184 +89,262 @@ def get_predictions_from_model(predictions):
         })
     return predicted_triplets
 
-def query_images_by_pairs(predictions, min_pairs, image_folder='./data/vg_focused/images'):
-    """
-    Truy vấn ảnh từ Neo4j dựa trên các cặp subject-object
-    
-    Args:
-        predictions: Kết quả dự đoán từ mô hình
-        min_pairs: Số lượng cặp tối thiểu cần khớp
-        image_folder: Thư mục chứa ảnh
-        
-    Returns:
-        image_details: Danh sách các ảnh và thông tin chi tiết
-    """
-    image_details = []
-    processed_image_ids = set()
-    query_start_time = time.time()
-    
-    with driver.session() as session:
-        # Tạo set các subject và object từ dự đoán
-        subjects = set(p['subject']['class'] for p in predictions)
-        objects = set(p['object']['class'] for p in predictions)
-        prediction_pairs = [(p['subject']['class'], p['object']['class']) for p in predictions]
-        
-        # Truy vấn Neo4j để lấy các ảnh và cặp subject-object
-        query = """
-        MATCH (s:Object)
-        WHERE s.category IN $subjects
-        WITH DISTINCT s.image_id AS image_id
-        
-        MATCH (o:Object)
-        WHERE o.image_id = image_id AND o.category IN $objects
-        WITH DISTINCT image_id
-        
-        MATCH (s2:Object)-[r2:RELATIONSHIP]->(o2:Object)
-        WHERE s2.image_id = image_id
-        WITH image_id,
-             COLLECT(DISTINCT [s2.category, o2.category]) as image_pairs,
-             COLLECT(DISTINCT {subject: s2.category, relation: r2.type, object: o2.category}) as relationships
-        
-        WITH image_id, image_pairs, relationships,
-             SIZE([p IN image_pairs WHERE p IN $prediction_pairs]) as matching_pairs,
-             SIZE(image_pairs) as total_pairs
-        
-        WHERE matching_pairs >= $min_pairs
-        RETURN DISTINCT 
-            image_id, 
-            matching_pairs,
-            relationships,
-            total_pairs,
-            100.0 * matching_pairs / total_pairs as matching_percentage
-        ORDER BY matching_percentage DESC, matching_pairs DESC, image_id
-        """
-        
-        # Gửi tham số cho truy vấn
-        params = {
-            'subjects': list(subjects),
-            'objects': list(objects),
-            'prediction_pairs': prediction_pairs,
-            'min_pairs': min_pairs
-        }
-        
-        result = session.run(query, params)
-        
-        for record in result:
-            image_id = record['image_id']
-            
-            # Kiểm tra sự tồn tại của file ảnh
-            image_path = os.path.join(image_folder, f"{image_id}.jpg")
-            if not os.path.exists(image_path) or image_id in processed_image_ids:
-                continue
-            
-            processed_image_ids.add(image_id)
-            relationships_str = []
-            for rel in record['relationships']:
-                relationships_str.append(
-                f"{rel['subject']} - {rel['relation']} - {rel['object']}"
-                )
-            
-            image_details.append({
-                "image_id": image_id,
-                "matching_pairs": record['matching_pairs'],
-                "total_pairs": record['total_pairs'],
-                "matching_percentage": round(record['matching_percentage'], 2),
-                "relationships": relationships_str
-            })
-    
-    query_time = time.time() - query_start_time
-    print(f"Query time: {query_time:.2f} seconds")
-    
-    return image_details
+# Biến để theo dõi số lượng truy vấn đang chạy
+active_queries = 0
+active_queries_lock = threading.Lock()
 
-def query_images_triplets(predictions, min_pairs, image_folder='./data/vg_focused/images'):
+def query_images_by_pairs_parallel(predictions_list, min_pairs, max_workers=5, image_folder='./data/vg_focused/images'):
     """
-    Truy vấn ảnh từ Neo4j dựa trên các triplet subject-relation-object
+    Truy vấn song song nhiều ảnh từ Neo4j dựa trên các cặp subject-object
     
     Args:
-        predictions: Kết quả dự đoán từ mô hình
-        min_pairs: Số lượng triplet tối thiểu cần khớp
+        predictions_list: Danh sách các dự đoán từ mô hình cho nhiều ảnh
+        min_pairs: Số lượng cặp tối thiểu cần khớp
+        max_workers: Số lượng worker tối đa cho việc xử lý song song
         image_folder: Thư mục chứa ảnh
         
     Returns:
-        image_details: Danh sách các ảnh và thông tin chi tiết
+        all_image_details: Danh sách các ảnh và thông tin chi tiết cho tất cả các ảnh
     """
-    image_details = []
-    processed_image_ids = set()
+    all_image_details = []
     query_start_time = time.time()
     
-    with driver.session() as session:
-        # Tạo set các subject, relation và object từ dự đoán
-        subjects = set(p['subject']['class'] for p in predictions)
-        relations = set(p['relation']['class'] for p in predictions)
-        objects = set(p['object']['class'] for p in predictions)
-        prediction_triples = [(p['subject']['class'], p['relation']['class'], p['object']['class']) for p in predictions]
+    # Hàm worker để xử lý một ảnh
+    def process_image(predictions):
+        global active_queries
         
-        # Truy vấn Neo4j để lấy các ảnh và bộ ba subject-relation-object
-        query = """
-        MATCH (s:Object)
-        WHERE s.category IN $subjects
-        WITH DISTINCT s.image_id AS image_id
+        # Tăng số lượng truy vấn đang chạy
+        with active_queries_lock:
+            active_queries += 1
+            current_active = active_queries
+            print(f"Đang chạy {current_active} truy vấn song song")
         
-        MATCH (o:Object)
-        WHERE o.image_id = image_id AND o.category IN $objects
-        WITH DISTINCT image_id
-        
-        MATCH (s2:Object)-[r2:RELATIONSHIP]->(o2:Object)
-        WHERE s2.image_id = image_id
-        WITH image_id,
-             COLLECT(DISTINCT [s2.category, r2.type, o2.category]) as image_triples,
-             COLLECT(DISTINCT {subject: s2.category, relation: r2.type, object: o2.category}) as relationships
-        
-        WITH image_id, image_triples, relationships,
-             SIZE([t IN image_triples WHERE t IN $prediction_triples]) as matching_triples,
-             SIZE(image_triples) as total_triples
-        
-        WHERE matching_triples >= $min_pairs
-        RETURN DISTINCT 
-            image_id, 
-            matching_triples,
-            relationships,
-            total_triples,
-            100.0 * matching_triples / total_triples as matching_percentage
-        ORDER BY matching_percentage DESC, matching_triples DESC, image_id
-        """
-        
-        # Gửi tham số cho truy vấn
-        params = {
-            'subjects': list(subjects),
-            'objects': list(objects),
-            'prediction_triples': prediction_triples,
-            'min_pairs': min_pairs
-        }
-        
-        result = session.run(query, params)
-        
-        for record in result:
-            image_id = record['image_id']
+        try:
+            # Tạo set các subject và object từ dự đoán
+            subjects = set(p['subject']['class'] for p in predictions)
+            objects = set(p['object']['class'] for p in predictions)
+            prediction_pairs = [(p['subject']['class'], p['object']['class']) for p in predictions]
             
-            if image_id in processed_image_ids:
-                continue
+            # Truy vấn Neo4j để lấy các ảnh và cặp subject-object - đã tối ưu hóa
+            query = """
+            // Sử dụng UNWIND để tối ưu hóa việc lọc
+            UNWIND $subjects AS subject
+            MATCH (s:Object {category: subject})
+            WITH DISTINCT s.image_id AS image_id
             
-            processed_image_ids.add(image_id)
-            relationships_str = []
-            for rel in record['relationships']:
-                relationships_str.append(
-                f"{rel['subject']} - {rel['relation']} - {rel['object']}"
-                )
+            // Kiểm tra xem có object phù hợp trong cùng ảnh không
+            MATCH (o:Object)
+            WHERE o.image_id = image_id AND o.category IN $objects
+            WITH DISTINCT image_id
             
-            image_details.append({
-                "image_id": image_id,
-                "matching_triples": record['matching_triples'],
-                "total_triples": record['total_triples'],
-                "matching_percentage": round(record['matching_percentage'], 2),
-                "relationships": relationships_str
-            })
+            // Lấy tất cả các mối quan hệ trong ảnh này
+            MATCH (s2:Object)-[r2:RELATIONSHIP]->(o2:Object)
+            WHERE s2.image_id = image_id
+            WITH image_id,
+                 COLLECT(DISTINCT [s2.category, o2.category]) as image_pairs,
+                 COLLECT(DISTINCT {subject: s2.category, relation: r2.type, object: o2.category}) as relationships
+            
+            WITH image_id, image_pairs, relationships,
+                 SIZE([p IN image_pairs WHERE p IN $prediction_pairs]) as matching_pairs,
+                 SIZE(image_pairs) as total_pairs
+            
+            WHERE matching_pairs >= $min_pairs
+            RETURN DISTINCT 
+                image_id, 
+                matching_pairs,
+                relationships,
+                total_pairs,
+                100.0 * matching_pairs / total_pairs as matching_percentage
+            ORDER BY matching_percentage DESC, matching_pairs DESC, image_id
+            """
+            
+            # Gửi tham số cho truy vấn
+            params = {
+                'subjects': list(subjects),
+                'objects': list(objects),
+                'prediction_pairs': prediction_pairs,
+                'min_pairs': min_pairs
+            }
+            
+            image_details = []
+            processed_image_ids = set()
+            
+            with driver.session() as session:
+                result = session.run(query, params)
+                
+                for record in result:
+                    image_id = record['image_id']
+                    
+                    # Kiểm tra sự tồn tại của file ảnh
+                    image_path = os.path.join(image_folder, f"{image_id}.jpg")
+                    if not os.path.exists(image_path) or image_id in processed_image_ids:
+                        continue
+                    
+                    processed_image_ids.add(image_id)
+                    relationships_str = []
+                    for rel in record['relationships']:
+                        relationships_str.append(
+                        f"{rel['subject']} - {rel['relation']} - {rel['object']}"
+                        )
+                    
+                    image_details.append({
+                        "image_id": image_id,
+                        "matching_pairs": record['matching_pairs'],
+                        "total_pairs": record['total_pairs'],
+                        "matching_percentage": round(record['matching_percentage'], 2),
+                        "relationships": relationships_str
+                    })
+            
+            return image_details
+        finally:
+            # Giảm số lượng truy vấn đang chạy
+            with active_queries_lock:
+                active_queries -= 1
+    
+    # Sử dụng ThreadPoolExecutor để xử lý song song
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Gửi tất cả các ảnh để xử lý
+        future_to_predictions = {executor.submit(process_image, predictions): i for i, predictions in enumerate(predictions_list)}
+        
+        # Thu thập kết quả khi hoàn thành
+        for future in concurrent.futures.as_completed(future_to_predictions):
+            image_index = future_to_predictions[future]
+            try:
+                image_details = future.result()
+                all_image_details.extend(image_details)
+            except Exception as e:
+                print(f"Lỗi khi xử lý ảnh {image_index}: {str(e)}")
     
     query_time = time.time() - query_start_time
-    print(f"Query time: {query_time:.2f} seconds")
+    print(f"Tổng thời gian truy vấn song song: {query_time:.2f} giây")
     
-    return image_details
+    return all_image_details
+
+def query_images_triplets_parallel(predictions_list, min_pairs, max_workers=5, image_folder='./data/vg_focused/images'):
+    """
+    Truy vấn song song nhiều ảnh từ Neo4j dựa trên các triplet subject-relation-object
+    
+    Args:
+        predictions_list: Danh sách các dự đoán từ mô hình cho nhiều ảnh
+        min_pairs: Số lượng triplet tối thiểu cần khớp
+        max_workers: Số lượng worker tối đa cho việc xử lý song song
+        image_folder: Thư mục chứa ảnh
+        
+    Returns:
+        all_image_details: Danh sách các ảnh và thông tin chi tiết cho tất cả các ảnh
+    """
+    all_image_details = []
+    query_start_time = time.time()
+    
+    # Hàm worker để xử lý một ảnh
+    def process_image(predictions):
+        global active_queries
+        
+        # Tăng số lượng truy vấn đang chạy
+        with active_queries_lock:
+            active_queries += 1
+            current_active = active_queries
+            print(f"Đang chạy {current_active} truy vấn song song")
+        
+        try:
+            # Tạo set các subject, relation và object từ dự đoán
+            subjects = set(p['subject']['class'] for p in predictions)
+            relations = set(p['relation']['class'] for p in predictions)
+            objects = set(p['object']['class'] for p in predictions)
+            prediction_triples = [(p['subject']['class'], p['relation']['class'], p['object']['class']) for p in predictions]
+            
+            # Truy vấn Neo4j để lấy các ảnh và bộ ba subject-relation-object - đã tối ưu hóa
+            query = """
+            // Sử dụng UNWIND để tối ưu hóa việc lọc
+            UNWIND $subjects AS subject
+            MATCH (s:Object {category: subject})
+            WITH DISTINCT s.image_id AS image_id
+            
+            // Kiểm tra xem có object phù hợp trong cùng ảnh không
+            MATCH (o:Object)
+            WHERE o.image_id = image_id AND o.category IN $objects
+            WITH DISTINCT image_id
+            
+            // Lấy tất cả các mối quan hệ trong ảnh này
+            MATCH (s2:Object)-[r2:RELATIONSHIP]->(o2:Object)
+            WHERE s2.image_id = image_id
+            WITH image_id,
+                 COLLECT(DISTINCT [s2.category, r2.type, o2.category]) as image_triples,
+                 COLLECT(DISTINCT {subject: s2.category, relation: r2.type, object: o2.category}) as relationships
+            
+            WITH image_id, image_triples, relationships,
+                 SIZE([t IN image_triples WHERE t IN $prediction_triples]) as matching_triples,
+                 SIZE(image_triples) as total_triples
+            
+            WHERE matching_triples >= $min_pairs
+            RETURN DISTINCT 
+                image_id, 
+                matching_triples,
+                relationships,
+                total_triples,
+                100.0 * matching_triples / total_triples as matching_percentage
+            ORDER BY matching_percentage DESC, matching_triples DESC, image_id
+            """
+            
+            # Gửi tham số cho truy vấn
+            params = {
+                'subjects': list(subjects),
+                'objects': list(objects),
+                'prediction_triples': prediction_triples,
+                'min_pairs': min_pairs
+            }
+            
+            image_details = []
+            processed_image_ids = set()
+            
+            with driver.session() as session:
+                result = session.run(query, params)
+                
+                for record in result:
+                    image_id = record['image_id']
+                    
+                    if image_id in processed_image_ids:
+                        continue
+                    
+                    processed_image_ids.add(image_id)
+                    relationships_str = []
+                    for rel in record['relationships']:
+                        relationships_str.append(
+                        f"{rel['subject']} - {rel['relation']} - {rel['object']}"
+                        )
+                    
+                    image_details.append({
+                        "image_id": image_id,
+                        "matching_triples": record['matching_triples'],
+                        "total_triples": record['total_triples'],
+                        "matching_percentage": round(record['matching_percentage'], 2),
+                        "relationships": relationships_str
+                    })
+            
+            return image_details
+        finally:
+            # Giảm số lượng truy vấn đang chạy
+            with active_queries_lock:
+                active_queries -= 1
+    
+    # Sử dụng ThreadPoolExecutor để xử lý song song
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Gửi tất cả các ảnh để xử lý
+        future_to_predictions = {executor.submit(process_image, predictions): i for i, predictions in enumerate(predictions_list)}
+        
+        # Thu thập kết quả khi hoàn thành
+        for future in concurrent.futures.as_completed(future_to_predictions):
+            image_index = future_to_predictions[future]
+            try:
+                image_details = future.result()
+                all_image_details.extend(image_details)
+            except Exception as e:
+                print(f"Lỗi khi xử lý ảnh {image_index}: {str(e)}")
+    
+    query_time = time.time() - query_start_time
+    print(f"Tổng thời gian truy vấn song song: {query_time:.2f} giây")
+    
+    return all_image_details
 
 def calculate_roc_pr_metrics(model_predictions, ground_truth_data):
     """
@@ -378,8 +496,8 @@ def plot_all_curves(image_path, model_path, save_path=None):
 
     # Dùng vòng lặp để truy vấn các pairs và triplets
     for min_pairs in range(1, 6):
-        pairs = query_images_by_pairs(predictions, min_pairs)
-        triplets = query_images_triplets(predictions, min_pairs)
+        pairs = query_images_by_pairs_parallel([predictions], min_pairs)
+        triplets = query_images_triplets_parallel([predictions], min_pairs)
         ground_truth_pairs_by_min[min_pairs] = pairs
         ground_truth_triplets_by_min[min_pairs] = triplets
 
@@ -494,8 +612,8 @@ def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=
 
     # Dùng vòng lặp để truy vấn các pairs và triplets
     for min_pairs in range(min_pairs_range[0], min_pairs_range[1]):
-        pairs = query_images_by_pairs(predictions, min_pairs)
-        triplets = query_images_triplets(predictions, min_pairs)
+        pairs = query_images_by_pairs_parallel([predictions], min_pairs)
+        triplets = query_images_triplets_parallel([predictions], min_pairs)
         ground_truth_pairs.extend(pairs)
         ground_truth_triplets.extend(triplets)
 
@@ -582,77 +700,94 @@ def evaluate_model_with_data(model_predictions, ground_truth_data, threshold=0.5
         'y_score': y_score.tolist()     # Chuyển đổi NumPy array thành list
     }
 
-def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), save_results=True, max_images=None):
+def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_workers=5, save_results=True):
     """
-    Đánh giá mô hình trên toàn bộ bộ dữ liệu ảnh
+    Đánh giá mô hình trên nhiều ảnh cùng lúc
     
     Args:
-        image_folder: Thư mục chứa ảnh cần đánh giá
+        image_paths: Danh sách đường dẫn đến các ảnh cần đánh giá
         model_path: Đường dẫn đến file checkpoint của mô hình
         min_pairs_range: Tuple (start, end) cho range của min_pairs
+        max_workers: Số lượng worker tối đa cho việc xử lý song song
         save_results: Nếu True, lưu kết quả vào file JSON
-        max_images: Số lượng ảnh tối đa cần đánh giá (None nếu đánh giá tất cả)
         
     Returns:
-        results: Dictionary chứa kết quả đánh giá
+        all_results: Dictionary chứa kết quả đánh giá cho tất cả các ảnh
     """
-    # Lấy danh sách tất cả các ảnh trong thư mục
-    image_files = [f for f in os.listdir(image_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
+    print(f"Đánh giá mô hình trên {len(image_paths)} ảnh...")
     
-    # Giới hạn số lượng ảnh nếu cần
-    if max_images is not None and max_images < len(image_files):
-        image_files = image_files[:max_images]
-    
-    print(f"Đánh giá mô hình trên {len(image_files)} ảnh...")
+    # Tạo thư mục kết quả nếu chưa tồn tại
+    results_dir = "./evaluation_results"
+    if not os.path.exists(results_dir):
+        os.makedirs(results_dir)
+        print(f"Đã tạo thư mục kết quả: {results_dir}")
     
     # Khởi tạo danh sách trống cho kết quả
     all_results = []
     
-    # Đánh giá từng ảnh
-    for i, image_file in enumerate(image_files):
-        image_path = os.path.join(image_folder, image_file)
-        print(f"Đánh giá ảnh {i+1}/{len(image_files)}: {image_file}")
-        
+    # Hàm worker để xử lý một ảnh
+    def process_image(image_path):
         try:
-            # Đánh giá mô hình trên ảnh hiện tại
-            result = evaluate_model(image_path, model_path, min_pairs_range, save_results=False)
+            # Tải mô hình và thực hiện dự đoán
+            predictions = load_model_and_predict(image_path, model_path)
+            model_predictions = get_predictions_from_model(predictions)
             
-            # Vẽ biểu đồ ROC và Precision-Recall cho ảnh hiện tại
-            print(f"Vẽ biểu đồ ROC và Precision-Recall cho ảnh {image_file}...")
-            plot_roc_and_pr_curve(
-                result['pairs_metrics']['y_true'], 
-                result['pairs_metrics']['y_score'], 
-                save_path=os.path.join(results_dir, f"roc_pr_curves_{image_file}.png"),
-                label="Pairs"
-            )
+            # Khởi tạo danh sách trống cho ground truth
+            ground_truth_pairs = []
+            ground_truth_triplets = []
             
-            # Vẽ tất cả các đường cong cho ảnh hiện tại
-            print(f"Vẽ tất cả các đường cong cho ảnh {image_file}...")
-            plot_all_curves(
-                image_path, 
-                model_path, 
-                save_path=os.path.join(results_dir, f"all_curves_{image_file}.png")
-            )
+            # Dùng vòng lặp để truy vấn các pairs và triplets
+            for min_pairs in range(min_pairs_range[0], min_pairs_range[1]):
+                pairs = query_images_by_pairs_parallel([predictions], min_pairs, max_workers=1)
+                triplets = query_images_triplets_parallel([predictions], min_pairs, max_workers=1)
+                ground_truth_pairs.extend(pairs)
+                ground_truth_triplets.extend(triplets)
             
-            # Thêm thông tin ảnh vào kết quả
-            result['image_file'] = image_file
-            all_results.append(result)
+            # Đánh giá mô hình với dữ liệu pairs
+            pairs_metrics = evaluate_model_with_data(model_predictions, ground_truth_pairs, save_plots=False)
             
-            # In kết quả chi tiết cho ảnh hiện tại
-            print(f"\nKết quả đánh giá chi tiết cho ảnh {image_file}:")
-            print("\nMetrics cho pairs:")
-            print(f"Precision: {result['pairs_metrics']['precision']:.4f}, "
-                  f"Recall: {result['pairs_metrics']['recall']:.4f}, "
-                  f"F1: {result['pairs_metrics']['f1']:.4f}")
+            # Đánh giá mô hình với dữ liệu triplets
+            triplets_metrics = evaluate_model_with_data(model_predictions, ground_truth_triplets, save_plots=False)
             
-            print("\nMetrics cho triplets:")
-            print(f"Precision: {result['triplets_metrics']['precision']:.4f}, "
-                  f"Recall: {result['triplets_metrics']['recall']:.4f}, "
-                  f"F1: {result['triplets_metrics']['f1']:.4f}")
+            # Chuẩn bị kết quả
+            result = {
+                'image_path': image_path,
+                'pairs_metrics': {
+                    'precision': pairs_metrics['precision'],
+                    'recall': pairs_metrics['recall'],
+                    'f1': pairs_metrics['f1'],
+                    'y_true': pairs_metrics['y_true'],
+                    'y_score': pairs_metrics['y_score']
+                },
+                'triplets_metrics': {
+                    'precision': triplets_metrics['precision'],
+                    'recall': triplets_metrics['recall'],
+                    'f1': triplets_metrics['f1'],
+                    'y_true': triplets_metrics['y_true'],
+                    'y_score': triplets_metrics['y_score']
+                }
+            }
             
+            return result
         except Exception as e:
-            print(f"Lỗi khi đánh giá ảnh {image_file}: {str(e)}")
-            continue
+            print(f"Lỗi khi đánh giá ảnh {image_path}: {str(e)}")
+            return None
+    
+    # Sử dụng ThreadPoolExecutor để xử lý song song
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Gửi tất cả các ảnh để xử lý
+        future_to_image = {executor.submit(process_image, image_path): image_path for image_path in image_paths}
+        
+        # Thu thập kết quả khi hoàn thành
+        for future in concurrent.futures.as_completed(future_to_image):
+            image_path = future_to_image[future]
+            try:
+                result = future.result()
+                if result:
+                    all_results.append(result)
+                    print(f"Đã đánh giá xong ảnh: {image_path}")
+            except Exception as e:
+                print(f"Lỗi khi xử lý ảnh {image_path}: {str(e)}")
     
     # Tính toán metrics trung bình
     avg_metrics = {
@@ -677,7 +812,7 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
     # Thêm kết quả từng ảnh vào JSON
     for result in all_results:
         json_result['individual_results'].append({
-            'image_file': result['image_file'],
+            'image_path': result['image_path'],
             'pairs_metrics': {
                 'precision': result['pairs_metrics']['precision'],
                 'recall': result['pairs_metrics']['recall'],
@@ -691,8 +826,9 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
         })
     
     # Lưu kết quả vào file JSON
-    with open(os.path.join(results_dir, "evaluation_metrics.json"), "w") as f:
-        json.dump(json_result, f, indent=4)
+    if save_results:
+        with open(os.path.join(results_dir, "evaluation_metrics_batch.json"), "w") as f:
+            json.dump(json_result, f, indent=4)
     
     # In kết quả trung bình
     print("\nKết quả trung bình trên toàn bộ bộ dữ liệu:")
@@ -706,8 +842,40 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
           f"Recall: {avg_metrics['triplets']['recall']:.4f}, "
           f"F1: {avg_metrics['triplets']['f1']:.4f}")
     
-    print(f"\nKết quả chi tiết đã được lưu vào file '{os.path.join(results_dir, 'evaluation_metrics.json')}'")
-    print(f"Biểu đồ ROC và Precision-Recall cho từng ảnh đã được lưu trong thư mục '{results_dir}'")
+    if save_results:
+        print(f"\nKết quả chi tiết đã được lưu vào file '{os.path.join(results_dir, 'evaluation_metrics_batch.json')}'")
+    
+    return all_results
+
+def query_images_by_pairs(predictions, min_pairs, image_folder='./data/vg_focused/images'):
+    """
+    Truy vấn ảnh từ Neo4j dựa trên các cặp subject-object
+    
+    Args:
+        predictions: Kết quả dự đoán từ mô hình
+        min_pairs: Số lượng cặp tối thiểu cần khớp
+        image_folder: Thư mục chứa ảnh
+        
+    Returns:
+        image_details: Danh sách các ảnh và thông tin chi tiết
+    """
+    # Sử dụng hàm song song với một ảnh duy nhất
+    return query_images_by_pairs_parallel([predictions], min_pairs, max_workers=1, image_folder=image_folder)
+
+def query_images_triplets(predictions, min_pairs, image_folder='./data/vg_focused/images'):
+    """
+    Truy vấn ảnh từ Neo4j dựa trên các triplet subject-relation-object
+    
+    Args:
+        predictions: Kết quả dự đoán từ mô hình
+        min_pairs: Số lượng triplet tối thiểu cần khớp
+        image_folder: Thư mục chứa ảnh
+        
+    Returns:
+        image_details: Danh sách các ảnh và thông tin chi tiết
+    """
+    # Sử dụng hàm song song với một ảnh duy nhất
+    return query_images_triplets_parallel([predictions], min_pairs, max_workers=1, image_folder=image_folder)
 
 def plot_all_data_curves(all_results, save_path=None):
     """
@@ -812,6 +980,34 @@ def plot_all_data_curves(all_results, save_path=None):
         plt.show()
     
     plt.close()
+
+def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), save_results=True, max_images=None, max_workers=5):
+    """
+    Đánh giá mô hình trên toàn bộ bộ dữ liệu ảnh
+    
+    Args:
+        image_folder: Thư mục chứa ảnh cần đánh giá
+        model_path: Đường dẫn đến file checkpoint của mô hình
+        min_pairs_range: Tuple (start, end) cho range của min_pairs
+        save_results: Nếu True, lưu kết quả vào file JSON
+        max_images: Số lượng ảnh tối đa cần đánh giá (None nếu đánh giá tất cả)
+        max_workers: Số lượng worker tối đa cho việc xử lý song song
+        
+    Returns:
+        results: Dictionary chứa kết quả đánh giá
+    """
+    # Lấy danh sách tất cả các ảnh trong thư mục
+    image_files = [f for f in os.listdir(image_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
+    
+    # Giới hạn số lượng ảnh nếu cần
+    if max_images is not None and max_images < len(image_files):
+        image_files = image_files[:max_images]
+    
+    # Tạo danh sách đường dẫn đầy đủ
+    image_paths = [os.path.join(image_folder, image_file) for image_file in image_files]
+    
+    # Sử dụng hàm đánh giá hàng loạt
+    return evaluate_model_batch(image_paths, model_path, min_pairs_range, max_workers, save_results)
 
 # Thực thi đánh giá mô hình
 if __name__ == "__main__":
