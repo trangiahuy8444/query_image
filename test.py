@@ -788,29 +788,35 @@ def evaluate_predictions(predictions, image_path):
         triplets_y_true.append(1)
         triplets_y_score.append(pred['subject']['score'] * pred['relation']['score'] * pred['object']['score'])
     
-    # Thêm một số negative examples
-    num_negatives = len(predictions)
-    pairs_y_true.extend([0] * num_negatives)
-    pairs_y_score.extend([0.1] * num_negatives)  # Giả sử score thấp cho negative examples
-    triplets_y_true.extend([0] * num_negatives)
-    triplets_y_score.extend([0.1] * num_negatives)
+    # Thêm một số negative examples nếu có predictions
+    if predictions:
+        num_negatives = len(predictions)
+        pairs_y_true.extend([0] * num_negatives)
+        pairs_y_score.extend([0.1] * num_negatives)  # Giả sử score thấp cho negative examples
+        triplets_y_true.extend([0] * num_negatives)
+        triplets_y_score.extend([0.1] * num_negatives)
+    
+    # Tính toán metrics với zero_division=0 để tránh cảnh báo
+    pairs_metrics = {
+        'y_true': pairs_y_true,
+        'y_score': pairs_y_score,
+        'precision': precision_score(pairs_y_true, [1 if s > 0.5 else 0 for s in pairs_y_score], zero_division=0),
+        'recall': recall_score(pairs_y_true, [1 if s > 0.5 else 0 for s in pairs_y_score], zero_division=0),
+        'f1': f1_score(pairs_y_true, [1 if s > 0.5 else 0 for s in pairs_y_score], zero_division=0)
+    }
+    
+    triplets_metrics = {
+        'y_true': triplets_y_true,
+        'y_score': triplets_y_score,
+        'precision': precision_score(triplets_y_true, [1 if s > 0.5 else 0 for s in triplets_y_score], zero_division=0),
+        'recall': recall_score(triplets_y_true, [1 if s > 0.5 else 0 for s in triplets_y_score], zero_division=0),
+        'f1': f1_score(triplets_y_true, [1 if s > 0.5 else 0 for s in triplets_y_score], zero_division=0)
+    }
     
     return {
         'image_file': os.path.basename(image_path),
-        'pairs_metrics': {
-            'y_true': pairs_y_true,
-            'y_score': pairs_y_score,
-            'precision': precision_score(pairs_y_true, [1 if s > 0.5 else 0 for s in pairs_y_score]),
-            'recall': recall_score(pairs_y_true, [1 if s > 0.5 else 0 for s in pairs_y_score]),
-            'f1': f1_score(pairs_y_true, [1 if s > 0.5 else 0 for s in pairs_y_score])
-        },
-        'triplets_metrics': {
-            'y_true': triplets_y_true,
-            'y_score': triplets_y_score,
-            'precision': precision_score(triplets_y_true, [1 if s > 0.5 else 0 for s in triplets_y_score]),
-            'recall': recall_score(triplets_y_true, [1 if s > 0.5 else 0 for s in triplets_y_score]),
-            'f1': f1_score(triplets_y_true, [1 if s > 0.5 else 0 for s in triplets_y_score])
-        }
+        'pairs_metrics': pairs_metrics,
+        'triplets_metrics': triplets_metrics
     }
 
 def plot_all_data_curves(all_results, save_path=None):
