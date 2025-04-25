@@ -1,8 +1,8 @@
-RelTR/ckpt.zip 
 .env
 __pycache__/
 *.pyc
 .DS_Store
 uploads/
 output_images/
-*.log 
+*.log
+RelTR/ckpt.zip 

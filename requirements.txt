@@ -3,7 +3,7 @@ neo4j==4.4.3
 Werkzeug==2.0.1
 gunicorn==20.1.0
 python-dotenv==0.19.0
-torch==1.9.0
-torchvision==0.10.0
+torch==2.0.1
+torchvision==0.15.2
 numpy==1.21.0
 Pillow==8.3.1 

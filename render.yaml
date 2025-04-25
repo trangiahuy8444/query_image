@@ -16,4 +16,7 @@ services:
       - key: UPLOAD_FOLDER
         value: /opt/render/project/src/uploads
       - key: OUTPUT_FOLDER
-        value: /opt/render/project/src/output_images 
+        value: /opt/render/project/src/output_images
+    healthCheckPath: /
+    autoDeploy: true
+    plan: free 
