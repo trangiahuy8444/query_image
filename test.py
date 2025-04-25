@@ -69,25 +69,41 @@ def load_model_and_predict(image_path, model_path):
         model = load_model(model_path)
         raw_predictions = predict(image_path, model)
         
+        # Kiểm tra và chuyển đổi dự đoán thành định dạng chuẩn
+        valid_predictions = []
+        
         # Nếu không có dự đoán hoặc dự đoán không phải list
         if not raw_predictions or not isinstance(raw_predictions, list):
+            print(f"Không có dự đoán hợp lệ cho ảnh {image_path}")
             return []
             
-        # Lọc và chuyển đổi dự đoán thành định dạng chuẩn
-        valid_predictions = []
+        # Lọc và chuyển đổi dự đoán
         for pred in raw_predictions:
-            # Nếu pred là dictionary, kiểm tra cấu trúc
-            if isinstance(pred, dict):
-                if all(k in pred for k in ['subject', 'relation', 'object']):
-                    valid_predictions.append(pred)
-            # Nếu pred là tuple/list có 3 phần tử, chuyển thành dictionary
-            elif isinstance(pred, (tuple, list)) and len(pred) >= 3:
-                valid_predictions.append({
-                    'subject': {'class': str(pred[0])},
-                    'relation': {'class': str(pred[1])},
-                    'object': {'class': str(pred[2])}
-                })
+            try:
+                # Nếu pred là dictionary, kiểm tra cấu trúc
+                if isinstance(pred, dict):
+                    if all(k in pred for k in ['subject', 'relation', 'object']):
+                        # Đảm bảo các giá trị là dictionary với key 'class'
+                        valid_pred = {
+                            'subject': {'class': str(pred['subject']) if isinstance(pred['subject'], (str, int)) else pred['subject'].get('class', '')},
+                            'relation': {'class': str(pred['relation']) if isinstance(pred['relation'], (str, int)) else pred['relation'].get('class', '')},
+                            'object': {'class': str(pred['object']) if isinstance(pred['object'], (str, int)) else pred['object'].get('class', '')}
+                        }
+                        valid_predictions.append(valid_pred)
+                # Nếu pred là tuple/list có 3 phần tử, chuyển thành dictionary
+                elif isinstance(pred, (tuple, list)) and len(pred) >= 3:
+                    valid_predictions.append({
+                        'subject': {'class': str(pred[0])},
+                        'relation': {'class': str(pred[1])},
+                        'object': {'class': str(pred[2])}
+                    })
+            except Exception as e:
+                print(f"Lỗi khi xử lý dự đoán: {str(e)}, Dữ liệu: {pred}")
+                continue
                 
+        if not valid_predictions:
+            print(f"Không tìm thấy dự đoán hợp lệ nào cho ảnh {image_path}")
+            
         return valid_predictions
         
     except Exception as e:
