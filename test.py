@@ -843,13 +843,21 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
     
     # Khởi tạo danh sách kết quả
     all_results = []
+    valid_results = []
     
     # Hàm worker để xử lý một ảnh
     def process_image(image_path):
         try:
             # Tải mô hình và thực hiện dự đoán
             predictions = load_model_and_predict(image_path, model_path)
+            if not predictions:
+                print(f"Không có dự đoán hợp lệ cho ảnh {image_path}")
+                return None
+                
             model_predictions = get_predictions_from_model(predictions)
+            if not model_predictions:
+                print(f"Không thể chuyển đổi dự đoán thành định dạng chuẩn cho ảnh {image_path}")
+                return None
             
             # Khởi tạo danh sách trống cho ground truth
             ground_truth_pairs = []
@@ -857,10 +865,21 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
             
             # Dùng vòng lặp để truy vấn các pairs và triplets
             for min_pairs in range(min_pairs_range[0], min_pairs_range[1]):
-                pairs = query_images_by_pairs_parallel([predictions], min_pairs, max_workers=1)
-                triplets = query_images_triplets_parallel([predictions], min_pairs, max_workers=1)
-                ground_truth_pairs.extend(pairs)
-                ground_truth_triplets.extend(triplets)
+                try:
+                    pairs = query_images_by_pairs_parallel([predictions], min_pairs, max_workers=1)
+                    triplets = query_images_triplets_parallel([predictions], min_pairs, max_workers=1)
+                    if pairs:
+                        ground_truth_pairs.extend(pairs)
+                    if triplets:
+                        ground_truth_triplets.extend(triplets)
+                except Exception as e:
+                    print(f"Lỗi khi truy vấn với min_pairs={min_pairs}: {str(e)}")
+                    continue
+            
+            # Lưu kết quả truy vấn vào file JSON
+            if save_results:
+                output_file = os.path.join(results_dir, f"query_results_{os.path.basename(image_path)}.json")
+                save_query_results_to_json(image_path, predictions, ground_truth_pairs, ground_truth_triplets, output_file)
             
             # Đánh giá mô hình với dữ liệu pairs
             pairs_metrics = evaluate_model_with_data(model_predictions, ground_truth_pairs, save_plots=False)
@@ -872,22 +891,23 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
             result = {
                 'image_path': image_path,
                 'pairs_metrics': {
-                    'precision': pairs_metrics['precision'],
-                    'recall': pairs_metrics['recall'],
-                    'f1': pairs_metrics['f1'],
-                    'y_true': pairs_metrics['y_true'],
-                    'y_score': pairs_metrics['y_score']
+                    'precision': float(pairs_metrics['precision']),
+                    'recall': float(pairs_metrics['recall']),
+                    'f1': float(pairs_metrics['f1']),
+                    'y_true': pairs_metrics['y_true'].tolist() if isinstance(pairs_metrics['y_true'], np.ndarray) else pairs_metrics['y_true'],
+                    'y_score': pairs_metrics['y_score'].tolist() if isinstance(pairs_metrics['y_score'], np.ndarray) else pairs_metrics['y_score']
                 },
                 'triplets_metrics': {
-                    'precision': triplets_metrics['precision'],
-                    'recall': triplets_metrics['recall'],
-                    'f1': triplets_metrics['f1'],
-                    'y_true': triplets_metrics['y_true'],
-                    'y_score': triplets_metrics['y_score']
+                    'precision': float(triplets_metrics['precision']),
+                    'recall': float(triplets_metrics['recall']),
+                    'f1': float(triplets_metrics['f1']),
+                    'y_true': triplets_metrics['y_true'].tolist() if isinstance(triplets_metrics['y_true'], np.ndarray) else triplets_metrics['y_true'],
+                    'y_score': triplets_metrics['y_score'].tolist() if isinstance(triplets_metrics['y_score'], np.ndarray) else triplets_metrics['y_score']
                 }
             }
             
             return result
+            
         except Exception as e:
             print(f"Lỗi khi đánh giá ảnh {image_path}: {str(e)}")
             return None
@@ -904,50 +924,46 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
                 result = future.result()
                 if result:
                     all_results.append(result)
+                    # Chỉ thêm vào valid_results nếu có metrics hợp lệ
+                    if (not np.isnan(result['pairs_metrics']['precision']) and 
+                        not np.isnan(result['pairs_metrics']['recall']) and 
+                        not np.isnan(result['pairs_metrics']['f1'])):
+                        valid_results.append(result)
                     print(f"Đã đánh giá xong ảnh: {image_path}")
             except Exception as e:
                 print(f"Lỗi khi xử lý ảnh {image_path}: {str(e)}")
     
-    # Tính toán metrics trung bình
-    avg_metrics = {
-        'pairs': {
-            'precision': float(np.mean([r['pairs_metrics']['precision'] for r in all_results])),
-            'recall': float(np.mean([r['pairs_metrics']['recall'] for r in all_results])),
-            'f1': float(np.mean([r['pairs_metrics']['f1'] for r in all_results]))
-        },
-        'triplets': {
-            'precision': float(np.mean([r['triplets_metrics']['precision'] for r in all_results])),
-            'recall': float(np.mean([r['triplets_metrics']['recall'] for r in all_results])),
-            'f1': float(np.mean([r['triplets_metrics']['f1'] for r in all_results]))
+    # Tính toán metrics trung bình chỉ từ các kết quả hợp lệ
+    if valid_results:
+        avg_metrics = {
+            'pairs': {
+                'precision': float(np.mean([r['pairs_metrics']['precision'] for r in valid_results])),
+                'recall': float(np.mean([r['pairs_metrics']['recall'] for r in valid_results])),
+                'f1': float(np.mean([r['pairs_metrics']['f1'] for r in valid_results]))
+            },
+            'triplets': {
+                'precision': float(np.mean([r['triplets_metrics']['precision'] for r in valid_results])),
+                'recall': float(np.mean([r['triplets_metrics']['recall'] for r in valid_results])),
+                'f1': float(np.mean([r['triplets_metrics']['f1'] for r in valid_results]))
+            }
         }
-    }
+    else:
+        avg_metrics = {
+            'pairs': {'precision': 0.0, 'recall': 0.0, 'f1': 0.0},
+            'triplets': {'precision': 0.0, 'recall': 0.0, 'f1': 0.0}
+        }
     
     # Lưu kết quả chi tiết vào file JSON
     json_result = {
         'average_metrics': avg_metrics,
-        'individual_results': []
+        'individual_results': all_results
     }
-    
-    # Thêm kết quả từng ảnh vào JSON
-    for result in all_results:
-        json_result['individual_results'].append({
-            'image_path': result['image_path'],
-            'pairs_metrics': {
-                'precision': result['pairs_metrics']['precision'],
-                'recall': result['pairs_metrics']['recall'],
-                'f1': result['pairs_metrics']['f1']
-            },
-            'triplets_metrics': {
-                'precision': result['triplets_metrics']['precision'],
-                'recall': result['triplets_metrics']['recall'],
-                'f1': result['triplets_metrics']['f1']
-            }
-        })
     
     # Lưu kết quả vào file JSON
     if save_results:
-        with open(os.path.join(results_dir, "evaluation_metrics_batch.json"), "w") as f:
-            json.dump(json_result, f, indent=4)
+        output_file = os.path.join(results_dir, "evaluation_metrics_batch.json")
+        with open(output_file, "w", encoding="utf-8") as f:
+            json.dump(json_result, f, indent=4, ensure_ascii=False)
     
     # In kết quả trung bình
     print("\nKết quả trung bình trên toàn bộ bộ dữ liệu:")
@@ -962,7 +978,7 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
           f"F1: {avg_metrics['triplets']['f1']:.4f}")
     
     if save_results:
-        print(f"\nKết quả chi tiết đã được lưu vào file '{os.path.join(results_dir, 'evaluation_metrics_batch.json')}'")
+        print(f"\nKết quả chi tiết đã được lưu vào file '{output_file}'")
     
     return all_results
 
