@@ -743,7 +743,10 @@ def save_query_results_to_json(image_path, predictions, ground_truth_pairs, grou
         }
         
         # Tạo thư mục nếu chưa tồn tại
-        os.makedirs(os.path.dirname(output_file), exist_ok=True)
+        output_dir = os.path.dirname(output_file)
+        if output_dir and not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+            print(f"Đã tạo thư mục: {output_dir}")
         
         # Lưu vào file JSON
         with open(output_file, "w", encoding="utf-8") as f:
@@ -761,6 +764,7 @@ def save_query_results_to_json(image_path, predictions, ground_truth_pairs, grou
         print(f"- Predictions: {predictions}")
         print(f"- Ground truth pairs: {ground_truth_pairs}")
         print(f"- Ground truth triplets: {ground_truth_triplets}")
+        print(f"- Output file: {output_file}")
 
 def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=True):
     """
