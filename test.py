@@ -885,16 +885,22 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
     # Hàm worker để xử lý một ảnh
     def process_image(image_path):
         try:
+            print(f"\nĐang xử lý ảnh: {image_path}")
+            
             # Tải mô hình và thực hiện dự đoán
             predictions = load_model_and_predict(image_path, model_path)
             if not predictions:
                 print(f"Không có dự đoán hợp lệ cho ảnh {image_path}")
                 return None
                 
+            print(f"Số lượng dự đoán: {len(predictions)}")
+            
             model_predictions = get_predictions_from_model(predictions)
             if not model_predictions:
                 print(f"Không thể chuyển đổi dự đoán thành định dạng chuẩn cho ảnh {image_path}")
                 return None
+            
+            print(f"Số lượng dự đoán sau chuyển đổi: {len(model_predictions)}")
             
             # Khởi tạo danh sách trống cho ground truth
             ground_truth_pairs = []
@@ -903,12 +909,17 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
             # Dùng vòng lặp để truy vấn các pairs và triplets
             for min_pairs in range(min_pairs_range[0], min_pairs_range[1]):
                 try:
+                    print(f"\nTruy vấn với min_pairs={min_pairs}")
                     pairs = query_images_by_pairs_parallel([predictions], min_pairs, max_workers=1)
                     triplets = query_images_triplets_parallel([predictions], min_pairs, max_workers=1)
+                    
                     if pairs:
+                        print(f"Tìm thấy {len(pairs)} pairs")
                         ground_truth_pairs.extend(pairs)
                     if triplets:
+                        print(f"Tìm thấy {len(triplets)} triplets")
                         ground_truth_triplets.extend(triplets)
+                        
                 except Exception as e:
                     print(f"Lỗi khi truy vấn với min_pairs={min_pairs}: {str(e)}")
                     continue
@@ -942,6 +953,10 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
                     'y_score': triplets_metrics['y_score'].tolist() if isinstance(triplets_metrics['y_score'], np.ndarray) else triplets_metrics['y_score']
                 }
             }
+            
+            print(f"\nKết quả đánh giá cho {image_path}:")
+            print(f"Pairs - Precision: {result['pairs_metrics']['precision']:.4f}, Recall: {result['pairs_metrics']['recall']:.4f}, F1: {result['pairs_metrics']['f1']:.4f}")
+            print(f"Triplets - Precision: {result['triplets_metrics']['precision']:.4f}, Recall: {result['triplets_metrics']['recall']:.4f}, F1: {result['triplets_metrics']['f1']:.4f}")
             
             return result
             
@@ -985,6 +1000,7 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
             }
         }
     else:
+        print("Không có kết quả hợp lệ nào được tìm thấy!")
         avg_metrics = {
             'pairs': {'precision': 0.0, 'recall': 0.0, 'f1': 0.0},
             'triplets': {'precision': 0.0, 'recall': 0.0, 'f1': 0.0}
@@ -993,7 +1009,12 @@ def evaluate_model_batch(image_paths, model_path, min_pairs_range=(1, 6), max_wo
     # Lưu kết quả chi tiết vào file JSON
     json_result = {
         'average_metrics': avg_metrics,
-        'individual_results': all_results
+        'individual_results': all_results,
+        'summary': {
+            'total_images': len(image_paths),
+            'valid_results': len(valid_results),
+            'timestamp': time.strftime("%Y-%m-%d %H:%M:%S")
+        }
     }
     
     # Lưu kết quả vào file JSON
