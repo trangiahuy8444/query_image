@@ -10,6 +10,7 @@ from neo4j.exceptions import ServiceUnavailable
 import atexit
 import concurrent.futures
 import threading
+import sys
 
 # Kết nối Neo4j với cấu hình tối ưu
 # uri = "bolt://localhost:7689"
@@ -1337,6 +1338,40 @@ if __name__ == "__main__":
         # Tính toán metrics trung bình
         valid_results = [r for r in results if r is not None]
         if valid_results:
+            # Kiểm tra và chuẩn bị dữ liệu cho pairs
+            pairs_data = {}
+            triplets_data = {}
+            has_valid_data = False
+            
+            for i in range(1, 6):
+                # Chuẩn bị dữ liệu cho pairs
+                pairs = [r for r in valid_results if f'pairs_{i}' in r]
+                if pairs:
+                    try:
+                        y_true = np.concatenate([r[f'pairs_{i}_metrics']['y_true'] for r in pairs])
+                        y_score = np.concatenate([r[f'pairs_{i}_metrics']['y_score'] for r in pairs])
+                        if len(y_true) > 0 and len(y_score) > 0:
+                            pairs_data[i] = (y_true, y_score)
+                            has_valid_data = True
+                    except Exception as e:
+                        print(f"Lỗi khi xử lý dữ liệu pairs_{i}: {str(e)}")
+                
+                # Chuẩn bị dữ liệu cho triplets
+                triplets = [r for r in valid_results if f'triplets_{i}' in r]
+                if triplets:
+                    try:
+                        y_true = np.concatenate([r[f'triplets_{i}_metrics']['y_true'] for r in triplets])
+                        y_score = np.concatenate([r[f'triplets_{i}_metrics']['y_score'] for r in triplets])
+                        if len(y_true) > 0 and len(y_score) > 0:
+                            triplets_data[i] = (y_true, y_score)
+                            has_valid_data = True
+                    except Exception as e:
+                        print(f"Lỗi khi xử lý dữ liệu triplets_{i}: {str(e)}")
+            
+            if not has_valid_data:
+                print("Không có dữ liệu hợp lệ để vẽ biểu đồ!")
+                sys.exit(1)
+            
             # Vẽ ROC và PR curves cho pairs (1-5)
             plt.figure(figsize=(12, 5))
             colors = ['red', 'blue', 'green', 'purple', 'orange']
@@ -1345,10 +1380,8 @@ if __name__ == "__main__":
             plt.subplot(1, 2, 1)
             plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--', label='Random')
             for i in range(1, 6):
-                pairs_data = [r for r in valid_results if f'pairs_{i}' in r]
-                if pairs_data:
-                    y_true = np.concatenate([r[f'pairs_{i}_metrics']['y_true'] for r in pairs_data])
-                    y_score = np.concatenate([r[f'pairs_{i}_metrics']['y_score'] for r in pairs_data])
+                if i in pairs_data:
+                    y_true, y_score = pairs_data[i]
                     fpr, tpr, _ = roc_curve(y_true, y_score)
                     roc_auc = auc(fpr, tpr)
                     plt.plot(fpr, tpr, color=colors[i-1], lw=2, 
@@ -1359,15 +1392,14 @@ if __name__ == "__main__":
             plt.xlabel('False Positive Rate')
             plt.ylabel('True Positive Rate')
             plt.title('ROC Curves for Pairs')
-            plt.legend(loc="lower right")
+            if len(pairs_data) > 0:
+                plt.legend(loc="lower right")
             
             # Vẽ Precision-Recall curves cho pairs
             plt.subplot(1, 2, 2)
             for i in range(1, 6):
-                pairs_data = [r for r in valid_results if f'pairs_{i}' in r]
-                if pairs_data:
-                    y_true = np.concatenate([r[f'pairs_{i}_metrics']['y_true'] for r in pairs_data])
-                    y_score = np.concatenate([r[f'pairs_{i}_metrics']['y_score'] for r in pairs_data])
+                if i in pairs_data:
+                    y_true, y_score = pairs_data[i]
                     precision, recall, _ = precision_recall_curve(y_true, y_score)
                     pr_auc = auc(recall, precision)
                     plt.plot(recall, precision, color=colors[i-1], lw=2,
@@ -1376,7 +1408,8 @@ if __name__ == "__main__":
             plt.xlabel('Recall')
             plt.ylabel('Precision')
             plt.title('Precision-Recall Curves for Pairs')
-            plt.legend(loc="lower left")
+            if len(pairs_data) > 0:
+                plt.legend(loc="lower left")
             
             plt.tight_layout()
             plt.savefig("evaluation_results/pairs_curves.png")
@@ -1389,10 +1422,8 @@ if __name__ == "__main__":
             plt.subplot(1, 2, 1)
             plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--', label='Random')
             for i in range(1, 6):
-                triplets_data = [r for r in valid_results if f'triplets_{i}' in r]
-                if triplets_data:
-                    y_true = np.concatenate([r[f'triplets_{i}_metrics']['y_true'] for r in triplets_data])
-                    y_score = np.concatenate([r[f'triplets_{i}_metrics']['y_score'] for r in triplets_data])
+                if i in triplets_data:
+                    y_true, y_score = triplets_data[i]
                     fpr, tpr, _ = roc_curve(y_true, y_score)
                     roc_auc = auc(fpr, tpr)
                     plt.plot(fpr, tpr, color=colors[i-1], lw=2, linestyle='--',
@@ -1403,15 +1434,14 @@ if __name__ == "__main__":
             plt.xlabel('False Positive Rate')
             plt.ylabel('True Positive Rate')
             plt.title('ROC Curves for Triplets')
-            plt.legend(loc="lower right")
+            if len(triplets_data) > 0:
+                plt.legend(loc="lower right")
             
             # Vẽ Precision-Recall curves cho triplets
             plt.subplot(1, 2, 2)
             for i in range(1, 6):
-                triplets_data = [r for r in valid_results if f'triplets_{i}' in r]
-                if triplets_data:
-                    y_true = np.concatenate([r[f'triplets_{i}_metrics']['y_true'] for r in triplets_data])
-                    y_score = np.concatenate([r[f'triplets_{i}_metrics']['y_score'] for r in triplets_data])
+                if i in triplets_data:
+                    y_true, y_score = triplets_data[i]
                     precision, recall, _ = precision_recall_curve(y_true, y_score)
                     pr_auc = auc(recall, precision)
                     plt.plot(recall, precision, color=colors[i-1], lw=2, linestyle='--',
@@ -1420,7 +1450,8 @@ if __name__ == "__main__":
             plt.xlabel('Recall')
             plt.ylabel('Precision')
             plt.title('Precision-Recall Curves for Triplets')
-            plt.legend(loc="lower left")
+            if len(triplets_data) > 0:
+                plt.legend(loc="lower left")
             
             plt.tight_layout()
             plt.savefig("evaluation_results/triplets_curves.png")
