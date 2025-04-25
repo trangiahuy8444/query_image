@@ -67,7 +67,7 @@ def load_model_and_predict(image_path, model_path):
     """
     try:
         print(f"\nĐang tải mô hình từ {model_path}")
-        model = load_model(model_path)
+    model = load_model(model_path)
         print("Đã tải mô hình thành công")
         
         print(f"Đang dự đoán cho ảnh {image_path}")
@@ -766,6 +766,76 @@ def save_query_results_to_json(image_path, predictions, ground_truth_pairs, grou
         print(f"- Ground truth triplets: {ground_truth_triplets}")
         print(f"- Output file: {output_file}")
 
+def plot_query_results(ground_truth_pairs, ground_truth_triplets, save_path=None):
+    """
+    Vẽ biểu đồ kết quả truy vấn
+    
+    Args:
+        ground_truth_pairs: Kết quả truy vấn pairs từ Neo4j
+        ground_truth_triplets: Kết quả truy vấn triplets từ Neo4j
+        save_path: Đường dẫn để lưu biểu đồ (nếu None thì hiển thị biểu đồ)
+    """
+    try:
+        # Tạo figure với 2x2 subplots
+        fig = plt.figure(figsize=(20, 15))
+        
+        # 1. Biểu đồ phân bố matching percentage cho pairs
+        plt.subplot(2, 2, 1)
+        matching_percentages_pairs = [pair.get('matching_percentage', 0) for pair in ground_truth_pairs]
+        plt.hist(matching_percentages_pairs, bins=20, color='skyblue', edgecolor='black')
+        plt.title('Phân bố Matching Percentage cho Pairs')
+        plt.xlabel('Matching Percentage (%)')
+        plt.ylabel('Số lượng ảnh')
+        plt.grid(True, alpha=0.3)
+        
+        # 2. Biểu đồ phân bố matching percentage cho triplets
+        plt.subplot(2, 2, 2)
+        matching_percentages_triplets = [triplet.get('matching_percentage', 0) for triplet in ground_truth_triplets]
+        plt.hist(matching_percentages_triplets, bins=20, color='lightgreen', edgecolor='black')
+        plt.title('Phân bố Matching Percentage cho Triplets')
+        plt.xlabel('Matching Percentage (%)')
+        plt.ylabel('Số lượng ảnh')
+        plt.grid(True, alpha=0.3)
+        
+        # 3. Biểu đồ cột so sánh số lượng relationships
+        plt.subplot(2, 2, 3)
+        total_relationships_pairs = sum(len(pair.get('relationships', [])) for pair in ground_truth_pairs)
+        total_relationships_triplets = sum(len(triplet.get('relationships', [])) for triplet in ground_truth_triplets)
+        plt.bar(['Pairs', 'Triplets'], [total_relationships_pairs, total_relationships_triplets], 
+                color=['skyblue', 'lightgreen'])
+        plt.title('Tổng số Relationships tìm thấy')
+        plt.ylabel('Số lượng')
+        plt.grid(True, alpha=0.3)
+        
+        # 4. Biểu đồ scatter plot matching percentage vs số lượng relationships
+        plt.subplot(2, 2, 4)
+        plt.scatter([len(pair.get('relationships', [])) for pair in ground_truth_pairs],
+                   [pair.get('matching_percentage', 0) for pair in ground_truth_pairs],
+                   alpha=0.6, label='Pairs', color='skyblue')
+        plt.scatter([len(triplet.get('relationships', [])) for triplet in ground_truth_triplets],
+                   [triplet.get('matching_percentage', 0) for triplet in ground_truth_triplets],
+                   alpha=0.6, label='Triplets', color='lightgreen')
+        plt.title('Matching Percentage vs Số lượng Relationships')
+        plt.xlabel('Số lượng Relationships')
+        plt.ylabel('Matching Percentage (%)')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        
+        # Điều chỉnh layout
+        plt.tight_layout()
+        
+        # Lưu hoặc hiển thị biểu đồ
+        if save_path:
+            plt.savefig(save_path, dpi=300, bbox_inches='tight')
+            print(f"Đã lưu biểu đồ vào {save_path}")
+        else:
+            plt.show()
+            
+        plt.close()
+        
+    except Exception as e:
+        print(f"Lỗi khi vẽ biểu đồ: {str(e)}")
+
 def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=True):
     """
     Đánh giá mô hình trên một ảnh cụ thể
@@ -831,6 +901,11 @@ def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=
             print(f"- Trung bình: {avg_matching_triplets:.2f}%")
             print(f"- Cao nhất: {max_matching_triplets:.2f}%")
             print(f"- Số ảnh có matching > 50%: {sum(1 for t in matching_percentages_triplets if t > 50)}")
+
+        # Vẽ biểu đồ kết quả
+        if save_results:
+            plot_path = f"query_results_{os.path.basename(image_path)}.png"
+            plot_query_results(ground_truth_pairs, ground_truth_triplets, plot_path)
 
         # Lưu kết quả truy vấn vào file JSON
         if save_results:
@@ -904,15 +979,9 @@ def evaluate_model_with_data(model_predictions, ground_truth_data, threshold=0.5
         y_true_binary = (y_true > 0).astype(int)
         
         # Tính precision, recall, và F1 score
-        try:
-            precision = precision_score(y_true_binary, y_score > threshold)
-            recall = recall_score(y_true_binary, y_score > threshold)
-            f1 = f1_score(y_true_binary, y_score > threshold)
-        except Exception as e:
-            print(f"Lỗi khi tính toán metrics: {str(e)}")
-            precision = 0.0
-            recall = 0.0
-            f1 = 0.0
+        precision = precision_score(y_true_binary, y_score > threshold)
+        recall = recall_score(y_true_binary, y_score > threshold)
+        f1 = f1_score(y_true_binary, y_score > threshold)
         
         return {
             'precision': float(precision),  # Chuyển đổi thành float để JSON serializable
