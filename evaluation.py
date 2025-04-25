@@ -2,6 +2,7 @@ import os
 import json
 import numpy as np
 from test import load_model_and_predict, get_predictions_from_model, query_images_by_pairs_parallel, query_images_triplets_parallel, calculate_roc_pr_metrics
+from sklearn.metrics import precision_recall_fscore_support
 
 def evaluate_model_pipeline(input_path, model_path, save_dir="./evaluation_results", max_images=None):
     """
@@ -35,6 +36,12 @@ def evaluate_model_pipeline(input_path, model_path, save_dir="./evaluation_resul
     
     all_results = {}
     
+    # Dictionaries to store aggregated metrics for precision, recall, and F1
+    aggregated_metrics = {
+        'pairs': {f'min_{i}': {'y_true': [], 'y_score': []} for i in range(1, 5)},
+        'triplets': {f'min_{i}': {'y_true': [], 'y_score': []} for i in range(1, 5)}
+    }
+    
     for i, image_path in enumerate(image_paths):
         print(f"\nProcessing image {i+1}/{len(image_paths)}: {image_path}")
         
@@ -50,8 +57,8 @@ def evaluate_model_pipeline(input_path, model_path, save_dir="./evaluation_resul
         ground_truth_pairs = []
         ground_truth_triplets = []
         
-        # Query with different min_pairs values (1-5)
-        for min_pairs in range(1, 6):
+        # Query with different min_pairs values (1-4)
+        for min_pairs in range(1, 5):
             pairs = query_images_by_pairs_parallel([predictions], min_pairs)
             triplets = query_images_triplets_parallel([predictions], min_pairs)
             
@@ -69,8 +76,8 @@ def evaluate_model_pipeline(input_path, model_path, save_dir="./evaluation_resul
         pairs_metrics = {}
         triplets_metrics = {}
         
-        # Calculate metrics for pairs (1-5)
-        for min_pairs in range(1, 6):
+        # Calculate metrics for pairs (1-4)
+        for min_pairs in range(1, 5):
             pairs_data = [p for p in ground_truth_pairs if p.get('matching_pairs', 0) >= min_pairs]
             print(f"Pairs data for min_pairs={min_pairs}: {len(pairs_data)} items")
             
@@ -81,6 +88,10 @@ def evaluate_model_pipeline(input_path, model_path, save_dir="./evaluation_resul
                     'y_score': y_score.tolist()
                 }
                 print(f"Calculated metrics for pairs min_pairs={min_pairs}: y_true={len(y_true)}, y_score={len(y_score)}")
+                
+                # Add to aggregated metrics
+                aggregated_metrics['pairs'][f'min_{min_pairs}']['y_true'].extend(y_true.tolist())
+                aggregated_metrics['pairs'][f'min_{min_pairs}']['y_score'].extend(y_score.tolist())
             else:
                 # Create empty metrics to ensure all curves are plotted
                 pairs_metrics[f'min_{min_pairs}'] = {
@@ -89,8 +100,8 @@ def evaluate_model_pipeline(input_path, model_path, save_dir="./evaluation_resul
                 }
                 print(f"No data for pairs min_pairs={min_pairs}, using placeholder")
         
-        # Calculate metrics for triplets (1-5)
-        for min_triplets in range(1, 6):
+        # Calculate metrics for triplets (1-4)
+        for min_triplets in range(1, 5):
             triplets_data = [t for t in ground_truth_triplets if t.get('matching_triples', 0) >= min_triplets]
             print(f"Triplets data for min_triplets={min_triplets}: {len(triplets_data)} items")
             
@@ -101,6 +112,10 @@ def evaluate_model_pipeline(input_path, model_path, save_dir="./evaluation_resul
                     'y_score': y_score.tolist()
                 }
                 print(f"Calculated metrics for triplets min_triplets={min_triplets}: y_true={len(y_true)}, y_score={len(y_score)}")
+                
+                # Add to aggregated metrics
+                aggregated_metrics['triplets'][f'min_{min_triplets}']['y_true'].extend(y_true.tolist())
+                aggregated_metrics['triplets'][f'min_{min_triplets}']['y_score'].extend(y_score.tolist())
             else:
                 # Create empty metrics to ensure all curves are plotted
                 triplets_metrics[f'min_{min_triplets}'] = {
@@ -122,7 +137,84 @@ def evaluate_model_pipeline(input_path, model_path, save_dir="./evaluation_resul
     
     print(f"\nEvaluation metrics saved to {os.path.join(save_dir, 'evaluation_metrics.json')}")
     
+    # Calculate and save average precision, recall, and F1 scores
+    average_metrics = calculate_average_metrics(aggregated_metrics)
+    
+    with open(os.path.join(save_dir, 'average_metrics.json'), 'w') as f:
+        json.dump(average_metrics, f, indent=4)
+    
+    print(f"Average metrics saved to {os.path.join(save_dir, 'average_metrics.json')}")
+    
     return all_results
+
+def calculate_average_metrics(aggregated_metrics):
+    """
+    Calculate average precision, recall, and F1 scores from aggregated metrics
+    
+    Args:
+        aggregated_metrics: Dictionary containing aggregated y_true and y_score for each category
+        
+    Returns:
+        Dictionary containing average metrics for each category
+    """
+    average_metrics = {
+        'pairs': {},
+        'triplets': {}
+    }
+    
+    # Calculate metrics for pairs
+    for min_key in aggregated_metrics['pairs']:
+        y_true = np.array(aggregated_metrics['pairs'][min_key]['y_true'])
+        y_score = np.array(aggregated_metrics['pairs'][min_key]['y_score'])
+        
+        if len(y_true) > 0 and len(y_score) > 0:
+            # Convert scores to binary predictions using 0.5 as threshold
+            y_pred = (y_score >= 0.5).astype(int)
+            
+            # Calculate precision, recall, and F1
+            precision, recall, f1, _ = precision_recall_fscore_support(y_true, y_pred, average='binary')
+            
+            average_metrics['pairs'][min_key] = {
+                'precision': float(precision),
+                'recall': float(recall),
+                'f1': float(f1),
+                'sample_count': len(y_true)
+            }
+        else:
+            average_metrics['pairs'][min_key] = {
+                'precision': 0.0,
+                'recall': 0.0,
+                'f1': 0.0,
+                'sample_count': 0
+            }
+    
+    # Calculate metrics for triplets
+    for min_key in aggregated_metrics['triplets']:
+        y_true = np.array(aggregated_metrics['triplets'][min_key]['y_true'])
+        y_score = np.array(aggregated_metrics['triplets'][min_key]['y_score'])
+        
+        if len(y_true) > 0 and len(y_score) > 0:
+            # Convert scores to binary predictions using 0.5 as threshold
+            y_pred = (y_score >= 0.5).astype(int)
+            
+            # Calculate precision, recall, and F1
+            precision, recall, f1, _ = precision_recall_fscore_support(y_true, y_pred, average='binary')
+            
+            average_metrics['triplets'][min_key] = {
+                'precision': float(precision),
+                'recall': float(recall),
+                'f1': float(f1),
+                'sample_count': len(y_true)
+            }
+        else:
+            average_metrics['triplets'][min_key] = {
+                'precision': 0.0,
+                'recall': 0.0,
+                'f1': 0.0,
+                'sample_count': 0
+            }
+    
+    return average_metrics
 
 if __name__ == "__main__":
     import argparse
