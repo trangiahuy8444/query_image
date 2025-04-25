@@ -8,9 +8,11 @@ import time
 import json
 
 # Kết nối Neo4j
-uri = "bolt://localhost:7689"
+# uri = "bolt://localhost:7689"
+uri = "neo4j+s://b40b4f2a.databases.neo4j.io"
 username = "neo4j"
-password = "12345678"
+password = "fpKNUXKT-4z0kQMm1nuUaiXe8p70uIebc3y3a4Z8kUA"
+# password = "12345678"
 driver = GraphDatabase.driver(uri, auth=(username, password))
 
 def load_model_and_predict(image_path, model_path):
