@@ -1,9 +1,8 @@
 services:
   - type: web
     name: reltr-app
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    env: docker
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: NEO4J_URI
         sync: false
@@ -12,11 +11,11 @@ services:
       - key: NEO4J_PASSWORD
         sync: false
       - key: IMAGE_FOLDER
-        value: /opt/render/project/src/data/vg_focused/images
+        value: /app/data/vg_focused/images
       - key: UPLOAD_FOLDER
-        value: /opt/render/project/src/uploads
+        value: /app/uploads
       - key: OUTPUT_FOLDER
-        value: /opt/render/project/src/output_images
+        value: /app/output_images
     healthCheckPath: /
     autoDeploy: true
     plan: free 
