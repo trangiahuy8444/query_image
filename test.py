@@ -579,11 +579,11 @@ def evaluate_model_with_data(model_predictions, ground_truth_data, threshold=0.5
     f1 = f1_score(y_true_binary, y_score > threshold)
     
     return {
-        'precision': precision,
-        'recall': recall,
-        'f1': f1,
-        'y_true': y_true,
-        'y_score': y_score
+        'precision': float(precision),  # Chuyển đổi thành float để JSON serializable
+        'recall': float(recall),        # Chuyển đổi thành float để JSON serializable
+        'f1': float(f1),                # Chuyển đổi thành float để JSON serializable
+        'y_true': y_true.tolist(),      # Chuyển đổi NumPy array thành list
+        'y_score': y_score.tolist()     # Chuyển đổi NumPy array thành list
     }
 
 def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), save_results=True, max_images=None):
@@ -631,14 +631,14 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
     # Tính toán metrics trung bình
     avg_metrics = {
         'pairs': {
-            'precision': np.mean([r['pairs_metrics']['precision'] for r in all_results]),
-            'recall': np.mean([r['pairs_metrics']['recall'] for r in all_results]),
-            'f1': np.mean([r['pairs_metrics']['f1'] for r in all_results])
+            'precision': float(np.mean([r['pairs_metrics']['precision'] for r in all_results])),
+            'recall': float(np.mean([r['pairs_metrics']['recall'] for r in all_results])),
+            'f1': float(np.mean([r['pairs_metrics']['f1'] for r in all_results]))
         },
         'triplets': {
-            'precision': np.mean([r['triplets_metrics']['precision'] for r in all_results]),
-            'recall': np.mean([r['triplets_metrics']['recall'] for r in all_results]),
-            'f1': np.mean([r['triplets_metrics']['f1'] for r in all_results])
+            'precision': float(np.mean([r['triplets_metrics']['precision'] for r in all_results])),
+            'recall': float(np.mean([r['triplets_metrics']['recall'] for r in all_results])),
+            'f1': float(np.mean([r['triplets_metrics']['f1'] for r in all_results]))
         }
     }
     
@@ -647,13 +647,33 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
     print(f"Pairs - Precision: {avg_metrics['pairs']['precision']:.4f}, Recall: {avg_metrics['pairs']['recall']:.4f}, F1: {avg_metrics['pairs']['f1']:.4f}")
     print(f"Triplets - Precision: {avg_metrics['triplets']['precision']:.4f}, Recall: {avg_metrics['triplets']['recall']:.4f}, F1: {avg_metrics['triplets']['f1']:.4f}")
     
+    # Chuẩn bị dữ liệu để lưu vào JSON
+    json_safe_results = {
+        'average_metrics': avg_metrics,
+        'individual_results': []
+    }
+    
+    # Chuyển đổi kết quả từng ảnh thành định dạng JSON-safe
+    for result in all_results:
+        json_safe_result = {
+            'image_file': result['image_file'],
+            'pairs_metrics': {
+                'precision': float(result['pairs_metrics']['precision']),
+                'recall': float(result['pairs_metrics']['recall']),
+                'f1': float(result['pairs_metrics']['f1'])
+            },
+            'triplets_metrics': {
+                'precision': float(result['triplets_metrics']['precision']),
+                'recall': float(result['triplets_metrics']['recall']),
+                'f1': float(result['triplets_metrics']['f1'])
+            }
+        }
+        json_safe_results['individual_results'].append(json_safe_result)
+    
     # Lưu kết quả vào file JSON nếu cần
     if save_results:
         with open("dataset_evaluation_results.json", "w") as f:
-            json.dump({
-                'average_metrics': avg_metrics,
-                'individual_results': all_results
-            }, f, indent=4)
+            json.dump(json_safe_results, f, indent=4)
     
     return {
         'average_metrics': avg_metrics,
@@ -662,7 +682,7 @@ def evaluate_model_on_dataset(image_folder, model_path, min_pairs_range=(1, 6), 
 
 def plot_dataset_curves(dataset_results, save_path=None):
     """
-    Vẽ biểu đồ tổng hợp từ kết quả đánh giá trên bộ dữ liệu
+    Vẽ biểu đồ ROC và Precision-Recall từ kết quả đánh giá trên bộ dữ liệu
     
     Args:
         dataset_results: Kết quả đánh giá từ hàm evaluate_model_on_dataset
@@ -670,46 +690,61 @@ def plot_dataset_curves(dataset_results, save_path=None):
     """
     # Trích xuất dữ liệu
     individual_results = dataset_results['individual_results']
-    avg_metrics = dataset_results['average_metrics']
     
     # Tạo biểu đồ
-    plt.figure(figsize=(15, 10))
+    plt.figure(figsize=(12, 5))
     
-    # Biểu đồ 1: Phân phối Precision, Recall, F1 cho pairs
-    plt.subplot(2, 2, 1)
-    pairs_precision = [r['pairs_metrics']['precision'] for r in individual_results]
-    pairs_recall = [r['pairs_metrics']['recall'] for r in individual_results]
-    pairs_f1 = [r['pairs_metrics']['f1'] for r in individual_results]
+    # Biểu đồ ROC
+    plt.subplot(1, 2, 1)
     
-    plt.boxplot([pairs_precision, pairs_recall, pairs_f1], labels=['Precision', 'Recall', 'F1'])
-    plt.title('Distribution of Pairs Metrics')
-    plt.ylabel('Score')
+    # Vẽ đường ROC cho pairs
+    pairs_y_true = []
+    pairs_y_score = []
+    for result in individual_results:
+        pairs_y_true.extend(result['pairs_metrics']['y_true'])
+        pairs_y_score.extend(result['pairs_metrics']['y_score'])
     
-    # Biểu đồ 2: Phân phối Precision, Recall, F1 cho triplets
-    plt.subplot(2, 2, 2)
-    triplets_precision = [r['triplets_metrics']['precision'] for r in individual_results]
-    triplets_recall = [r['triplets_metrics']['recall'] for r in individual_results]
-    triplets_f1 = [r['triplets_metrics']['f1'] for r in individual_results]
+    fpr, tpr, _ = roc_curve(pairs_y_true, pairs_y_score)
+    roc_auc = auc(fpr, tpr)
+    plt.plot(fpr, tpr, color='blue', lw=2, label=f'Pairs (AUC = {roc_auc:.2f})')
     
-    plt.boxplot([triplets_precision, triplets_recall, triplets_f1], labels=['Precision', 'Recall', 'F1'])
-    plt.title('Distribution of Triplets Metrics')
-    plt.ylabel('Score')
+    # Vẽ đường ROC cho triplets
+    triplets_y_true = []
+    triplets_y_score = []
+    for result in individual_results:
+        triplets_y_true.extend(result['triplets_metrics']['y_true'])
+        triplets_y_score.extend(result['triplets_metrics']['y_score'])
     
-    # Biểu đồ 3: So sánh Precision giữa pairs và triplets
-    plt.subplot(2, 2, 3)
-    plt.scatter(pairs_precision, triplets_precision, alpha=0.5)
-    plt.plot([0, 1], [0, 1], 'r--')
-    plt.xlabel('Pairs Precision')
-    plt.ylabel('Triplets Precision')
-    plt.title('Pairs vs Triplets Precision')
+    fpr, tpr, _ = roc_curve(triplets_y_true, triplets_y_score)
+    roc_auc = auc(fpr, tpr)
+    plt.plot(fpr, tpr, color='red', lw=2, label=f'Triplets (AUC = {roc_auc:.2f})')
     
-    # Biểu đồ 4: So sánh F1 score giữa pairs và triplets
-    plt.subplot(2, 2, 4)
-    plt.scatter(pairs_f1, triplets_f1, alpha=0.5)
-    plt.plot([0, 1], [0, 1], 'r--')
-    plt.xlabel('Pairs F1 Score')
-    plt.ylabel('Triplets F1 Score')
-    plt.title('Pairs vs Triplets F1 Score')
+    # Vẽ đường chéo ngẫu nhiên
+    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver Operating Characteristic')
+    plt.legend(loc="lower right")
+    
+    # Biểu đồ Precision-Recall
+    plt.subplot(1, 2, 2)
+    
+    # Vẽ đường Precision-Recall cho pairs
+    precision, recall, _ = precision_recall_curve(pairs_y_true, pairs_y_score)
+    average_precision = average_precision_score(pairs_y_true, pairs_y_score)
+    plt.plot(recall, precision, color='blue', lw=2, label=f'Pairs (AP = {average_precision:.2f})')
+    
+    # Vẽ đường Precision-Recall cho triplets
+    precision, recall, _ = precision_recall_curve(triplets_y_true, triplets_y_score)
+    average_precision = average_precision_score(triplets_y_true, triplets_y_score)
+    plt.plot(recall, precision, color='red', lw=2, label=f'Triplets (AP = {average_precision:.2f})')
+    
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.title('Precision-Recall')
+    plt.legend(loc="lower left")
     
     plt.tight_layout()
     
