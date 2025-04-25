@@ -66,16 +66,26 @@ def load_model_and_predict(image_path, model_path):
         predictions: Kết quả dự đoán từ mô hình
     """
     try:
+        print(f"\nĐang tải mô hình từ {model_path}")
         model = load_model(model_path)
+        print("Đã tải mô hình thành công")
+        
+        print(f"Đang dự đoán cho ảnh {image_path}")
         raw_predictions = predict(image_path, model)
+        print(f"Loại dữ liệu của raw_predictions: {type(raw_predictions)}")
+        print(f"Raw predictions: {raw_predictions}")
         
         # Kiểm tra và chuyển đổi dự đoán thành định dạng chuẩn
         valid_predictions = []
         
         # Nếu không có dự đoán hoặc dự đoán không phải list
-        if not raw_predictions or not isinstance(raw_predictions, list):
-            print(f"Không có dự đoán hợp lệ cho ảnh {image_path}")
+        if not raw_predictions:
+            print(f"Không có dự đoán cho ảnh {image_path}")
             return []
+            
+        if not isinstance(raw_predictions, list):
+            print(f"Chuyển đổi dự đoán thành list: {raw_predictions}")
+            raw_predictions = [raw_predictions]
             
         # Lọc và chuyển đổi dự đoán
         for pred in raw_predictions:
@@ -90,19 +100,24 @@ def load_model_and_predict(image_path, model_path):
                             'object': {'class': str(pred['object']) if isinstance(pred['object'], (str, int)) else pred['object'].get('class', '')}
                         }
                         valid_predictions.append(valid_pred)
+                        print(f"Thêm dự đoán hợp lệ: {valid_pred}")
                 # Nếu pred là tuple/list có 3 phần tử, chuyển thành dictionary
                 elif isinstance(pred, (tuple, list)) and len(pred) >= 3:
-                    valid_predictions.append({
+                    valid_pred = {
                         'subject': {'class': str(pred[0])},
                         'relation': {'class': str(pred[1])},
                         'object': {'class': str(pred[2])}
-                    })
+                    }
+                    valid_predictions.append(valid_pred)
+                    print(f"Chuyển đổi và thêm dự đoán: {valid_pred}")
             except Exception as e:
                 print(f"Lỗi khi xử lý dự đoán: {str(e)}, Dữ liệu: {pred}")
                 continue
                 
         if not valid_predictions:
             print(f"Không tìm thấy dự đoán hợp lệ nào cho ảnh {image_path}")
+        else:
+            print(f"Tìm thấy {len(valid_predictions)} dự đoán hợp lệ")
             
         return valid_predictions
         
@@ -131,6 +146,8 @@ def get_predictions_from_model(predictions):
         print("Cảnh báo: Không có dự đoán nào")
         return predicted_triplets
     
+    print(f"\nĐang xử lý {len(predictions)} dự đoán")
+    
     for p in predictions:
         try:
             # Kiểm tra cấu trúc của p
@@ -155,11 +172,13 @@ def get_predictions_from_model(predictions):
             
             # Kiểm tra nếu có đủ thông tin
             if subject_class and relation_class and object_class:
-                predicted_triplets.append({
+                triplet = {
                     'subject': subject_class,
                     'relation': relation_class,
                     'object': object_class
-                })
+                }
+                predicted_triplets.append(triplet)
+                print(f"Thêm triplet: {triplet}")
             else:
                 print(f"Cảnh báo: Thiếu thông tin trong dự đoán: {p}")
                 
@@ -167,6 +186,7 @@ def get_predictions_from_model(predictions):
             print(f"Lỗi khi xử lý dự đoán: {e}, Dữ liệu: {p}")
             continue
             
+    print(f"Tổng số triplet hợp lệ: {len(predicted_triplets)}")
     return predicted_triplets
 
 # Biến để theo dõi số lượng truy vấn đang chạy
