@@ -669,6 +669,42 @@ def plot_all_curves(image_path, model_path, save_path=None):
         'triplets_metrics': {i: calculate_roc_pr_metrics(model_predictions, ground_truth_triplets_by_min[i]) for i in range(1, 6)}
     }
 
+def save_query_results_to_json(image_path, predictions, ground_truth_pairs, ground_truth_triplets, output_file="query_results.json"):
+    """
+    Lưu kết quả truy vấn vào file JSON
+    
+    Args:
+        image_path: Đường dẫn đến ảnh
+        predictions: Kết quả dự đoán từ mô hình
+        ground_truth_pairs: Kết quả truy vấn pairs từ Neo4j
+        ground_truth_triplets: Kết quả truy vấn triplets từ Neo4j
+        output_file: Tên file JSON để lưu kết quả
+    """
+    try:
+        # Chuẩn bị dữ liệu để lưu
+        results = {
+            "image_path": image_path,
+            "model_predictions": [
+                {
+                    "subject": pred["subject"]["class"],
+                    "relation": pred["relation"]["class"],
+                    "object": pred["object"]["class"]
+                }
+                for pred in predictions
+            ],
+            "ground_truth_pairs": ground_truth_pairs,
+            "ground_truth_triplets": ground_truth_triplets
+        }
+        
+        # Lưu vào file JSON
+        with open(output_file, "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=4, ensure_ascii=False)
+            
+        print(f"Đã lưu kết quả truy vấn vào file {output_file}")
+        
+    except Exception as e:
+        print(f"Lỗi khi lưu kết quả vào file JSON: {str(e)}")
+
 def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=True):
     """
     Đánh giá mô hình trên một ảnh cụ thể
@@ -710,6 +746,11 @@ def evaluate_model(image_path, model_path, min_pairs_range=(1, 6), save_results=
             except Exception as e:
                 print(f"Lỗi khi truy vấn với min_pairs={min_pairs}: {str(e)}")
                 continue
+
+        # Lưu kết quả truy vấn vào file JSON
+        if save_results:
+            output_file = f"query_results_{os.path.basename(image_path)}.json"
+            save_query_results_to_json(image_path, predictions, ground_truth_pairs, ground_truth_triplets, output_file)
 
         # Đánh giá mô hình với dữ liệu pairs
         pairs_metrics = evaluate_model_with_data(model_predictions, ground_truth_pairs, save_plots=False)
