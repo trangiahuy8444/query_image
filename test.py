@@ -724,27 +724,34 @@ def evaluate_model_batch(image_paths, model_path, batch_size=4):
                     for idx, (sxmin, symin, sxmax, symax), (oxmin, oymin, oxmax, oymax) in \
                             zip(keep_queries, sub_bboxes_scaled, obj_bboxes_scaled):
                         
-                        subject_class = CLASSES[probas_sub[idx].argmax()]
-                        relation_class = REL_CLASSES[probas[idx].argmax()]
-                        object_class = CLASSES[probas_obj[idx].argmax()]
+                        # Lấy index của class có xác suất cao nhất
+                        sub_idx = probas_sub[idx].argmax().item()
+                        rel_idx = probas[idx].argmax().item()
+                        obj_idx = probas_obj[idx].argmax().item()
                         
-                        prediction = {
-                            "subject": {
-                                "class": subject_class,
-                                "bbox": [sxmin.item(), symin.item(), sxmax.item(), symax.item()],
-                                "score": probas_sub[idx].max().item()
-                            },
-                            "relation": {
-                                "class": relation_class,
-                                "score": probas[idx].max().item()
-                            },
-                            "object": {
-                                "class": object_class,
-                                "bbox": [oxmin.item(), oymin.item(), oxmax.item(), oymax.item()],
-                                "score": probas_obj[idx].max().item()
+                        # Kiểm tra index có hợp lệ không
+                        if sub_idx < len(CLASSES) and rel_idx < len(REL_CLASSES) and obj_idx < len(CLASSES):
+                            subject_class = CLASSES[sub_idx]
+                            relation_class = REL_CLASSES[rel_idx]
+                            object_class = CLASSES[obj_idx]
+                            
+                            prediction = {
+                                "subject": {
+                                    "class": subject_class,
+                                    "bbox": [sxmin.item(), symin.item(), sxmax.item(), symax.item()],
+                                    "score": probas_sub[idx].max().item()
+                                },
+                                "relation": {
+                                    "class": relation_class,
+                                    "score": probas[idx].max().item()
+                                },
+                                "object": {
+                                    "class": object_class,
+                                    "bbox": [oxmin.item(), oymin.item(), oxmax.item(), oymax.item()],
+                                    "score": probas_obj[idx].max().item()
+                                }
                             }
-                        }
-                        predictions.append(prediction)
+                            predictions.append(prediction)
                     
                     # Tính toán metrics
                     result = evaluate_predictions(predictions, img_path)
