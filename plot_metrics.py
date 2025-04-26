@@ -39,7 +39,12 @@ def plot_metrics_from_json(json_file_path, save_path=None):
         y_score = np.array(all_y_score)
         
         if len(y_true) > 1 and len(y_score) > 1:
-            fpr, tpr, _ = roc_curve(y_true, y_score)
+            # Sort data points by score in ascending order
+            sorted_indices = np.argsort(y_score)
+            y_true = y_true[sorted_indices]
+            y_score = y_score[sorted_indices]
+            
+            fpr, tpr, thresholds = roc_curve(y_true, y_score)
             roc_auc = auc(fpr, tpr)
             
             # Use different colors for different min values
@@ -52,8 +57,24 @@ def plot_metrics_from_json(json_file_path, save_path=None):
             elif min_key == 'min_4':
                 color = 'cyan'
             
-            plt.plot(fpr, tpr, color=color, lw=2, 
+            # Plot the curve
+            plt.plot(fpr, tpr, color=color, lw=2, marker='x', markersize=4,
                     label=f'Pairs (≥{i+1}) (AUC = {roc_auc:.2f})')
+            
+            # Plot all individual points
+            unique_scores = np.unique(y_score)
+            for threshold in unique_scores:
+                y_pred = (y_score >= threshold).astype(int)
+                tn = np.sum((y_true == 0) & (y_pred == 0))
+                fp = np.sum((y_true == 0) & (y_pred == 1))
+                fn = np.sum((y_true == 1) & (y_pred == 0))
+                tp = np.sum((y_true == 1) & (y_pred == 1))
+                
+                fpr_point = fp / (fp + tn) if (fp + tn) > 0 else 0
+                tpr_point = tp / (tp + fn) if (tp + fn) > 0 else 0
+                
+                plt.scatter(fpr_point, tpr_point, color=color, marker='x', s=20, alpha=0.5)
+            
             print(f"Plotted ROC curve for pairs {min_key} with {len(y_true)} data points")
     
     # Plot triplets ROC curves (excluding min_5)
@@ -73,6 +94,11 @@ def plot_metrics_from_json(json_file_path, save_path=None):
         y_score = np.array(all_y_score)
         
         if len(y_true) > 1 and len(y_score) > 1:
+            # Sort data points by score in ascending order
+            sorted_indices = np.argsort(y_score)
+            y_true = y_true[sorted_indices]
+            y_score = y_score[sorted_indices]
+            
             fpr, tpr, _ = roc_curve(y_true, y_score)
             roc_auc = auc(fpr, tpr)
             
@@ -86,7 +112,7 @@ def plot_metrics_from_json(json_file_path, save_path=None):
             elif min_key == 'min_4':
                 color = 'green'
             
-            plt.plot(fpr, tpr, color=color, lw=2,
+            plt.plot(fpr, tpr, color=color, lw=2, marker='x', markersize=4,
                     label=f'Triplets (≥{i+1}) (AUC = {roc_auc:.2f})')
             print(f"Plotted ROC curve for triplets {min_key} with {len(y_true)} data points")
     
@@ -120,7 +146,12 @@ def plot_metrics_from_json(json_file_path, save_path=None):
         y_score = np.array(all_y_score)
         
         if len(y_true) > 1 and len(y_score) > 1:
-            precision, recall, _ = precision_recall_curve(y_true, y_score)
+            # Sort data points by score in ascending order
+            sorted_indices = np.argsort(y_score)
+            y_true = y_true[sorted_indices]
+            y_score = y_score[sorted_indices]
+            
+            precision, recall, thresholds = precision_recall_curve(y_true, y_score)
             pr_auc = auc(recall, precision)
             
             # Use different colors for different min values
@@ -133,8 +164,24 @@ def plot_metrics_from_json(json_file_path, save_path=None):
             elif min_key == 'min_4':
                 color = 'cyan'
             
-            plt.plot(recall, precision, color=color, lw=2,
+            # Plot the curve
+            plt.plot(recall, precision, color=color, lw=2, marker='x', markersize=4,
                     label=f'Pairs (≥{i+1}) (AP = {pr_auc:.2f})')
+            
+            # Plot all individual points
+            unique_scores = np.unique(y_score)
+            for threshold in unique_scores:
+                y_pred = (y_score >= threshold).astype(int)
+                tn = np.sum((y_true == 0) & (y_pred == 0))
+                fp = np.sum((y_true == 0) & (y_pred == 1))
+                fn = np.sum((y_true == 1) & (y_pred == 0))
+                tp = np.sum((y_true == 1) & (y_pred == 1))
+                
+                if tp + fp > 0:
+                    precision_point = tp / (tp + fp)
+                    recall_point = tp / (tp + fn)
+                    plt.scatter(recall_point, precision_point, color=color, marker='x', s=20, alpha=0.5)
+            
             print(f"Plotted PR curve for pairs {min_key} with {len(y_true)} data points")
     
     # Plot triplets PR curves (excluding min_5)
@@ -154,6 +201,11 @@ def plot_metrics_from_json(json_file_path, save_path=None):
         y_score = np.array(all_y_score)
         
         if len(y_true) > 1 and len(y_score) > 1:
+            # Sort data points by score in ascending order
+            sorted_indices = np.argsort(y_score)
+            y_true = y_true[sorted_indices]
+            y_score = y_score[sorted_indices]
+            
             precision, recall, _ = precision_recall_curve(y_true, y_score)
             pr_auc = auc(recall, precision)
             
@@ -167,7 +219,7 @@ def plot_metrics_from_json(json_file_path, save_path=None):
             elif min_key == 'min_4':
                 color = 'green'
             
-            plt.plot(recall, precision, color=color, lw=2,
+            plt.plot(recall, precision, color=color, lw=2, marker='x', markersize=4,
                     label=f'Triplets (≥{i+1}) (AP = {pr_auc:.2f})')
             print(f"Plotted PR curve for triplets {min_key} with {len(y_true)} data points")
     
@@ -189,10 +241,11 @@ def plot_metrics_from_json(json_file_path, save_path=None):
 
 if __name__ == "__main__":
     # Path to the evaluation_metrics.json file
-    json_file_path = "./evaluation_results/evaluation_metrics.json"
+    # json_file_path = "./evaluation_results/evaluation_metrics.json"
+    json_file_path = "./evaluation_results_goc/evaluation_metrics.json"
     
     # Path to save the plot
-    save_path = "./evaluation_results/combined_curves_all_images.png"
+    save_path = "./evaluation_results_goc/combined_curves_all_images2.png"
     
     # Plot the metrics
     plot_metrics_from_json(json_file_path, save_path) 
