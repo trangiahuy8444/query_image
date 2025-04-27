@@ -242,10 +242,10 @@ def plot_metrics_from_json(json_file_path, save_path=None):
 if __name__ == "__main__":
     # Path to the evaluation_metrics.json file
     # json_file_path = "./evaluation_results/evaluation_metrics.json"
-    json_file_path = "./evaluation_results_goc/evaluation_metrics.json"
+    json_file_path = "./evaluation_results_full_ft/evaluation_metrics.json"
     
     # Path to save the plot
-    save_path = "./evaluation_results_goc/combined_curves_all_images2.png"
+    save_path = "./evaluation_results_full_ft/combined_curves_all_images2.png"
     
     # Plot the metrics
     plot_metrics_from_json(json_file_path, save_path) 
